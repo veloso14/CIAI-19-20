@@ -1,5 +1,7 @@
 package fct.cli.demo.api
 
+import fct.cli.demo.dto.PetDTO
+import fct.cli.demo.services.PetService
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
@@ -11,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 @Controller
 @ResponseBody
 
-class PetsController{
+class PetsController(val service: PetService){
 
     @ApiOperation("Retrives info about pet with id id" , response = List::class)
     @ApiResponses( value = [
