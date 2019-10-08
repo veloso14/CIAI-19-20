@@ -15,7 +15,7 @@ class AppointmentService{
 
     fun newPet(dto: PetDTO): PetDTO {
 
-        return pet ?: throw PetNotFoundException(-1)
+        return pet ?: throw PetNotFoundException(pet!!.name)
 
     }
 
