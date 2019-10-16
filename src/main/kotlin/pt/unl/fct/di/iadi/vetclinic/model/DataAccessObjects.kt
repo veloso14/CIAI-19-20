@@ -26,28 +26,56 @@ import javax.persistence.*
 import javax.validation.constraints.NotNull
 
 @Entity
-data class PetDAO(
-        @Id @GeneratedValue val id:Long,
-        var name: String,
-        var species: String
-) {
-    constructor(pet: PetDTO) : this(pet.id,pet.name,pet.species)
+ class PetDAO(
+         name: String,
+         species: String,
+         owner: ClientDAO,
+         appointments: MutableList<AppointmentDAO>,
+         description: String,
+         notes: MutableList<String>) {
+    constructor(pet: PetDTO) : this(pet.name,pet.species, pet.owner, pet.appointments, pet.description, pet.notes )
+
+    @Id
+    @GeneratedValue
+    val id:Long = -1
+
+
+    var name:String = name
+    var species:String = species
+    var description:String = description
+
+    @ManyToOne(fetch = FetchType.LAZY , optional = false)
+    @JoinColumn(name = "owner_id" , nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    val owner:ClientDAO = owner
+
+
+    @ElementCollection
+    val notes:MutableList<String> = mutableListOf()
+
+    @OneToMany
+    val appointments:MutableList<AppointmentDAO> = mutableListOf()
+
 
     fun update(other:PetDAO) {
         this.name = other.name
 
         this.species = other.species
     }
+
+
 }
 
 @Entity
 class  AppointmentDAO(
-                        id: Long,
+
                        pet: PetDAO,
-                        employee:VetDAO,
+                        vet:VetDAO,
                        start:LocalDateTime ,
                        end:LocalDateTime ,
                         description: String){
+
+    constructor(appoint: AppointmentDTO) : this( appoint.pet, appoint.vet, appoint.start, appoint.end, appoint.description)
 
     @Id
     @GeneratedValue
@@ -60,7 +88,7 @@ class  AppointmentDAO(
     @ManyToOne(fetch = FetchType.LAZY , optional = false)
     @JoinColumn(name = "vet_id" , nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    val vet:VetDAO = employee
+    val vet:VetDAO = vet
 
     var start:LocalDateTime = start
     var end:LocalDateTime = end
@@ -77,11 +105,13 @@ class  AppointmentDAO(
 }*/
    // constructor(appointment: AppointmentDTO) : this(appointment.id ,appointment.pet,appointment.start, appointment.end , appointment.description )
 
+
+
 }
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-open class UserDAO(name: String, email :String){
+open class UserDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String){
     @Id
     @GeneratedValue
     val id = -1
@@ -91,18 +121,37 @@ open class UserDAO(name: String, email :String){
     @NotNull
     @Column(name = "u_email" , unique = true)
     var email:String = email
+
+    @NotNull
+    @Column(name = "u_username" , unique = true)
+    var username:String = username
+
+    @NotNull
+    @Column(name = "u_pass")
+    var password:String = password
+
+    @NotNull
+    @Column(name = "u_cellphone")
+    var cellphone:Long = cellphone
+
+    @NotNull
+    @Column(name = "u_address")
+    var address:String = address
 }
 
 @Entity
-class ClientDAO(name: String, email :String ):UserDAO(name, email){
-
+class ClientDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(name, email ,  username , password, cellphone, address){
+    val pets:MutableList<PetDAO> = mutableListOf()
 }
 
+// val picture: URI
 @Entity
-class VetDAO( name:String ,  username:String , password:String , email:String , cellphone:Long , adress:String, val picture: URI): UserDAO( name , username)
+class VetDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(name, email ,  username , password, cellphone, address){
+    val appointments:MutableList<AppointmentDAO> = mutableListOf()
+}
 
 
 @Entity
-class AdminDAO(name:String, username:String, password:String, email:String, cellphone:Long, adress:String, picture: URI): UserDAO( name , username)
+class AdminDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(name, email ,  username , password, cellphone, address)
 
 

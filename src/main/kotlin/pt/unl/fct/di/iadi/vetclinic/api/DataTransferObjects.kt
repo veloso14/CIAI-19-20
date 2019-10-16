@@ -16,25 +16,24 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.api
 
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.time.LocalDateTime
 
-data class PetDTO(val id:Long, val name:String, val species:String) {
+data class PetDTO(val name:String, val species:String, val owner: ClientDAO, val appointments:MutableList<AppointmentDAO>, val description: String, val notes:MutableList<String>) {
 
-    constructor(pet: PetDAO) : this(pet.id,pet.name,pet.species)
+    constructor(pet: PetDAO) : this(pet.name,pet.species, pet.owner, pet.appointments, pet.description, pet.notes)
 }
 
-data class AppointmentDTO(val pet: PetDAO,val start: LocalDateTime,val end: LocalDateTime,val description: String) {
+data class AppointmentDTO(val pet: PetDAO, val vet: VetDAO, val start: LocalDateTime,val end: LocalDateTime,val description: String) {
 
-    constructor(appoint: AppointmentDAO) : this( appoint.pet, appoint.start, appoint.end, appoint.description)
+    constructor(appoint: AppointmentDAO) : this( appoint.pet,appoint.vet, appoint.start, appoint.end, appoint.description)
 }
 
-data class UserDTO( val name: String, val email :String){
-    constructor(user: UserDAO) : this( user.name ,user.email)
+data class UserDTO( val name: String, val email :String, val username:String , val password:String, val cellphone:Long, val address:String){
+    constructor(user: UserDAO) : this( user.name, user.email ,  user.username , user.password, user.cellphone, user.address)
 }
 
+//fazers clientDTO etc, com heranca ??
 
 
 

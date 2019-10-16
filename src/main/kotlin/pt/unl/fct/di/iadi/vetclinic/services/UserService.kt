@@ -16,7 +16,7 @@ class UserService(val user: UserRepository) {
     }
 
     fun getOneUser(id:Long) =
-            user.findById(id).orElseThrow { PetNotFoundException("There is no client with Id $id") }
+            user.findById(id).orElseThrow { NotFoundException("There is no client with Id $id") }
 
 
     fun deleteUser(id:Long) {

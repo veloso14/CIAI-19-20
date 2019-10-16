@@ -1,6 +1,7 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
+import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 
@@ -29,4 +30,18 @@ class PetService(val pets:PetRepository) {
 
         pets.delete(pet)
     }
+
+    fun addAppointment(app:AppointmentDAO, id:Long){
+        val pet:PetDAO = getOnePet(id)
+        pet.appointments.add(app)
+        pets.save(pet)
+    }
+
+    fun addNote(note:String, id: Long){
+        val pet:PetDAO = getOnePet(id)
+        pet.notes.add(note)
+        pets.save(pet)
+    }
+
+
 }

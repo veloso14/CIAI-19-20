@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
+import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.PetNotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
@@ -23,7 +24,7 @@ class PetController(val pets: PetService) {
     ])
     @GetMapping("")
     fun getAllPets() =
-            pets.getAllPets().map { PetDTO(it) }
+            pets.getAllPets().map {  }
 
     @ApiOperation(value = "Add a new pet", response = Unit::class)
     @ApiResponses(value = [
@@ -73,6 +74,21 @@ class PetController(val pets: PetService) {
     fun deletePet(@PathVariable id: Long) =
             try {
                 pets.deletePet(id)
+            } catch (e: PetNotFoundException) {
+                throw NotFoundException(e.message ?: "Not Found")
+            }
+
+
+    @ApiOperation(value = "Add appointment to pet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully updated a pet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/{id}")
+    fun addAppointmentToPet(@RequestBody app: AppointmentDTO,  @PathVariable id: Long) =
+            try {
+                pets.addAppointment(AppointmentDAO(app), id)
             } catch (e: PetNotFoundException) {
                 throw NotFoundException(e.message ?: "Not Found")
             }
