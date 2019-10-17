@@ -52,49 +52,40 @@ data class AppointmentDAO(
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-open class UserDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String){
-    constructor(user: UserDAO) : this(user.name,  user.email,  user.username , user.password, user.cellphone, user.address)
+open class UserDAO( @Id @GeneratedValue val id:Long,
+                    var name:String,
+                    @NotNull
+                    @Column(name = "u_email" , unique = true)
+                    var  email :String,
+                    @NotNull
+                    @Column(name = "u_username" , unique = true)
+                    var  username:String ,
+                    @NotNull
+                    @Column(name = "u_pass")
+                    var password:String,
+                    @NotNull
+                    @Column(name = "u_cellphone")
+                    var cellphone:Long,  @NotNull
+                    @Column(name = "u_address")
+                    var address:String){
+    constructor(user: UserDAO) : this(user.id, user.name,  user.email,  user.username , user.password, user.cellphone, user.address)
 
-    @Id
-    @GeneratedValue
-    val id = -1L
 
-    var name:String = name
-
-    @NotNull
-    @Column(name = "u_email" , unique = true)
-    var email:String = email
-
-    @NotNull
-    @Column(name = "u_username" , unique = true)
-    var username:String = username
-
-    @NotNull
-    @Column(name = "u_pass")
-    var password:String = password
-
-    @NotNull
-    @Column(name = "u_cellphone")
-    var cellphone:Long = cellphone
-
-    @NotNull
-    @Column(name = "u_address")
-    var address:String = address
 }
 
 @Entity
-class ClientDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(name, email ,  username , password, cellphone, address){
-    val pets:MutableList<PetDAO> = mutableListOf()
+class ClientDAO(id: Long,name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(id,name, email ,  username , password, cellphone, address){
+    //val pets:MutableList<PetDAO> = mutableListOf()
 }
 
 // val picture: URI
 @Entity
-class VetDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String, employeeID:Long):UserDAO(name, email ,  username , password, cellphone, address){
-    val appointments:MutableList<AppointmentDAO> = mutableListOf()
+class VetDAO(id: Long,name: String, email :String,  username:String , password:String, cellphone:Long, address:String, employeeID:Long):UserDAO(id,name, email ,  username , password, cellphone, address){
+   // val appointments:MutableList<AppointmentDAO> = mutableListOf()
 }
 
 
 @Entity
-class AdminDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String,employeeID:Long):UserDAO(name, email ,  username , password, cellphone, address)
+class AdminDAO(id: Long,name: String, email :String,  username:String , password:String, cellphone:Long, address:String,employeeID:Long):UserDAO(id,name, email ,  username , password, cellphone, address)
 
 
