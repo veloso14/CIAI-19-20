@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.PetNotFoundException
+
 
 @Api(value = "VetClinic Management System - Admin API",
         description = "Management operations of ADMIN in the IADI 2019 Pet Clinic")
@@ -33,10 +33,6 @@ class AdminController(val admin: AdminService) {
     fun getAllAppointments() = admin.getAllAppointments().map { AppointmentDTO(it) }
 
     @GetMapping("/appointments/{id}")
-    fun getAppointmentsByVetId(@PathVariable id: Long) =
-            try {
-                admin.getAppointmentsByVetId(id)
-            } catch (e: NotFoundException) {
-                throw NotFoundException(e.message ?: "Vet id not found")
-            }
+    fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id)}
+
 }
