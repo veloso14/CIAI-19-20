@@ -16,97 +16,38 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.model
 
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
+import com.sun.istack.NotNull
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import java.net.URI
-import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
-import javax.validation.constraints.NotNull
 
 @Entity
- class PetDAO(
-         name: String,
-         species: String,
-         owner: ClientDAO,
-         appointments: MutableList<AppointmentDAO>,
-         description: String,
-         notes: MutableList<String>) {
-    constructor(pet: PetDTO) : this(pet.name,pet.species, pet.owner, pet.appointments, pet.description, pet.notes )
-
-    @Id
-    @GeneratedValue
-    val id:Long = -1
-
-
-    var name:String = name
-    var species:String = species
-    var description:String = description
-
-    @ManyToOne(fetch = FetchType.LAZY , optional = false)
-    @JoinColumn(name = "owner_id" , nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    val owner:ClientDAO = owner
-
-
-    @ElementCollection
-    val notes:MutableList<String> = mutableListOf()
-
-    @OneToMany
-    val appointments:MutableList<AppointmentDAO> = mutableListOf()
-
+data class PetDAO(
+        @Id @GeneratedValue val id:Long,
+                            var name: String,
+                            var species: String,
+        @OneToMany(mappedBy = "pet")
+                            var appointments:List<AppointmentDAO>
+) {
+    constructor(pet: PetDTO, apts:List<AppointmentDAO>) : this(pet.id,pet.name,pet.species, apts)
 
     fun update(other:PetDAO) {
         this.name = other.name
-
         this.species = other.species
+        this.appointments = other.appointments
     }
-
-
 }
 
 @Entity
-class  AppointmentDAO(
+data class AppointmentDAO(
+        @Id @GeneratedValue val id:Long,
+                            var date: Date,
+                            var desc:String,
+        @ManyToOne          var pet:PetDAO
+) {
 
-                       pet: PetDAO,
-                        vet:VetDAO,
-                       start:LocalDateTime ,
-                       end:LocalDateTime ,
-                        description: String){
-
-    constructor(appoint: AppointmentDTO) : this( appoint.pet, appoint.vet, appoint.start, appoint.end, appoint.description)
-
-    @Id
-    @GeneratedValue
-    val id:Long = -1
-    @ManyToOne(fetch = FetchType.LAZY , optional = false)
-    @JoinColumn(name = "pet_id" , nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    val pet:PetDAO = pet
-
-    @ManyToOne(fetch = FetchType.LAZY , optional = false)
-    @JoinColumn(name = "vet_id" , nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    val vet:VetDAO = vet
-
-    var start:LocalDateTime = start
-    var end:LocalDateTime = end
-    var description:String = description
-
-    /*
-    fun update(other:AppointmentDAO) {
-        this.id = other.id
-    this.pet: PetDAO,
-    this.employee:VetDAO,
-    this.start:LocalDateTime ,
-    this.end:LocalDateTime ,
-    this.description: String
-}*/
-   // constructor(appointment: AppointmentDTO) : this(appointment.id ,appointment.pet,appointment.start, appointment.end , appointment.description )
-
-
-
+    constructor(apt: AppointmentDTO, pet:PetDAO) : this(apt.id, apt.date, apt.desc, pet)
 }
 
 @Entity
@@ -114,7 +55,7 @@ class  AppointmentDAO(
 open class UserDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String){
     @Id
     @GeneratedValue
-    val id = -1
+    val id = -1L
 
     var name:String = name
 
@@ -146,12 +87,12 @@ class ClientDAO(name: String, email :String,  username:String , password:String,
 
 // val picture: URI
 @Entity
-class VetDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(name, email ,  username , password, cellphone, address){
+class VetDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String, employeeID:Long):UserDAO(name, email ,  username , password, cellphone, address){
     val appointments:MutableList<AppointmentDAO> = mutableListOf()
 }
 
 
 @Entity
-class AdminDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(name, email ,  username , password, cellphone, address)
+class AdminDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String,employeeID:Long):UserDAO(name, email ,  username , password, cellphone, address)
 
 

@@ -22,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.services.PetNotFoundException
+import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 
 
@@ -43,8 +43,8 @@ class PetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog")
-        val bigodes = PetDAO(2L, "bigodes", "Cat")
+        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList())
         val petsDAO = ArrayList(listOf(pantufas, bigodes))
 
         val petsDTO = petsDAO.map { PetDTO(it.id, it.name, it.species) }
@@ -81,7 +81,7 @@ class PetControllerTester {
 
     @Test
     fun `Test GET One Pet (Not Found)`() {
-        Mockito.`when`(pets.getOnePet(2)).thenThrow(PetNotFoundException("not found"))
+        Mockito.`when`(pets.getOnePet(2)).thenThrow(NotFoundException("not found"))
 
         mvc.perform(get("$petsURL/2"))
                 .andExpect(status().is4xxClientError)
@@ -92,7 +92,7 @@ class PetControllerTester {
     @Test
     fun `Test POST One Pet`() {
         val louro = PetDTO(0, "louro", "Papagaio")
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species)
+        val louroDAO = PetDAO(louro.id, louro.name, louro.species, emptyList())
 
         val louroJSON = mapper.writeValueAsString(louro)
 

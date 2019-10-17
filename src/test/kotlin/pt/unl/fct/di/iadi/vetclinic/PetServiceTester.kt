@@ -12,7 +12,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
-import pt.unl.fct.di.iadi.vetclinic.services.PetNotFoundException
+import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import java.util.*
 
@@ -27,8 +27,8 @@ class PetServiceTester {
     lateinit var repo:PetRepository
 
     companion object Constants {
-        val pantufas = PetDAO(1L, "pantufas", "Dog")
-        val bigodes = PetDAO(2L, "bigodes", "Cat")
+        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList())
         val petsDAO = mutableListOf(pantufas, bigodes);
     }
 
@@ -46,7 +46,7 @@ class PetServiceTester {
         assertThat(pets.getOnePet(1L), equalTo(pantufas))
     }
 
-    @Test(expected = PetNotFoundException::class)
+    @Test(expected = NotFoundException::class)
     fun `test on getOne() exception`() {
         //did not find the desired pet on the DB hence an empty Optional
         Mockito.`when`(repo.findById(anyLong())).thenReturn(Optional.empty())
