@@ -1,13 +1,10 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.model.AppointRepository
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
+import pt.unl.fct.di.iadi.vetclinic.model.*
 
 @Service
-class AppointmentService(val appointment: AppointRepository) {
+class AppointmentService(val appointment: AppointmentRepository) {
 
     fun getAllAppointment():List<AppointmentDAO> = appointment.findAll().toList()
 
@@ -16,7 +13,7 @@ class AppointmentService(val appointment: AppointRepository) {
     }
 
     fun getOneAppointment(id:Long) =
-            appointment.findById(id).orElseThrow { PetNotFoundException("There is no Appointment with Id $id") }
+            appointment.findById(id).orElseThrow { NotFoundException("There is no Appointment with Id $id") }
 
 
     fun deleteAppointment(id:Long) {

@@ -1,7 +1,6 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.model.AppointRepository
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserRepository

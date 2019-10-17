@@ -53,6 +53,8 @@ data class AppointmentDAO(
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 open class UserDAO(name: String, email :String,  username:String , password:String, cellphone:Long, address:String){
+    constructor(user: UserDAO) : this(user.name,  user.email,  user.username , user.password, user.cellphone, user.address)
+
     @Id
     @GeneratedValue
     val id = -1L

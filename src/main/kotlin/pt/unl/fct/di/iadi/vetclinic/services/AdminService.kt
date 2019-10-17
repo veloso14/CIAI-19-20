@@ -2,14 +2,13 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import pt.unl.fct.di.iadi.vetclinic.api.NotFoundException
 
 
 @Service
 class AdminService(
         val users: UserRepository,
         val pets: PetRepository,
-        val appointments: AppointRepository
+        val appointments: AppointmentRepository
 ) {
     // val logger = LoggerFactory.getLogger(AdminService::class.java)
 
@@ -43,6 +42,7 @@ class AdminService(
 
     // returns the list of appointments of a single Vet by giving his unique Id
     fun getAppointmentsByVetId(id: Long): List<AppointmentDAO> = appointments.findAllByVetId(id).toList()
+
 
     // set Vet schedule keeping restrictions in mind
     // #TODO
