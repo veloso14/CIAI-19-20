@@ -33,6 +33,6 @@ class AdminController(val admin: AdminService) {
     fun getAllAppointments() = admin.getAllAppointments().map { AppointmentDTO(it) }
 
     @GetMapping("/appointments/{id}")
-    fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id)}
+    fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
 
 }
