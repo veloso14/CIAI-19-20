@@ -14,7 +14,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.PetNotFoundException
 @Api(value = "VetClinic Management System - Admin API",
         description = "Management operations of ADMIN in the IADI 2019 Pet Clinic")
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/user/admin")
 
 class AdminController(val admin: AdminService) {
     @ApiOperation(value = "View a list of registered users", response = List::class)
