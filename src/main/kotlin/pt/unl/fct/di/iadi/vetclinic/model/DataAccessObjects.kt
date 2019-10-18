@@ -31,14 +31,23 @@ data class PetDAO(
                             var name: String,
                             var species: String,
         @OneToMany(mappedBy = "pet")
-                            var appointments:List<AppointmentDAO>
+                            var appointments:List<AppointmentDAO>,
+       /* @ManyToOne(fetch = FetchType.LAZY , optional = false)
+        @JoinColumn(name = "owner_id" , nullable = false)
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        var owner:ClientDAO */
+
+        @ElementCollection
+                             var notes:List<String>
 ) {
-    constructor(pet: PetDTO, apts:List<AppointmentDAO>) : this(pet.id,pet.name,pet.species, apts)
+    constructor(pet: PetDTO, apts:List<AppointmentDAO>,notes:List<String>) : this(pet.id,pet.name,pet.species, apts, notes)
 
     fun update(other:PetDAO) {
         this.name = other.name
         this.species = other.species
         this.appointments = other.appointments
+        this.notes = other.notes
+       // this.owner = other.owner
     }
 }
 
