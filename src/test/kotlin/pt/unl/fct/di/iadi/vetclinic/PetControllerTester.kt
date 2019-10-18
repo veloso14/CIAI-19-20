@@ -43,8 +43,8 @@ class PetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList())
+        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = ArrayList(listOf(pantufas, bigodes))
 
         val petsDTO = petsDAO.map { PetDTO(it.id, it.name, it.species) }
@@ -92,7 +92,7 @@ class PetControllerTester {
     @Test
     fun `Test POST One Pet`() {
         val louro = PetDTO(0, "louro", "Papagaio")
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species, emptyList())
+        val louroDAO = PetDAO(louro.id, louro.name, louro.species, emptyList(), emptyList())
 
         val louroJSON = mapper.writeValueAsString(louro)
 

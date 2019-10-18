@@ -33,7 +33,7 @@ class PetController(val pets: PetService) {
     ])
     @PostMapping("")
     fun addNewPet(@RequestBody pet: PetDTO) =
-            pets.addNewPet(PetDAO(pet, emptyList()))
+            pets.addNewPet(PetDAO(pet, emptyList(), emptyList()))
 
     @ApiOperation(value = "Get the details of a single pet by id", response = PetDTO::class)
     @ApiResponses(value = [
@@ -54,7 +54,7 @@ class PetController(val pets: PetService) {
     ])
     @PutMapping("/{id}")
     fun updatePet(@RequestBody pet: PetDTO, @PathVariable id: Long) =
-            handle404 { pets.updatePet(PetDAO(pet, emptyList()), id) }
+            handle404 { pets.updatePet(PetDAO(pet, emptyList(), emptyList()), id) }
 
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [

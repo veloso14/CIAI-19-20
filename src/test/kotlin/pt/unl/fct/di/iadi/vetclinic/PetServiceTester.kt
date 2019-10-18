@@ -27,8 +27,8 @@ class PetServiceTester {
     lateinit var repo:PetRepository
 
     companion object Constants {
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList())
+        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = mutableListOf(pantufas, bigodes);
     }
 

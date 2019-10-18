@@ -19,8 +19,8 @@ class VetClinicApplication {
             pets:PetRepository,
             apts:AppointmentRepository
     ) = CommandLineRunner {
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList())
+        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = mutableListOf(pantufas, bigodes);
         pets.saveAll(petsDAO)
         val apt = AppointmentDAO(1L, LocalDateTime.now(), LocalDateTime.now(), "consulta", pantufas)
