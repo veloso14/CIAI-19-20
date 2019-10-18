@@ -19,7 +19,8 @@ interface AppointmentRepository : JpaRepository<AppointmentDAO, Long> {
     //fun findAllByPetId(petID: Long): MutableIterable<AppointmentDAO>
 }
 
-//interface UserRepository : JpaRepository<UserDAO, Long> {}
+interface UserRepository : JpaRepository<UserDAO, Long> {}
 
-//interface VetRepository : UserRepository {}
-//interface AdminRepository : UserRepository {}
+interface VetRepository : UserRepository {}
+interface AdminRepository : UserRepository {}
+interface ClientRepository : UserRepository {}
