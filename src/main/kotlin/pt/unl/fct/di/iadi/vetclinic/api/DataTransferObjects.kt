@@ -18,8 +18,8 @@ package pt.unl.fct.di.iadi.vetclinic.api
 
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
+//import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
+//import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import java.util.*
 
 data class PetDTO(val id:Long, val name:String, val species:String) {
@@ -32,9 +32,9 @@ data class AppointmentDTO(val id:Long, val date:Date, val desc:String) {
     constructor(apt: AppointmentDAO) : this(apt.id, apt.date, apt.desc)
 }
 
-open class UserDTO(val id:Long, val name:String){
-    constructor(user: UserDAO) : this(user.id, user.name)
-}
+//open class UserDTO(val id:Long, val name:String){
+//    constructor(user: UserDAO) : this(user.id, user.name)
+//}
 //como fazer herança aqui??
 /*
 class VetDTO(val id:Long, val name:String, val employeeID:Long):UserDAO(id, name){

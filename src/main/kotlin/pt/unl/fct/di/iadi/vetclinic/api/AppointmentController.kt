@@ -7,7 +7,7 @@ import io.swagger.annotations.ApiResponses
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
-import pt.unl.fct.di.iadi.vetclinic.services.UserService
+//import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 @RestController
 @RequestMapping("/users")
