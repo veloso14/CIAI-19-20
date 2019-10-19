@@ -74,4 +74,12 @@ class PetController(val pets: PetService) {
     fun newAppointment(@PathVariable id: Long, @RequestBody apt: AppointmentDTO) =
             handle404 { pets.getOnePet(id).let { pets.newAppointmentOfPet(id, AppointmentDAO(apt, it)) } }
 
+    @PostMapping("/{id}/notes")
+    fun newNote(@PathVariable id: Long, @RequestBody note:String) =
+            handle404 { pets.getOnePet(id).let { pets.newNoteOfPet(id, note) } }
+
+    @GetMapping("/{id}/notes")
+    fun notesOfPet(@PathVariable id: Long): List<String> =
+            handle404 { pets.notesOfPet(id).map { it}}
+
 }

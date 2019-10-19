@@ -56,5 +56,24 @@ class PetService(
 //        pets.save(pet)
     }
 
+    fun notesOfPet(id: Long): List<String> {
+        val pet: PetDAO = getOnePet(id)
+
+
+        return pet.notes // This redirection has pre-fetching
+    }
+
+    fun newNoteOfPet(id: Long, note: String) {
+        val pet: PetDAO = getOnePet(id)
+
+        pet.notes = pet.notes.plus(note)
+        pets.save(pet)
+
+
+
+//        pet.appointments = pet.appointments.plus(appointment)
+//        pets.save(pet)
+    }
+
 
 }
