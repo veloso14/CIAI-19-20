@@ -39,15 +39,20 @@ data class PetDAO(
 
         @ElementCollection
                              var notes:List<String>
+        //@ManyToOne(fetch = FetchType.LAZY , optional = false)
+     //   @JoinColumn(name = "owner_id" , nullable = false)
+       // @OnDelete(action = OnDeleteAction.CASCADE)
+      //  var owner:ClientDAO
+
 ) {
-    constructor(pet: PetDTO, apts:List<AppointmentDAO>,notes:List<String>) : this(pet.id,pet.name,pet.species, apts, notes)
+    constructor(pet: PetDTO, apts:List<AppointmentDAO>,notes:List<String>/*, owner:ClientDAO*/) : this(pet.id,pet.name,pet.species, apts, notes/*, owner*/)
 
     fun update(other:PetDAO) {
         this.name = other.name
         this.species = other.species
         this.appointments = other.appointments
         this.notes = other.notes
-       // this.owner = other.owner
+        //this.owner = other.owner
     }
 }
 
@@ -91,8 +96,16 @@ open class UserDAO( @Id @GeneratedValue val id:Long,
 }
 
 @Entity
-class ClientDAO(id: Long,name: String, email :String,  username:String , password:String, cellphone:Long, address:String):UserDAO(id,name, email ,  username , password, cellphone, address){
-    constructor(client: ClientDAO) : this(client.id, client.name,  client.email,  client.username , client.password, client.cellphone, client.address)
+class ClientDAO(id: Long,
+                name: String,
+                email :String,
+                username:String ,
+                password:String,
+                cellphone:Long,
+                address:String/*,
+                @OneToMany()
+                var pets:List<PetDAO>*/):UserDAO(id,name, email ,  username , password, cellphone, address){
+    constructor(client: ClientDAO/*, pets:List<PetDAO>*/) : this(client.id, client.name,  client.email,  client.username , client.password, client.cellphone, client.address/*, pets*/)
     //val pets:MutableList<PetDAO> = mutableListOf()
 }
 

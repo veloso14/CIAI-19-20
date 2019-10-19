@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
@@ -42,7 +43,7 @@ class PetControllerTester {
         // see: https://github.com/FasterXML/jackson-module-kotlin
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
-
+        //val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
         val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = ArrayList(listOf(pantufas, bigodes))

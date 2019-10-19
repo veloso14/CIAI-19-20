@@ -25,18 +25,11 @@ class PetService(
             pets.findById(id)
                 .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 
-    fun updatePet(newPet: PetDAO, id: Long) {
-        val original: PetDAO = getOnePet(id)
-
-        original.update(newPet)
-
-        pets.save(original)
-    }
+    fun updatePet(newPet: PetDAO, id: Long) =
+            getOnePet(id).let { it.update(newPet); pets.save(it) }
 
     fun deletePet(id: Long) {
-        val pet: PetDAO = getOnePet(id)
-
-        pets.delete(pet)
+        getOnePet(id).let { pets.delete(it) }
     }
 
     fun appointmentsOfPet(id: Long): List<AppointmentDAO> {

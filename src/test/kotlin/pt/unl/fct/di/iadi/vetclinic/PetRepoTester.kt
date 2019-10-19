@@ -8,6 +8,7 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 
@@ -19,6 +20,7 @@ class PetRepoTester {
     lateinit var pets:PetRepository
 
     companion object Constants {
+        //val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
         val pantufas = PetDAO(-1L, "pantufas", "Dog", emptyList(), emptyList())
         val bigodes = PetDAO(-1L, "bigodes", "Cat", emptyList(), emptyList())
     }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
@@ -27,6 +28,7 @@ class PetServiceTester {
     lateinit var repo:PetRepository
 
     companion object Constants {
+       // val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
         val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = mutableListOf(pantufas, bigodes);

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 
@@ -65,11 +66,24 @@ class PetController(val pets: PetService) {
     @DeleteMapping("/{id}")
     fun deletePet(@PathVariable id: Long) =
             handle404 { pets.deletePet(id) }
-
+    @ApiOperation(value = "List the appointments related to a Pet", response = List::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
     @GetMapping("/{id}/appointments")
     fun appointmentsOfPet(@PathVariable id: Long): List<AppointmentDTO> =
             handle404 { pets.appointmentsOfPet(id).map { AppointmentDTO(it) } }
 
+    @ApiOperation(value = "Add a new appointment to a pet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
     @PostMapping("/{id}/appointments")
     fun newAppointment(@PathVariable id: Long, @RequestBody apt: AppointmentDTO) =
             handle404 { pets.getOnePet(id).let { pets.newAppointmentOfPet(id, AppointmentDAO(apt, it)) } }

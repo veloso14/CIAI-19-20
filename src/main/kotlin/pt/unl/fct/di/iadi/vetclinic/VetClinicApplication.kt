@@ -4,10 +4,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentRepository
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.time.LocalDateTime
 import java.util.*
 
@@ -19,11 +16,12 @@ class VetClinicApplication {
             pets:PetRepository,
             apts:AppointmentRepository
     ) = CommandLineRunner {
+       // val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
         val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = mutableListOf(pantufas, bigodes);
         pets.saveAll(petsDAO)
-        val apt = AppointmentDAO(1L, LocalDateTime.now(), LocalDateTime.now(), "consulta", pantufas)
+        val apt = AppointmentDAO(1L, LocalDateTime.now(), LocalDateTime.now(),"consulta", pantufas)
         apts.save(apt)
     }
 }
