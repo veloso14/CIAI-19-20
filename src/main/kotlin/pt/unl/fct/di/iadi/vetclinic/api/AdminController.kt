@@ -23,16 +23,19 @@ class AdminController(val admin: AdminService) {
         ApiResponse(code = 401, message = "You are not authorized to view this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    //@GetMapping("/users")
-    //fun getAllUsers() = admin.getAllUsers().map { UserDTO(it) }
+    @GetMapping("/employees")
+    fun getAllUsers() = admin.getAllEmployees().map { UserDTO(it) }
 
     @GetMapping("/pets")
     fun getAllPets() = admin.getAllPets().map { PetDTO(it) }
 
+    @GetMapping("/clients")
+    fun getAllClients() = admin.getAllClients().map { UserDTO(it) }
+
     @GetMapping("/appointments")
     fun getAllAppointments() = admin.getAllAppointments().map { AppointmentDTO(it) }
 
-    //@GetMapping("/appointments/{id}")
-    //fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
+  //  @GetMapping("/appointments/{id}")
+  //  fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
 
 }
