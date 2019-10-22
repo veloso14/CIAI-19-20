@@ -57,7 +57,7 @@ class UserServiceTester {
         //Basta  lancar excepção
         //Porque é que não lança????
         //TODO
-        repo.getOne("Veloso")
+         repo.getOne("Veloso")
 
     }
 
