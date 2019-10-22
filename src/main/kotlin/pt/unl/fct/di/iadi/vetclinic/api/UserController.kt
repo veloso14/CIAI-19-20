@@ -61,6 +61,17 @@ class UserController(val userService: UserService){
         userService.addNewUser(user)
     }
 
+    @ApiOperation("Delete USER account" , response = UserDTO::class)
+    @ApiResponses( value = [
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 401 , message = "Falhou"),
+        ApiResponse( code = 403 , message = "Proibido")
+    ])
+    @DeleteMapping("/{id}")
+    fun deleteUser(@PathVariable id:Long) {
+        userService.deleteUser(id)
+    }
+
 
     @ApiOperation("Login USER" , response = UserDTO::class)
     @ApiResponses( value = [
@@ -71,8 +82,6 @@ class UserController(val userService: UserService){
     @GetMapping("/{id}{password}")
     //tenho duvida aqui
     fun login(@PathVariable id:Number, @PathVariable password:String) {
-
-
 
     }
 

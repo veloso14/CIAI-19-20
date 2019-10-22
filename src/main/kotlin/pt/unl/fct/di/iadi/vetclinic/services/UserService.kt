@@ -19,13 +19,7 @@ class UserService(val user: UserRepository) {
 
     fun checkIfPasswordValid(id:Long , password : String): Boolean {
         val client: UserDAO = getOneUser(id)
-        if ( client.password.equals(password)){
-            return true
-        }
-        else{
-            return false
-        }
-
+        return client.password.equals(password)
     }
 
     fun checkIfUserExists(id:Long): Boolean {
