@@ -32,10 +32,10 @@ import pt.unl.fct.di.iadi.vetclinic.services.PetService
 class PetControllerTester {
 
     @Autowired
-    lateinit var mvc:MockMvc
+    lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var pets:PetService
+    lateinit var pets: PetService
 
     companion object {
         // To avoid all annotations JsonProperties in data classes
@@ -87,7 +87,7 @@ class PetControllerTester {
                 .andExpect(status().is4xxClientError)
     }
 
-    fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
+    fun <T> nonNullAny(t: Class<T>): T = Mockito.any(t)
 
     @Test
     fun `Test POST One Pet`() {

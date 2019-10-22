@@ -8,8 +8,6 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
-import pt.unl.fct.di.iadi.vetclinic.PetTests.PetRepoTester
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
 
@@ -18,11 +16,11 @@ import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
 class UserRepoTester {
 
     @Autowired
-    lateinit var userRepo:UserRepository
+    lateinit var userRepo: UserRepository
 
     companion object Constants {
 
-        val veloso = UserDAO(1,"Veloso","joao.veloso@neec-fct.com","sir_veloso","123456",962839449,"Pio 12")
+        val veloso = UserDAO(1, "Veloso", "joao.veloso@neec-fct.com", "sir_veloso", "123456", 962839449, "Pio 12")
 
     }
 
@@ -33,7 +31,6 @@ class UserRepoTester {
     fun `basic test on findAll`() {
         assertThat(userRepo.findAll().toList(), equalTo(emptyList()))
     }
-    
 
 
     @Test

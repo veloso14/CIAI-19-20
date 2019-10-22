@@ -1,6 +1,5 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
 
@@ -39,22 +38,22 @@ class AdminService(
         admins.save(admin)
     }
 
-   // create vet account
-   fun hireVet(vet: VetDAO) {
-       vets.save(vet)
-   }
+    // create vet account
+    fun hireVet(vet: VetDAO) {
+        vets.save(vet)
+    }
 
     // if employee is admin remove account; if employee is vet freeze account
-    fun fireEmployee(id:String) {
-        if(admins.findById(id).isPresent) {
+    fun fireEmployee(id: String) {
+        if (admins.findById(id).isPresent) {
             admins.deleteById(id)
-        } else if(vets.findById(id).isPresent) {
+        } else if (vets.findById(id).isPresent) {
             //freeze vet account #TODO
         }
     }
 
     // returns the list of appointments of a single Vet by giving his unique Id
-   // fun getAppointmentsByVetId(id: Long): List<AppointmentDAO> = appointments.findAllByVetId(id).toList()
+    // fun getAppointmentsByVetId(id: Long): List<AppointmentDAO> = appointments.findAllByVetId(id).toList()
 
 
     // set Vet schedule keeping restrictions in mind

@@ -12,10 +12,9 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 @Configuration
 class SecurityConfig(
-        val customUserDetails:CustomUserDetailsService,
+        val customUserDetails: CustomUserDetailsService,
         val users: UserService
-) : WebSecurityConfigurerAdapter()
-{
+) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.csrf().disable() // for now, we can disable cross site request forgery protection
                 .authorizeRequests()
@@ -24,12 +23,12 @@ class SecurityConfig(
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.POST,"/signup").permitAll()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(UserPasswordAuthenticationFilterToJWT ("/login", super.authenticationManagerBean()),
+                .addFilterBefore(UserPasswordAuthenticationFilterToJWT("/login", super.authenticationManagerBean()),
                         BasicAuthenticationFilter::class.java)
-                .addFilterBefore(UserPasswordSignUpFilterToJWT ("/signup", users),
+                .addFilterBefore(UserPasswordSignUpFilterToJWT("/signup", users),
                         BasicAuthenticationFilter::class.java)
                 .addFilterBefore(JWTAuthenticationFilter(),
                         BasicAuthenticationFilter::class.java)

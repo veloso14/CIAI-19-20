@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,7 +17,6 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import pt.unl.fct.di.iadi.vetclinic.api.UserDTO
@@ -34,17 +32,17 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 class UserControllerTester {
 
     @Autowired
-    lateinit var mvc:MockMvc
+    lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var users:UserService
+    lateinit var users: UserService
 
     companion object {
         // To avoid all annotations JsonProperties in data classes
         // see: https://github.com/FasterXML/jackson-module-kotlin
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
-        val veloso = UserDAO(1,"Veloso","joao.veloso@neec-fct.com","sir_veloso","123456",962839449,"Pio 12")
+        val veloso = UserDAO(1, "Veloso", "joao.veloso@neec-fct.com", "sir_veloso", "123456", 962839449, "Pio 12")
 
         val userDAO = ArrayList(listOf(veloso))
 
@@ -76,7 +74,7 @@ class UserControllerTester {
 
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<PetDTO>(responseString)
-     //   assertThat(responseDTO, equalTo(UserDAO[0]))
+        //   assertThat(responseDTO, equalTo(UserDAO[0]))
     }
 
     @Test
@@ -87,7 +85,7 @@ class UserControllerTester {
                 .andExpect(status().is4xxClientError)
     }
 
-    fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
+    fun <T> nonNullAny(t: Class<T>): T = Mockito.any(t)
 
     @Test
     fun `Test POST One Pet`() {

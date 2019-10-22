@@ -9,9 +9,9 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 class CustomUserDetails(
-        private val aUsername:String,
-        private val aPassword:String,
-        private val someAuthorities:MutableCollection<out GrantedAuthority>) : UserDetails {
+        private val aUsername: String,
+        private val aPassword: String,
+        private val someAuthorities: MutableCollection<out GrantedAuthority>) : UserDetails {
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = someAuthorities
 
@@ -38,7 +38,7 @@ class CustomUserDetailsService(
 
         username?.let {
             val userDAO = users.findUser(it)
-            if( userDAO.isPresent ) {
+            if (userDAO.isPresent) {
                 return CustomUserDetails(userDAO.get().username, userDAO.get().password, mutableListOf())
             } else
                 throw UsernameNotFoundException(username)

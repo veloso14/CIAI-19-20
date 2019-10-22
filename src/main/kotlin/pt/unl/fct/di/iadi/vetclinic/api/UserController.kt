@@ -16,84 +16,84 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 @Controller
 @ResponseBody
 
-class UserController(val userService: UserService){
+class UserController(val userService: UserService) {
 
-    @ApiOperation("Register um novo USER" , response = UserDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 401 , message = "Falhou")
+    @ApiOperation("Register um novo USER", response = UserDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 401, message = "Falhou")
     ])
     @PostMapping("/register")
-    fun register(@RequestBody user:UserDAO) {
+    fun register(@RequestBody user: UserDAO) {
         userService.addNewUser(user)
     }
 
-    @ApiOperation("Registar Veterinário" , response = UserDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 401 , message = "Falhou"),
-        ApiResponse( code = 403 , message = "Proibido")
+    @ApiOperation("Registar Veterinário", response = UserDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 401, message = "Falhou"),
+        ApiResponse(code = 403, message = "Proibido")
     ])
     @PostMapping("/register/vet")
-    fun registerVet(@RequestBody user:VetDAO) {
+    fun registerVet(@RequestBody user: VetDAO) {
         userService.addNewUser(user)
     }
 
-    @ApiOperation("Registar Cliente" , response = UserDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 401 , message = "Falhou"),
-        ApiResponse( code = 403 , message = "Proibido")
+    @ApiOperation("Registar Cliente", response = UserDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 401, message = "Falhou"),
+        ApiResponse(code = 403, message = "Proibido")
     ])
     @PostMapping("/register/client")
-    fun registerClient(@RequestBody user:ClientDAO) {
+    fun registerClient(@RequestBody user: ClientDAO) {
         userService.addNewUser(user)
     }
 
-    @ApiOperation("Registo Admin" , response = UserDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 401 , message = "Falhou"),
-        ApiResponse( code = 403 , message = "Proibido")
+    @ApiOperation("Registo Admin", response = UserDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 401, message = "Falhou"),
+        ApiResponse(code = 403, message = "Proibido")
     ])
     @PostMapping("/register/admin")
-    fun registerAdmin(@RequestBody user:AdminDAO) {
+    fun registerAdmin(@RequestBody user: AdminDAO) {
         userService.addNewUser(user)
     }
 
-    @ApiOperation("Delete USER account" , response = UserDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 401 , message = "Falhou"),
-        ApiResponse( code = 403 , message = "Proibido")
+    @ApiOperation("Delete USER account", response = UserDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 401, message = "Falhou"),
+        ApiResponse(code = 403, message = "Proibido")
     ])
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id:String) {
+    fun deleteUser(@PathVariable id: String) {
         userService.deleteUser(id)
     }
 
 
-    @ApiOperation("Login USER" , response = UserDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 401 , message = "Falhou"),
-        ApiResponse( code = 403 , message = "Proibido")
+    @ApiOperation("Login USER", response = UserDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 401, message = "Falhou"),
+        ApiResponse(code = 403, message = "Proibido")
     ])
     @GetMapping("/{id}{password}")
     //tenho duvida aqui
-    fun login(@PathVariable id:Number, @PathVariable password:String) {
+    fun login(@PathVariable id: Number, @PathVariable password: String) {
 
     }
 
 
-    @ApiOperation("Faz logout do utilizador com o ID fornecido" , response = String::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso"),
-        ApiResponse( code = 404 , message = "Utilizador não encontrado")
+    @ApiOperation("Faz logout do utilizador com o ID fornecido", response = String::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Sucesso"),
+        ApiResponse(code = 404, message = "Utilizador não encontrado")
     ])
     @GetMapping("/logout/{id}")
 
-    fun logout(@PathVariable id:Number){
+    fun logout(@PathVariable id: Number) {
 
 
     }

@@ -21,13 +21,13 @@ import java.util.*
 class PetServiceTester {
 
     @Autowired
-    lateinit var pets:PetService
+    lateinit var pets: PetService
 
     @MockBean
-    lateinit var repo:PetRepository
+    lateinit var repo: PetRepository
 
     companion object Constants {
-       // val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
+        // val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
         val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
         val petsDAO = mutableListOf(pantufas, bigodes);
@@ -59,7 +59,7 @@ class PetServiceTester {
     fun `test on addNewPet()`() {
         Mockito.`when`(repo.save(Mockito.any(PetDAO::class.java)))
                 .then {
-                    val pet:PetDAO = it.getArgument(0)
+                    val pet: PetDAO = it.getArgument(0)
                     assertThat(pet.id, equalTo(pantufas.id))
                     assertThat(pet.species, equalTo(pantufas.species))
                     assertThat(pet.name, equalTo(pantufas.name))
