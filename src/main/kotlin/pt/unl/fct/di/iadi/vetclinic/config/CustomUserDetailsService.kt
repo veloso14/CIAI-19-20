@@ -5,7 +5,8 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.services.UsersService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
+
 
 class CustomUserDetails(
         private val aUsername:String,
@@ -30,7 +31,7 @@ class CustomUserDetails(
 
 @Service
 class CustomUserDetailsService(
-        val users: UsersService
+        val users: UserService
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String?): UserDetails {

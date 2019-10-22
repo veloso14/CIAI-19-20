@@ -56,6 +56,7 @@ data class AppointmentDAO(
     constructor(apt: AppointmentDTO, pet:PetDAO) : this(apt.id, apt.start, apt.end, apt.desc, pet)
 }
 
+
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 open class UserDAO( @Id @GeneratedValue val id:Long,
