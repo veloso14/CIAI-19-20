@@ -37,8 +37,8 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 401, message = "Falhou"),
         ApiResponse(code = 403, message = "Proibido")
     ])
-    //TODO confirmar isto
-    @PreAuthorize("hasRole({'ROLE_ADMIN'})")
+
+    @PreAuthorize("hasRole({'ADMIN'})")
     @PostMapping("/register/vet")
     fun registerVet(@RequestBody user: VetDAO) {
         userService.addNewUser(user)
@@ -50,6 +50,7 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 401, message = "Falhou"),
         ApiResponse(code = 403, message = "Proibido")
     ])
+    @PreAuthorize("hasRole({'ADMIN'})")
     @PostMapping("/register/client")
     fun registerClient(@RequestBody user: ClientDAO) {
         userService.addNewUser(user)
@@ -72,24 +73,13 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 401, message = "Falhou"),
         ApiResponse(code = 403, message = "Proibido")
     ])
+    @PreAuthorize("hasRole({'ADMIN'})")
     @DeleteMapping("/{id}")
     fun deleteUser(@PathVariable id: String) {
         userService.deleteUser(id)
     }
 
-
-    @ApiOperation("Login USER", response = UserDTO::class)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Sucesso"),
-        ApiResponse(code = 401, message = "Falhou"),
-        ApiResponse(code = 403, message = "Proibido")
-    ])
-    @GetMapping("/{id}{password}")
-    //tenho duvida aqui
-    fun login(@PathVariable id: Number, @PathVariable password: String) {
-
-    }
-
+    
 
     @ApiOperation("Faz logout do utilizador com o ID fornecido", response = String::class)
     @ApiResponses(value = [
@@ -97,7 +87,7 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 404, message = "Utilizador não encontrado")
     ])
     @GetMapping("/logout/{id}")
-
+    //TODO
     fun logout(@PathVariable id: Number) {
 
     }

@@ -27,9 +27,9 @@ class SecurityConfig(
                 .antMatchers(HttpMethod.POST, "/users/register/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(UserPasswordAuthenticationFilterToJWT("/login", super.authenticationManagerBean()),
+                .addFilterBefore(UserPasswordAuthenticationFilterToJWT("/users/login", super.authenticationManagerBean()),
                         BasicAuthenticationFilter::class.java)
-                .addFilterBefore(UserPasswordSignUpFilterToJWT("/signup", users),
+                .addFilterBefore(UserPasswordSignUpFilterToJWT("/users/register/**", users),
                         BasicAuthenticationFilter::class.java)
                 .addFilterBefore(JWTAuthenticationFilter(),
                         BasicAuthenticationFilter::class.java)
