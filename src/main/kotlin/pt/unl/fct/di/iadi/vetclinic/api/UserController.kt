@@ -5,7 +5,10 @@ import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
+import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
+import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
+import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 @RestController
@@ -13,34 +16,76 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 @Controller
 @ResponseBody
 
-class UserController(val user: UserService){
+class UserController(val userService: UserService){
 
-    @ApiOperation("Register USER" , response = List::class)
+    @ApiOperation("Register um novo USER" , response = UserDTO::class)
     @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso")
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 401 , message = "Falhou")
     ])
     @PostMapping("/register")
-    fun register(@RequestBody user:UserDTO) {
-
+    fun register(@RequestBody user:UserDAO) {
+        userService.addNewUser(user)
     }
+
+    @ApiOperation("Registar Veterinário" , response = UserDTO::class)
+    @ApiResponses( value = [
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 401 , message = "Falhou"),
+        ApiResponse( code = 403 , message = "Proibido")
+    ])
+    @PostMapping("/register/vet")
+    fun registerVet(@RequestBody user:VetDAO) {
+        userService.addNewUser(user)
+    }
+
+    @ApiOperation("Registar Cliente" , response = UserDTO::class)
+    @ApiResponses( value = [
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 401 , message = "Falhou"),
+        ApiResponse( code = 403 , message = "Proibido")
+    ])
+    @PostMapping("/register/client")
+    fun registerClient(@RequestBody user:ClientDAO) {
+        userService.addNewUser(user)
+    }
+
+    @ApiOperation("Registo Admin" , response = UserDTO::class)
+    @ApiResponses( value = [
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 401 , message = "Falhou"),
+        ApiResponse( code = 403 , message = "Proibido")
+    ])
+    @PostMapping("/register/admin")
+    fun registerAdmin(@RequestBody user:AdminDAO) {
+        userService.addNewUser(user)
+    }
+
 
     @ApiOperation("Login USER" , response = UserDTO::class)
     @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso")
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 401 , message = "Falhou"),
+        ApiResponse( code = 403 , message = "Proibido")
     ])
-    @GetMapping("/{id}")
-    fun login(@PathVariable id:Number) {
+    @GetMapping("/{id}{password}")
+    //tenho duvida aqui
+    fun login(@PathVariable id:Number, @PathVariable password:String) {
+
 
 
     }
 
 
-    @ApiOperation("Retrives info about User with id id" , response = AppointmentDTO::class)
+    @ApiOperation("Faz logout do utilizador com o ID fornecido" , response = String::class)
     @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso")
+        ApiResponse( code = 200 , message = "Sucesso"),
+        ApiResponse( code = 404 , message = "Utilizador não encontrado")
     ])
     @GetMapping("/logout/{id}")
+
     fun logout(@PathVariable id:Number){
+
 
     }
 

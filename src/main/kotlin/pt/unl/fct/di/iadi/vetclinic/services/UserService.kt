@@ -1,7 +1,6 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
 
@@ -18,9 +17,23 @@ class UserService(val user: UserRepository) {
             user.findById(id).orElseThrow { NotFoundException("There is no client with Id $id") }
 
 
-  fun deleteUser(id:Long) {
+    fun checkIfPasswordValid(id:Long , password : String): Boolean {
         val client: UserDAO = getOneUser(id)
+        if ( client.password.equals(password)){
+            return true
+        }
+        else{
+            return false
+        }
 
-       user.delete(client)
-   }
+    }
+
+    fun checkIfUserExists(id:Long): Boolean {
+        return user.existsById(id);
+    }
+
+      fun deleteUser(id:Long) {
+            val client: UserDAO = getOneUser(id)
+            user.delete(client)
+       }
 }
