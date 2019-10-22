@@ -79,7 +79,7 @@ class UserController(val userService: UserService) {
         userService.deleteUser(id)
     }
 
-    
+
 
     @ApiOperation("Faz logout do utilizador com o ID fornecido", response = String::class)
     @ApiResponses(value = [

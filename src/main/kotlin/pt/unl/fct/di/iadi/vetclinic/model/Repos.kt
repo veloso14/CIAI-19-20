@@ -21,6 +21,7 @@ interface UserRepository : JpaRepository<UserDAO, String> {
 
 }
 
+interface BlaclListRepository : JpaRepository<BackListDAO, String> {}
 interface VetRepository : JpaRepository<UserDAO, String> {}
 interface AdminRepository : JpaRepository<UserDAO, String> {}
 interface ClientRepository : JpaRepository<UserDAO, String> {}

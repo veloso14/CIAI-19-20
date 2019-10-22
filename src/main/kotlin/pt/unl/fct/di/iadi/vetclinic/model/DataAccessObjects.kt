@@ -58,6 +58,17 @@ data class AppointmentDAO(
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+open class BackListDAO(@Id @GeneratedValue val id: Long,
+                   @NotNull
+                   @Column(name = "JWT", unique = true)
+                   var key: String) {
+    constructor(lista: BackListDAO) : this(lista.id , lista.key)
+
+
+}
+
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 open class UserDAO(@Id @GeneratedValue val id: Long,
                    var name: String,
                    @NotNull
