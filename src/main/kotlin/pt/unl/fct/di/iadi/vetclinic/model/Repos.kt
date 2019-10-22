@@ -20,7 +20,6 @@ interface AppointmentRepository : JpaRepository<AppointmentDAO, Long> {
 }
 
 interface UserRepository : JpaRepository<UserDAO, Long> {}
-
-interface VetRepository : UserRepository {}
-interface AdminRepository : UserRepository {}
-interface ClientRepository : UserRepository {}
+interface VetRepository : JpaRepository<UserDAO, Long> {}
+interface AdminRepository : JpaRepository<UserDAO, Long> {}
+interface ClientRepository : JpaRepository<UserDAO, Long> {}

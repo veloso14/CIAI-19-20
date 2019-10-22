@@ -16,32 +16,6 @@ import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
 
 class AppointmentController(val appointment: AppointmentService){
 
-    @ApiOperation("Register USER" , response = List::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso")
-    ])
-    @PostMapping("/register")
-    fun register(@RequestBody pet:AppointmentDTO) {
 
-    }
-
-    @ApiOperation("Login USER" , response = AppointmentDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso")
-    ])
-    @GetMapping("/{id}")
-    fun login(@PathVariable id:Number) {
-
-    }
-
-
-    @ApiOperation("Retrives info about pet with id id" , response = AppointmentDTO::class)
-    @ApiResponses( value = [
-        ApiResponse( code = 200 , message = "Sucesso")
-    ])
-    @GetMapping("/logout/{id}")
-    fun logout(@PathVariable id:Number){
-
-    }
 
 }
