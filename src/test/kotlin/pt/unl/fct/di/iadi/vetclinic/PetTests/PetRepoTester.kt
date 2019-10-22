@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic
+package pt.unl.fct.di.iadi.vetclinic.PetTests
 
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.not
@@ -8,7 +8,6 @@ import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 

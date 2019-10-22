@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic
+package pt.unl.fct.di.iadi.vetclinic.PetTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -21,7 +21,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
