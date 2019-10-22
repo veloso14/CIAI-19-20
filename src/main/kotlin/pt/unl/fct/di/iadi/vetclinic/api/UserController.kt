@@ -37,6 +37,8 @@ class UserController(val userService: UserService) {
         ApiResponse(code = 401, message = "Falhou"),
         ApiResponse(code = 403, message = "Proibido")
     ])
+    //TODO confirmar isto
+    @PreAuthorize("hasRole({'ROLE_ADMIN'})")
     @PostMapping("/register/vet")
     fun registerVet(@RequestBody user: VetDAO) {
         userService.addNewUser(user)
@@ -97,7 +99,6 @@ class UserController(val userService: UserService) {
     @GetMapping("/logout/{id}")
 
     fun logout(@PathVariable id: Number) {
-
 
     }
 

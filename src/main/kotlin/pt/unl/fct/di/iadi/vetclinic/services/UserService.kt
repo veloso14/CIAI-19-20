@@ -41,6 +41,12 @@ class UserService(val users: UserRepository) {
         return users.existsById(id);
     }
 
+    fun logout(id: String){
+        val client: UserDAO = getOneUser(id)
+
+
+    }
+
     fun deleteUser(id: String) {
         val client: UserDAO = getOneUser(id)
         users.delete(client)
