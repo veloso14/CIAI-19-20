@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.filter.GenericFilterBean
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
-import pt.unl.fct.di.iadi.vetclinic.services.UsersService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
 import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -146,7 +146,7 @@ class JWTAuthenticationFilter: GenericFilterBean() {
 
 class UserPasswordSignUpFilterToJWT (
         defaultFilterProcessesUrl: String?,
-        private val users: UsersService
+        private val users: UserService
 ) : AbstractAuthenticationProcessingFilter(defaultFilterProcessesUrl) {
 
     override fun attemptAuthentication(request: HttpServletRequest?,

@@ -6,6 +6,7 @@ import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -33,7 +34,7 @@ class UserServiceTester {
 
     companion object Constants {
 
-        val veloso = UserDAO(1L,"Veloso","joao.veloso@neec-fct.com","sir_veloso","123456",962839449,"Pio 12")
+        val veloso = UserDAO(1L,"Veloso","joao.veloso@neec-fct.com","jmveloso","123456",962839449,"Pio 12")
         val userDAO = mutableListOf(veloso);
     }
 
@@ -45,18 +46,18 @@ class UserServiceTester {
 
     @Test
     fun `basic test on getOne`() {
-        Mockito.`when`(repo.findById(1L)).thenReturn(Optional.of(veloso));
-        assertThat(users.getOneUser(1L), equalTo(veloso))
+        Mockito.`when`(repo.findById("jmveloso")).thenReturn(Optional.of(veloso));
+        assertThat(users.getOneUser("jmveloso"), equalTo(veloso))
     }
 
     @Test(expected = NotFoundException::class)
     fun `test on getOne() exception`() {
         //did not find the desired pet on the DB hence an empty Optional
-       Mockito.`when`(repo.findById(anyLong())).thenReturn(Optional.empty())
+       Mockito.`when`(repo.findById(anyString())).thenReturn(Optional.empty())
         //Basta  lancar excepção
         //Porque é que não lança????
         //TODO
-        repo.getOne(54757L)
+        repo.getOne("Veloso")
 
     }
 

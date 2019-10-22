@@ -45,7 +45,7 @@ class AdminService(
    }
 
     // if employee is admin remove account; if employee is vet freeze account
-    fun fireEmployee(id:Long) {
+    fun fireEmployee(id:String) {
         if(admins.findById(id).isPresent) {
             admins.deleteById(id)
         } else if(vets.findById(id).isPresent) {

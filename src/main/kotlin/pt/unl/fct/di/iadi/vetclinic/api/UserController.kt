@@ -68,7 +68,7 @@ class UserController(val userService: UserService){
         ApiResponse( code = 403 , message = "Proibido")
     ])
     @DeleteMapping("/{id}")
-    fun deleteUser(@PathVariable id:Long) {
+    fun deleteUser(@PathVariable id:String) {
         userService.deleteUser(id)
     }
 

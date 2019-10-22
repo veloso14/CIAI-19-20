@@ -7,12 +7,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import pt.unl.fct.di.iadi.vetclinic.services.UsersService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
+
 
 @Configuration
 class SecurityConfig(
         val customUserDetails:CustomUserDetailsService,
-        val users: UsersService
+        val users: UserService
 ) : WebSecurityConfigurerAdapter()
 {
     override fun configure(http: HttpSecurity) {
