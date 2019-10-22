@@ -22,8 +22,9 @@ class SecurityConfig(
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/signup").permitAll()
+                //Permite mais endpoints
+                .antMatchers(HttpMethod.POST, "/users/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/users/register/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(UserPasswordAuthenticationFilterToJWT("/login", super.authenticationManagerBean()),
@@ -44,6 +45,7 @@ class SecurityConfig(
                 .and()
                 .userDetailsService(customUserDetails)
                 .passwordEncoder(BCryptPasswordEncoder())
+
     }
 }
 

@@ -3,6 +3,7 @@ package pt.unl.fct.di.iadi.vetclinic.api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
@@ -18,11 +19,13 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 class UserController(val userService: UserService) {
 
+
     @ApiOperation("Register um novo USER", response = UserDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Sucesso"),
         ApiResponse(code = 401, message = "Falhou")
     ])
+
     @PostMapping("/register")
     fun register(@RequestBody user: UserDAO) {
         userService.addNewUser(user)
