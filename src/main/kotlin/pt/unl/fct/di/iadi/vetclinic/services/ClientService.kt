@@ -56,17 +56,18 @@ class ClientService(val pets: PetRepository,
             else
                 pets.save(pet)
 
-    fun removePet(name:String, pet: PetDAO){
-        val client: ClientDAO = getOneClient(name)
-
-        client.pets = client.pets.minus(pet)
-        clients.save(client)
+    fun removePet( pet: PetDAO){
+        if (pet.id != 0L)
+            throw PreconditionFailedException("Id must be 0 in insertion")
+        else
+            pets.delete(pet)
 
     }
 
     //??
     fun deleteClient(name: String) {
         getOneClient(name).let { clients.delete(it) }
+
     }
 
   /*  fun addNewClient(client: ClientDAO) =

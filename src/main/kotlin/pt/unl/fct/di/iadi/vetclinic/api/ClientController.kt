@@ -79,6 +79,20 @@ class ClientController(val clients: ClientService) {
                 PetDTO(clients.newPet(PetDAO(pet, emptyList(), emptyList(),clients.getOneClient(name))))
             }
 
+    //falta teste
+    @ApiOperation(value = "Delete a pet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully deleted a pet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @DeleteMapping("/{name}/pets")
+    fun removePet(@PathVariable name:String,
+               @RequestBody pet: PetDTO) =
+            handle4xx {
+                clients.removePet(PetDAO(pet, emptyList(), emptyList(),clients.getOneClient(name)))
+
+            }
 
 
 
@@ -89,6 +103,6 @@ class ClientController(val clients: ClientService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @DeleteMapping("/{name}")
-    fun deletePet(@PathVariable name: String) =
+    fun deleteClient(@PathVariable name: String) =
             handle4xx { clients.deleteClient(name) }
 }
