@@ -42,4 +42,7 @@ class AdminController(val admin: AdminService, val users: UserService) {
     @GetMapping("/employees/{id}")
     fun fireEmployee(@PathVariable id: String) = handle404 { admin.fireEmployee(id) }
 
+    @GetMapping("/schedule/{id}")
+    fun setVetSchedule(@PathVariable id: String) = handle404 { admin.setVetSchedule(id) }
+
 }

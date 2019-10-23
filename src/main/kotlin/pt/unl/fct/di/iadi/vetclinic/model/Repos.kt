@@ -24,4 +24,4 @@ interface VetRepository : JpaRepository<UserDAO, String> {}
 interface AdminRepository : JpaRepository<UserDAO, String> {}
 interface ClientRepository : JpaRepository<UserDAO, String> {}
 
-//interface VetShiftsRepository : JpaRepository<VetShiftsDAO, String> {}
+interface VetScheduleRepository : JpaRepository<VetScheduleDAO, String> {}

@@ -136,25 +136,26 @@ class AdminDAO(id: Long, name: String, email: String, username: String, password
 @Entity
 data class ShiftDAO(
         @Id @GeneratedValue val id: Long,
-        val start: Date,
-        val end: Date,
-        @ManyToOne val vet: VetDAO
+        //val start: LocalDateTime,
+        //val end: LocalDateTime,
+        @ManyToOne val vet: VetDAO,
+        var available: Boolean
 ) {
 
-    fun getDuration(): Long {
-        return end.time - start.time
-    }
+    constructor(shift: ShiftDTO, vet: VetDAO) : this(shift.id, /*shift.start, shift.end,*/ vet, true)
 
-    fun getStartDay(): Int {
-        return start.day
-    }
+    constructor(vet: VetDAO) : this(0, /* LocalDateTime.MIN,LocalDateTime.MAX,*/ vet, true)
 
-    constructor(shift: ShiftDTO, vet: VetDAO) : this(shift.id, shift.start, shift.end, vet)
+    fun setAvailableFalse() {
+        this.available = false
+    }
 }
 
-data class VetShiftsDAO(
+data class VetScheduleDAO(
         val vet: VetDAO,
-        @OneToMany val shifts: List<ShiftDAO>
+        @OneToMany val shifts: MutableMap<Int, MutableList<ShiftDAO>>
 ) {
-
+    fun getScheduleByDay(day: Int): List<ShiftDAO>? {
+        return shifts[day]
+    }
 }

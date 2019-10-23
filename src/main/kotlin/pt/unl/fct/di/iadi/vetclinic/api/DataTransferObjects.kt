@@ -16,7 +16,7 @@ data class AppointmentDTO(val id: Long, var start: LocalDateTime, var end: Local
     constructor(apt: AppointmentDAO) : this(apt.id, apt.start, apt.end, apt.desc)
 }
 
-data class ShiftDTO(val id: Long, val start: Date, val end: Date) {
+data class ShiftDTO(val id: Long, val start: LocalDateTime, val end: LocalDateTime) {
     constructor(shift: ShiftDAO) : this(shift.id, shift.start, shift.end)
 }
 

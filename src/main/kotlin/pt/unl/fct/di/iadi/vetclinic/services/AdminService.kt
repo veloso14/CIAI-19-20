@@ -2,6 +2,9 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -11,7 +14,8 @@ class AdminService(
         val pets: PetRepository,
         val clients: ClientRepository,
         val appointments: AppointmentRepository,
-        val users: UserRepository
+        val users: UserRepository,
+        val schedules: VetScheduleRepository
 ) {
     // val logger = LoggerFactory.getLogger(AdminService::class.java)
 
@@ -45,29 +49,53 @@ class AdminService(
         return appointments
     }
 
-    /*
-
-    Em vez de criar um schedule complicado assumimos que todos os vets trabalham
-    das 9h as 17h de segunda a sexta. Sendo assim, todas as restricoes dos horarios
-    sao verificadas e apenas sera necessario verificar se a data de um appointment
-    é valida na marcacao
-
     fun setVetSchedule(id: String) {
         val vet = findEmployee(id)
-
         if (vet is VetDAO) {
-            // TODO
-            //createSchedule(vet)
+            // check first if said vet already has a schedule created and throw exception if that's the case TODO
+            // val existingSchedule = schedules.findById(...)
+            // if (existingSchedule isPresent) throw Exception
+            val schedule = createSchedule(vet)
+            val vetSchedule = VetScheduleDAO(vet, schedule)
+            schedules.save(vetSchedule)
+
         } else {
             throw NotFoundException("Vet with given Id:${id} doesn't exist.")
         }
     }
 
-    fun createSchedule(vet: VetDAO) {
-        //TODO
+    fun createSchedule(vet: VetDAO): MutableMap<Int, MutableList<ShiftDAO>> {
+        val newSchedule = mutableMapOf<Int, MutableList<ShiftDAO>>()
+        for (x in 0..29) {
+            val newShiftList = createShiftList(vet)
+            newSchedule[x] = newShiftList
+        }
+        return newSchedule
     }
 
- */
+    // lista com 16 posições correspondendo aos slots que são possiveis marcar uma consulta.
+    // posiçao 0: 9:00
+    // posiçao 15: 17:00
+    // com incrementos de 30 minutos
+    // cada shift na lista corresponde a um possivel slot de appointment que e possivel ver se esta
+    // disponivel atraves de um booleano
+    // temos que assumir que cada posiçao corresponde a um slot de 30 min
+    fun createShiftList(vet: VetDAO): MutableList<ShiftDAO> {
+        val list = mutableListOf<ShiftDAO>()
+        for (x in 0..15) {
+            val newShift = ShiftDAO(vet)
+            list.add(x, newShift)
+        }
+        return list
+    }
+
+    // como somar de 30 em 30 minutos
+//    fun createShift(x: Int) {
+//        val year = 2019
+//        val month = Month.OCTOBER
+//        val start = LocalDateTime.of(year, month, x, 9, 30)
+//        val end = start.plusMinutes(30)
+//    }
 
 }
 
