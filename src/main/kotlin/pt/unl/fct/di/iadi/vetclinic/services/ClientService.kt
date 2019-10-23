@@ -38,7 +38,7 @@ class ClientService(val pets: PetRepository,
             else
                 appointments.save(apt)
 
-    fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
+    //fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
 
     fun petsOfClient(name: String): List<PetDAO> {
         val client = clients.findByIdWithAppointment(name)
@@ -64,17 +64,17 @@ class ClientService(val pets: PetRepository,
 
     }
 
-
+    //??
     fun deleteClient(name: String) {
         getOneClient(name).let { clients.delete(it) }
     }
 
-    fun addNewClient(client: ClientDAO) =
+  /*  fun addNewClient(client: ClientDAO) =
             // defensive programming
             if (client.id != 0L)
                 throw PreconditionFailedException("Id must be 0 in insertion")
             else
-                clients.save(client)
+                clients.save(client) */
 
 
 

@@ -42,19 +42,17 @@ class ClientController(val clients: ClientService) {
                 AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(),clients.getOneClient(name))))
             }
 
-    @ApiOperation(value = "View a list of registered clients", response = List::class)
+   /* @ApiOperation(value = "View a list of registered clients", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
         ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @GetMapping("")
-   /* fun getAllClients() =
-            clients.getAllClients().map { ClientDTO(it) } */
     fun getAllClients() : List<ClientPetsDTO> =
             clients.getAllClients().map { ClientPetsDTO(ClientDTO(it),
                     it.pets.map { PetDTO(it) }) }
-
+*/
 
     @ApiOperation(value = "List the pets related to a Client", response = List::class)
     @ApiResponses(value = [

@@ -63,7 +63,7 @@ class ClientControllerTester {
         val clientsURL = "/clients"
     }
 
-    @Test
+  /*  @Test
     fun `Test GET all clients`() {
         Mockito.`when`(clients.getAllClients()).thenReturn(clientsDAO)
 
@@ -75,7 +75,7 @@ class ClientControllerTester {
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<List<ClientPetsDTO>>(responseString)
         assertThat(responseDTO, equalTo(clientsPetsDTO))
-    }
+    } */
 
     @Test
     fun `Test Get One Client`() {
@@ -100,7 +100,7 @@ class ClientControllerTester {
 
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
-    @Test
+ /*   @Test
     fun `Test POST One Client`() {
         val vicente = ClientDTO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao")
         val vicenteDAO = ClientDAO(vicente.id,vicente.name,vicente.email,vicente.username,vicente.password,vicente.cellphone,vicente.address, emptyList(), emptyList())
@@ -115,6 +115,7 @@ class ClientControllerTester {
                 .content(vicenteJSON))
                 .andExpect(status().isOk)
     }
+    */
 
     @Test
     fun `Test checking appointments`() {
