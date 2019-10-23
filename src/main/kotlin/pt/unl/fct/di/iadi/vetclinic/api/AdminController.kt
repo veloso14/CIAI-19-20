@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
@@ -35,7 +36,9 @@ class AdminController(val admin: AdminService, val users: UserService) {
     @GetMapping("/appointments")
     fun getAllAppointments() = admin.getAllAppointments().map { AppointmentDTO(it) }
 
-    //  @GetMapping("/appointments/{id}")
-    //  fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
+    @GetMapping("/appointments/{id}")
+    fun getAppointmentsByVetId(@PathVariable id: String) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
 
+    @GetMapping("/employees/{id}")
+    fun fireEmployee(@PathVariable id: String) = handle404 { admin.fireEmployee(id) }
 }
