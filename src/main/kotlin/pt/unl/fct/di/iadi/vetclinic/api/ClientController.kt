@@ -28,10 +28,19 @@ class ClientController(val clients: ClientService) {
             handle4xx { clients.getOneClient(name).let { ClientDTO(it) } }
 
 
-    @PostMapping("/{name}/pets/appointments")
-    fun bookAppointmentOfPet(@PathVariable name: String, @RequestBody pet: PetDTO, @RequestBody apt: AppointmentDTO) =
-            handle4xx { clients.getOneClient(name).let { clients.bookAppointmentOfPet(name, PetDAO(pet, emptyList(), emptyList(), clients.getOneClient(name)), AppointmentDAO(apt, PetDAO(),clients.getOneClient(name)) ) } }
-
+    @ApiOperation(value = "Add a new appointment to a pet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @PostMapping("/{name}/appointments")
+    fun newAppointment(@PathVariable name: String,
+                       @RequestBody apt:AppointmentDTO) =
+            handle4xx {
+                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(),clients.getOneClient(name))))
+            }
 
     @ApiOperation(value = "View a list of registered clients", response = List::class)
     @ApiResponses(value = [
@@ -40,8 +49,11 @@ class ClientController(val clients: ClientService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @GetMapping("")
-    fun getAllPets() =
-            clients.getAllClients().map { ClientDTO(it) }
+   /* fun getAllClients() =
+            clients.getAllClients().map { ClientDTO(it) } */
+    fun getAllClients() : List<ClientPetsDTO> =
+            clients.getAllClients().map { ClientPetsDTO(ClientDTO(it),
+                    it.pets.map { PetDTO(it) }) }
 
 
     @ApiOperation(value = "List the pets related to a Client", response = List::class)

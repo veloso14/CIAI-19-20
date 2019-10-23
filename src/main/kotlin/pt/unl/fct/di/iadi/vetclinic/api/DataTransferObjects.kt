@@ -34,12 +34,15 @@ data class PetDTO(val id:Long, val name:String, val species:String) {
 }
 
 data class PetAptsDTO(val pet:PetDTO, val appointments:List<AppointmentDTO>)
+data class PetOwnerDTO(val pet:PetDTO, val owner:ClientDTO)
 
 data class AppointmentDTO(val id:Long, var start:LocalDateTime, var end:LocalDateTime , var desc:String) {
     constructor(apt:AppointmentDAO) : this(apt.id, apt.start, apt.end, apt.desc)
 }
 
 data class AppointmentPetDTO(val appointment:AppointmentDTO, val pet:PetDTO)
+data class AppointmentClientDTO(val appointment:AppointmentDTO, val client: ClientDAO)
+
 
 
 open class UserDTO(val id: Long, val name: String, var email: String,
@@ -53,6 +56,8 @@ open class UserDTO(val id: Long, val name: String, var email: String,
 class ClientDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String) : UserDTO(id, name,email,username,password,cellphone,address) {
     constructor(client: ClientDAO) : this(client.id, client.name, client.email,client.username,client.password, client.cellphone,client.address)
 }
+
+data class ClientPetsDTO(val client:ClientDTO, val pets:List<PetDTO>)
 
 
 class VetDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
