@@ -23,7 +23,7 @@ class PetService(
 
     fun getOnePet(id: Long) =
             pets.findById(id)
-                .orElseThrow { NotFoundException("There is no Pet with Id $id") }
+                    .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 
     fun updatePet(newPet: PetDAO, id: Long) =
             getOnePet(id).let { it.update(newPet); pets.save(it) }
@@ -34,7 +34,7 @@ class PetService(
 
     fun appointmentsOfPet(id: Long): List<AppointmentDAO> {
         val pet = pets.findByIdWithAppointment(id)
-                      .orElseThrow { NotFoundException("There is no Pet with Id $id") }
+                .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 
         return pet.appointments // This redirection has pre-fetching
     }
@@ -61,7 +61,6 @@ class PetService(
 
         pet.notes = pet.notes.plus(note)
         pets.save(pet)
-
 
 
 //        pet.appointments = pet.appointments.plus(appointment)

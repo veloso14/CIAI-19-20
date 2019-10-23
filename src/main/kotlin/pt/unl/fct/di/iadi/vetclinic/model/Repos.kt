@@ -1,9 +1,7 @@
 package pt.unl.fct.di.iadi.vetclinic.model
 
-import org.mapstruct.Qualifier
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
-import org.springframework.data.repository.CrudRepository
 import java.util.*
 
 interface PetRepository : JpaRepository<PetDAO, Long> {
@@ -19,9 +17,11 @@ interface AppointmentRepository : JpaRepository<AppointmentDAO, Long> {
     //fun findAllByPetId(petID: Long): MutableIterable<AppointmentDAO>
 }
 
-interface UserRepository : JpaRepository<UserDAO, Long> {
+interface UserRepository : JpaRepository<UserDAO, String> {
 
 }
-interface VetRepository : JpaRepository<UserDAO, Long> {}
-interface AdminRepository : JpaRepository<UserDAO, Long> {}
-interface ClientRepository : JpaRepository<UserDAO, Long> {}
+
+interface BlaclListRepository : JpaRepository<BackListDAO, String> {}
+interface VetRepository : JpaRepository<UserDAO, String> {}
+interface AdminRepository : JpaRepository<UserDAO, String> {}
+interface ClientRepository : JpaRepository<UserDAO, String> {}

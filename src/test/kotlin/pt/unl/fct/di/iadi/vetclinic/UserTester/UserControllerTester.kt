@@ -1,10 +1,9 @@
-package pt.unl.fct.di.iadi.vetclinic.PetTests
+package pt.unl.fct.di.iadi.vetclinic.UserTester
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,72 +17,71 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
+import pt.unl.fct.di.iadi.vetclinic.api.UserDTO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class PetControllerTester {
+class UserControllerTester {
 
     @Autowired
     lateinit var mvc: MockMvc
 
     @MockBean
-    lateinit var pets: PetService
+    lateinit var users: UserService
 
     companion object {
         // To avoid all annotations JsonProperties in data classes
         // see: https://github.com/FasterXML/jackson-module-kotlin
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
-        //val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
-        val petsDAO = ArrayList(listOf(pantufas, bigodes))
+        val veloso = UserDAO(1, "Veloso", "joao.veloso@neec-fct.com", "sir_veloso", "123456", 962839449, "Pio 12")
 
-        val petsDTO = petsDAO.map { PetDTO(it.id, it.name, it.species) }
+        val userDAO = ArrayList(listOf(veloso))
 
-        val petsURL = "/pets"
+        //val userDTO = userDAO.map { PetDTO(it.id, it.name, it.email , it.address , it.password) }
+
+        val userURL = "/users"
     }
 
     @Test
     fun `Test GET all pets`() {
-        Mockito.`when`(pets.getAllPets()).thenReturn(petsDAO)
+        Mockito.`when`(users.getAllUser()).thenReturn(userDAO)
 
-        val result = mvc.perform(get(petsURL))
+        val result = mvc.perform(get(userURL))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize<Any>(petsDTO.size)))
                 .andReturn()
 
         val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<List<PetDTO>>(responseString)
-        assertThat(responseDTO, equalTo(petsDTO))
+        val responseDTO = mapper.readValue<List<UserDTO>>(responseString)
+        //assertThat(responseDTO, equalTo(UserDTO))
     }
 
     @Test
     fun `Test Get One Pet`() {
-        Mockito.`when`(pets.getOnePet(1)).thenReturn(pantufas)
+        Mockito.`when`(users.getOneUser("jm.veloso")).thenReturn(veloso)
 
-        val result = mvc.perform(get("$petsURL/1"))
+        val result = mvc.perform(get("$userURL/1"))
                 .andExpect(status().isOk)
                 .andReturn()
 
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<PetDTO>(responseString)
-        assertThat(responseDTO, equalTo(petsDTO[0]))
+        //   assertThat(responseDTO, equalTo(UserDAO[0]))
     }
 
     @Test
     fun `Test GET One Pet (Not Found)`() {
-        Mockito.`when`(pets.getOnePet(2)).thenThrow(NotFoundException("not found"))
+        Mockito.`when`(users.getOneUser("jm.veloso")).thenThrow(NotFoundException("not found"))
 
-        mvc.perform(get("$petsURL/2"))
+        mvc.perform(get("$userURL/2"))
                 .andExpect(status().is4xxClientError)
     }
 
@@ -96,13 +94,12 @@ class PetControllerTester {
 
         val louroJSON = mapper.writeValueAsString(louro)
 
-        Mockito.`when`(pets.addNewPet(nonNullAny(PetDAO::class.java)))
+        Mockito.`when`(users.addNewUser(nonNullAny(UserDAO::class.java)))
                 .then { assertThat(it.getArgument(0), equalTo(louroDAO)) }
 
-        mvc.perform(post(petsURL)
+        mvc.perform(post(userURL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(louroJSON))
                 .andExpect(status().isOk)
     }
-
 }

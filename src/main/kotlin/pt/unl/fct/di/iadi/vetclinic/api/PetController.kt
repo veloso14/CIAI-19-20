@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 
@@ -66,6 +65,7 @@ class PetController(val pets: PetService) {
     @DeleteMapping("/{id}")
     fun deletePet(@PathVariable id: Long) =
             handle404 { pets.deletePet(id) }
+
     @ApiOperation(value = "List the appointments related to a Pet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
@@ -89,11 +89,11 @@ class PetController(val pets: PetService) {
             handle404 { pets.getOnePet(id).let { pets.newAppointmentOfPet(id, AppointmentDAO(apt, it)) } }
 
     @PostMapping("/{id}/notes")
-    fun newNote(@PathVariable id: Long, @RequestBody note:String) =
+    fun newNote(@PathVariable id: Long, @RequestBody note: String) =
             handle404 { pets.getOnePet(id).let { pets.newNoteOfPet(id, note) } }
 
     @GetMapping("/{id}/notes")
     fun notesOfPet(@PathVariable id: Long): List<String> =
-            handle404 { pets.notesOfPet(id).map { it}}
+            handle404 { pets.notesOfPet(id).map { it } }
 
 }

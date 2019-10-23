@@ -16,7 +16,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 class PetRepoTester {
 
     @Autowired
-    lateinit var pets:PetRepository
+    lateinit var pets: PetRepository
 
     companion object Constants {
         //val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())

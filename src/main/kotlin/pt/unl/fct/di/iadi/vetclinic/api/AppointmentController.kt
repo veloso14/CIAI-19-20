@@ -1,12 +1,12 @@
 package pt.unl.fct.di.iadi.vetclinic.api
 
 
-import io.swagger.annotations.ApiOperation
-import io.swagger.annotations.ApiResponse
-import io.swagger.annotations.ApiResponses
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.RestController
 import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
+
 //import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 @RestController
@@ -14,8 +14,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
 @Controller
 @ResponseBody
 
-class AppointmentController(val appointment: AppointmentService){
-
+class AppointmentController(val appointment: AppointmentService) {
 
 
 }

@@ -4,10 +4,9 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
-import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.*
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
@@ -36,7 +35,7 @@ class AdminController(val admin: AdminService, val users: UserService) {
     @GetMapping("/appointments")
     fun getAllAppointments() = admin.getAllAppointments().map { AppointmentDTO(it) }
 
-  //  @GetMapping("/appointments/{id}")
-  //  fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
+    //  @GetMapping("/appointments/{id}")
+    //  fun getAppointmentsByVetId(@PathVariable id: Long) = handle404 {admin.getAppointmentsByVetId(id).map { AppointmentDTO(it)  }}
 
 }
