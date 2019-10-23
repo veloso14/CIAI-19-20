@@ -17,55 +17,34 @@ class PetService(
 
     fun getAllPets(): List<PetDAO> = pets.findAll().toList()
 
-    fun addNewPet(pet: PetDAO) {
-        pets.save(pet)
-    }
+    fun addNewPet(pet: PetDAO) =
+        // defensive programming
+        if (pet.id != 0L)
+            throw PreconditionFailedException("Id must be 0 in insertion")
+        else
+            pets.save(pet)
 
     fun getOnePet(id: Long) =
             pets.findById(id)
-                    .orElseThrow { NotFoundException("There is no Pet with Id $id") }
+                .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 
     fun updatePet(newPet: PetDAO, id: Long) =
-            getOnePet(id).let { it.update(newPet); pets.save(it) }
+        getOnePet(id).let { it.update(newPet); pets.save(it) }
 
-    fun deletePet(id: Long) {
+    fun deletePet(id: Long) =
         getOnePet(id).let { pets.delete(it) }
-    }
 
     fun appointmentsOfPet(id: Long): List<AppointmentDAO> {
         val pet = pets.findByIdWithAppointment(id)
-                .orElseThrow { NotFoundException("There is no Pet with Id $id") }
+                      .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 
         return pet.appointments // This redirection has pre-fetching
     }
 
-    fun newAppointmentOfPet(id: Long, appointment: AppointmentDAO) {
-        val pet: PetDAO = getOnePet(id)
-
-        appointment.pet = pet
-        appointments.save(appointment)
-
-//        pet.appointments = pet.appointments.plus(appointment)
-//        pets.save(pet)
-    }
-
-    fun notesOfPet(id: Long): List<String> {
-        val pet: PetDAO = getOnePet(id)
-
-
-        return pet.notes // This redirection has pre-fetching
-    }
-
-    fun newNoteOfPet(id: Long, note: String) {
-        val pet: PetDAO = getOnePet(id)
-
-        pet.notes = pet.notes.plus(note)
-        pets.save(pet)
-
-
-//        pet.appointments = pet.appointments.plus(appointment)
-//        pets.save(pet)
-    }
-
-
+    fun newAppointment(apt: AppointmentDAO) =
+        // defensive programming
+        if (apt.id != 0L)
+            throw PreconditionFailedException("Id must be 0 in insertion")
+        else
+            appointments.save(apt)
 }

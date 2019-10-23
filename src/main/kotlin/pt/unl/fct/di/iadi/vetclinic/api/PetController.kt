@@ -6,8 +6,10 @@ import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
+
 
 @Api(value = "VetClinic Management System - Pet API",
         description = "Management operations of Pets in the IADI 2019 Pet Clinic")
@@ -22,8 +24,9 @@ class PetController(val pets: PetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @GetMapping("")
-    fun getAllPets() =
-            pets.getAllPets().map { PetDTO(it) }
+    fun getAllPets() : List<PetAptsDTO> =
+            pets.getAllPets().map { PetAptsDTO(PetDTO(it),
+                                    it.appointments.map { AppointmentDTO(it) }) }
 
     @ApiOperation(value = "Add a new pet", response = Unit::class)
     @ApiResponses(value = [
@@ -32,8 +35,9 @@ class PetController(val pets: PetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PostMapping("")
-    fun addNewPet(@RequestBody pet: PetDTO) =
-            pets.addNewPet(PetDAO(pet, emptyList(), emptyList()))
+    fun addNewPet(@RequestBody pet: PetDTO): PetDTO =
+        PetDTO(pets.addNewPet(PetDAO( pet,emptyList(), emptyList(), ClientDAO())))
+
 
     @ApiOperation(value = "Get the details of a single pet by id", response = PetDTO::class)
     @ApiResponses(value = [
@@ -43,8 +47,8 @@ class PetController(val pets: PetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}")
-    fun getOnePet(@PathVariable id: Long): PetDTO =
-            handle404 { pets.getOnePet(id).let { PetDTO(it) } }
+    fun getOnePet(@PathVariable id:Long) : PetAptsDTO =
+            handle4xx { pets.getOnePet(id).let { PetAptsDTO(PetDTO(it), it.appointments.map { AppointmentDTO(it) }) } }
 
     @ApiOperation(value = "Update a pet", response = Unit::class)
     @ApiResponses(value = [
@@ -54,7 +58,7 @@ class PetController(val pets: PetService) {
     ])
     @PutMapping("/{id}")
     fun updatePet(@RequestBody pet: PetDTO, @PathVariable id: Long) =
-            handle404 { pets.updatePet(PetDAO(pet, emptyList(), emptyList()), id) }
+            handle4xx { pets.updatePet(PetDAO(pet, emptyList(), emptyList(), ClientDAO()), id) }
 
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
@@ -64,7 +68,7 @@ class PetController(val pets: PetService) {
     ])
     @DeleteMapping("/{id}")
     fun deletePet(@PathVariable id: Long) =
-            handle404 { pets.deletePet(id) }
+            handle4xx { pets.deletePet(id) }
 
     @ApiOperation(value = "List the appointments related to a Pet", response = List::class)
     @ApiResponses(value = [
@@ -74,8 +78,11 @@ class PetController(val pets: PetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/appointments")
-    fun appointmentsOfPet(@PathVariable id: Long): List<AppointmentDTO> =
-            handle404 { pets.appointmentsOfPet(id).map { AppointmentDTO(it) } }
+    fun appointemntsOfPet(@PathVariable id:Long): List<AppointmentDTO> =
+            handle4xx {
+                pets.appointmentsOfPet(id)
+                        .map { AppointmentDTO(it) }
+            }
 
     @ApiOperation(value = "Add a new appointment to a pet", response = Unit::class)
     @ApiResponses(value = [
@@ -85,15 +92,9 @@ class PetController(val pets: PetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @PostMapping("/{id}/appointments")
-    fun newAppointment(@PathVariable id: Long, @RequestBody apt: AppointmentDTO) =
-            handle404 { pets.getOnePet(id).let { pets.newAppointmentOfPet(id, AppointmentDAO(apt, it)) } }
-
-    @PostMapping("/{id}/notes")
-    fun newNote(@PathVariable id: Long, @RequestBody note: String) =
-            handle404 { pets.getOnePet(id).let { pets.newNoteOfPet(id, note) } }
-
-    @GetMapping("/{id}/notes")
-    fun notesOfPet(@PathVariable id: Long): List<String> =
-            handle404 { pets.notesOfPet(id).map { it } }
-
+    fun newAppointment(@PathVariable id:Long,
+                       @RequestBody apt:AppointmentDTO) =
+            handle4xx {
+                AppointmentDTO(pets.newAppointment(AppointmentDAO(apt, pets.getOnePet(id),pets.getOnePet(id).owner)))
+            }
 }

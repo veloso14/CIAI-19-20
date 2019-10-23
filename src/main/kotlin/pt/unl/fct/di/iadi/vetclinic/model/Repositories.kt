@@ -1,0 +1,28 @@
+package pt.unl.fct.di.iadi.vetclinic.model
+
+import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
+import org.springframework.data.repository.CrudRepository
+import java.util.*
+
+interface PetRepository : JpaRepository<PetDAO, Long> {
+
+    // Query defined by adopting a conventional name construction
+    fun findByName(name:String): MutableIterable<PetDAO>
+
+    // A query that loads all Pets with prefetching of the appointments associated
+    @Query("select p from PetDAO p left join fetch p.appointments where p.id = :id")
+    fun findByIdWithAppointment(id:Long) : Optional<PetDAO>
+}
+
+interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
+
+interface UserRepository : JpaRepository<UserDAO, String> {}
+
+interface BlaclListRepository : JpaRepository<BackListDAO, String> {}
+interface VetRepository : JpaRepository<UserDAO, String> {}
+interface AdminRepository : JpaRepository<UserDAO, String> {}
+interface ClientRepository : JpaRepository<ClientDAO, String> {
+    @Query("select c from ClientDAO c inner join fetch c.appointments where c.name = :name")
+    fun findByIdWithAppointment(name: String): Optional<ClientDAO>
+}

@@ -1,69 +1,73 @@
+/**
+Copyright 2019 João Costa Seco
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+ */
+
 package pt.unl.fct.di.iadi.vetclinic.model
 
-import com.sun.istack.NotNull
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
+import ch.qos.logback.core.net.server.Client
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
+import pt.unl.fct.di.iadi.vetclinic.api.ClientDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.api.ShiftDTO
 import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
+import javax.validation.constraints.NotNull
 
 @Entity
 data class PetDAO(
-        @Id @GeneratedValue val id: Long,
-        var name: String,
-        var species: String,
+        @Id @GeneratedValue val id:Long,
+                            var name: String,
+                            var species: String,
         @OneToMany(mappedBy = "pet")
-        var appointments: List<AppointmentDAO>,
-        /* @ManyToOne(fetch = FetchType.LAZY , optional = false)
-         @JoinColumn(name = "owner_id" , nullable = false)
-         @OnDelete(action = OnDeleteAction.CASCADE)
-         var owner:ClientDAO */
-
+                            var appointments:List<AppointmentDAO>,
         @ElementCollection
-        var notes: List<String>
-        //@ManyToOne(fetch = FetchType.LAZY , optional = false)
-        //   @JoinColumn(name = "owner_id" , nullable = false)
-        // @OnDelete(action = OnDeleteAction.CASCADE)
-        //  var owner:ClientDAO
-
+                             var notes:List<String>,
+        @ManyToOne()    var owner: ClientDAO
 ) {
-    constructor(pet: PetDTO, apts: List<AppointmentDAO>, notes: List<String>/*, owner:ClientDAO*/) : this(pet.id, pet.name, pet.species, apts, notes/*, owner*/)
+    constructor() : this(0,"","", emptyList(), emptyList(), ClientDAO())
 
-    fun update(other: PetDAO) {
+    constructor(pet: PetDTO, apts:List<AppointmentDAO>,notes:List<String>, owner:ClientDAO) : this(pet.id,pet.name,pet.species, apts, notes, owner)
+
+    fun update(other:PetDAO) {
         this.name = other.name
         this.species = other.species
         this.appointments = other.appointments
         this.notes = other.notes
-        //this.owner = other.owner
     }
 }
 
 @Entity
 data class AppointmentDAO(
-        @Id @GeneratedValue val id: Long,
-        var start: LocalDateTime,
-        var end: LocalDateTime,
-        var desc: String,
-        @ManyToOne(fetch = FetchType.LAZY, optional = false)
-        @JoinColumn(name = "pet_id", nullable = false)
-        @OnDelete(action = OnDeleteAction.CASCADE)
-        var pet: PetDAO
+        @Id @GeneratedValue val id:Long,
+                            var start: LocalDateTime,
+                            var end:LocalDateTime,
+                            var desc:String,
+        @ManyToOne          var pet:PetDAO,
+        @ManyToOne          var client:ClientDAO
 
 ) {
-
-    constructor(apt: AppointmentDTO, pet: PetDAO) : this(apt.id, apt.start, apt.end, apt.desc, pet)
+    constructor() : this(0, LocalDateTime.MIN, LocalDateTime.MAX,"", PetDAO(), ClientDAO())
+    constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO) : this(apt.id, apt.start, apt.end, apt.desc, pet, client)
 }
-
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 open class BackListDAO(@Id @GeneratedValue val id: Long,
-                   @NotNull
-                   @Column(name = "JWT", unique = true)
-                   var key: String) {
+                       @NotNull
+                       @Column(name = "JWT", unique = true)
+                       var key: String) {
     constructor(lista: BackListDAO) : this(lista.id , lista.key)
 
 
@@ -73,19 +77,10 @@ open class BackListDAO(@Id @GeneratedValue val id: Long,
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 open class UserDAO(@Id @GeneratedValue val id: Long,
                    var name: String,
-                   @NotNull
-                   @Column(name = "u_email", unique = true)
                    var email: String,
-                   @NotNull
-                   @Column(name = "u_username", unique = true)
                    var username: String,
-                   @NotNull
-                   @Column(name = "u_pass")
                    var password: String,
-                   @NotNull
-                   @Column(name = "u_cellphone")
-                   var cellphone: Long, @NotNull
-                   @Column(name = "u_address")
+                   var cellphone: Long,
                    var address: String) {
     constructor(user: UserDAO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address)
 
@@ -99,11 +94,15 @@ class ClientDAO(id: Long,
                 username: String,
                 password: String,
                 cellphone: Long,
-                address: String/*,
-                @OneToMany()
-                var pets:List<PetDAO>*/) : UserDAO(id, name, email, username, password, cellphone, address) {
-    constructor(client: ClientDAO/*, pets:List<PetDAO>*/) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address/*, pets*/)
+                address: String,
+                @OneToMany(mappedBy = "owner", cascade = arrayOf(CascadeType.ALL))
+                var pets:List<PetDAO>,
+                @OneToMany(mappedBy = "client")
+                var appointments:List<AppointmentDAO>
+                ) : UserDAO(id, name, email, username, password, cellphone, address) {
+    constructor(client: ClientDTO, pets:List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address, pets, apts)
     //val pets:MutableList<PetDAO> = mutableListOf()
+    constructor() : this(0,"","","","",0,"", emptyList(), emptyList())
 }
 
 // val picture: URI
@@ -149,7 +148,7 @@ data class ShiftDAO(
         return start.day
     }
 
-    constructor(shift: ShiftDTO, vet: VetDAO) : this(shift.id, shift.start, shift.end, vet)
+    constructor(shift: ShiftDAO, vet: VetDAO) : this(shift.id, shift.start, shift.end, vet)
 }
 
 data class VetShiftsDAO(
@@ -158,3 +157,4 @@ data class VetShiftsDAO(
 ) {
 
 }
+
