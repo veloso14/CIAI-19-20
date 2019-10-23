@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @Api(value = "VetClinic Management System - Admin API",
@@ -16,7 +17,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 @RestController
 @RequestMapping("/user/admin")
 
-class AdminController(val admin: AdminService) {
+class AdminController(val admin: AdminService, val users: UserService) {
     @ApiOperation(value = "View a list of registered users", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved user list"),

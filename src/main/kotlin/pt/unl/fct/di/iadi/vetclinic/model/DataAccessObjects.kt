@@ -6,7 +6,6 @@ import org.hibernate.annotations.OnDeleteAction
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -79,6 +78,25 @@ open class UserDAO( @Id @GeneratedValue val id:Long,
 
 }
 
+abstract class UserDAOtest {
+    abstract var id: String
+    abstract var email: String
+    abstract var username: String
+    abstract var password: String
+    abstract var cellphone: Long
+    abstract var address: String
+}
+
+data class VetDAOtest(
+        var appointments: MutableList<AppointmentDAO>,
+        override var id: String,
+        override var email: String,
+        override var username: String,
+        override var password: String,
+        override var cellphone: Long,
+        override var address: String
+) : UserDAOtest()
+
 @Entity
 class ClientDAO(id: Long,
                 name: String,
@@ -95,15 +113,29 @@ class ClientDAO(id: Long,
 
 // val picture: URI
 @Entity
-class VetDAO(id: Long,name: String, email :String,  username:String , password:String, cellphone:Long, address:String, var employeeID:Long):UserDAO(id,name, email ,  username , password, cellphone, address){
-    constructor(vet: VetDAO) : this(vet.id, vet.name,  vet.email,  vet.username , vet.password, vet.cellphone, vet.address, vet.employeeID)
-   // val appointments:MutableList<AppointmentDAO> = mutableListOf()
+class VetDAO(
+        id: Long,
+        name: String,
+        email: String,
+        username: String,
+        password: String,
+        cellphone: Long,
+        address: String,
+        var employeeID: Long,
+        var appointments: MutableList<AppointmentDAO>,
+        var frozen: Boolean
+) : UserDAO(id,name, email ,  username , password, cellphone, address) {
+    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.appointments, vet.frozen)
+
+    fun updateFrozen(frozen: Boolean) {
+        this.frozen = frozen
+    }
 }
+
 
 
 @Entity
 class AdminDAO(id: Long,name: String, email :String,  username:String , password:String, cellphone:Long, address:String,var employeeID:Long):UserDAO(id,name, email ,  username , password, cellphone, address){
     constructor(admin: AdminDAO) : this(admin.id, admin.name,  admin.email,  admin.username , admin.password, admin.cellphone, admin.address, admin.employeeID)
 }
-
 
