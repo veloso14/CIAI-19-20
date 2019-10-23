@@ -65,14 +65,14 @@ class AdminService(
 //    }
 
     // returns the list of appointments of a single Vet by giving his unique Id
-    fun getAppointmentsByVetId(id: String): MutableList<AppointmentDAO> {
-        val vet = findEmployee(id)
-        var appointments = mutableListOf<AppointmentDAO>()
-        if (vet is VetDAO) {
-            appointments = vet.appointments
-        }
-        return appointments
-    }
+//    fun getAppointmentsByVetId(id: String): MutableList<AppointmentDAO> {
+//        val vet = findEmployee(id)
+//        var appointments = mutableListOf<AppointmentDAO>()
+//        if (vet is VetDAO) {
+//            appointments = vet.appointments
+//        }
+//        return appointments
+//    }
     // fun getAppointmentsByVetId(id: Long): List<AppointmentDAO> = appointments.findAllByVetId(id).toList()
 
 

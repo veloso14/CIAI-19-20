@@ -89,25 +89,25 @@ open class UserDAO(@Id @GeneratedValue val id: Long,
 
 
 }
-
-abstract class UserDAOtest {
-    abstract var id: String
-    abstract var email: String
-    abstract var username: String
-    abstract var password: String
-    abstract var cellphone: Long
-    abstract var address: String
-}
-
-data class VetDAOtest(
-        var appointments: MutableList<AppointmentDAO>,
-        override var id: String,
-        override var email: String,
-        override var username: String,
-        override var password: String,
-        override var cellphone: Long,
-        override var address: String
-) : UserDAOtest()
+//
+//abstract class UserDAOtest {
+//    abstract var id: String
+//    abstract var email: String
+//    abstract var username: String
+//    abstract var password: String
+//    abstract var cellphone: Long
+//    abstract var address: String
+//}
+//
+//data class VetDAOtest(
+//        var appointments: MutableList<AppointmentDAO>,
+//        override var id: String,
+//        override var email: String,
+//        override var username: String,
+//        override var password: String,
+//        override var cellphone: Long,
+//        override var address: String
+//) : UserDAOtest()
 
 @Entity
 class ClientDAO(id: Long,
@@ -134,10 +134,11 @@ class VetDAO(
         cellphone: Long,
         address: String,
         var employeeID: Long,
-        var appointments: MutableList<AppointmentDAO>,
+
+        //var appointments: MutableList<AppointmentDAO>,
         var frozen: Boolean
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
-    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.appointments, vet.frozen)
+    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen)
 
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
