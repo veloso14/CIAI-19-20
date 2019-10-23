@@ -73,6 +73,16 @@ class VetController(val vets: VetService) {
     @GetMapping("/appointments")
     fun getAllAppointments() = vets.getAllAppointments().map { AppointmentDTO(it) }
 
+    @ApiOperation(value = "Update a appointment", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully updated a appointment"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/{name}/appointment")
+    fun completeAppointment(@PathVariable name:String, @RequestBody appointment: AppointmentDTO) = handle4xx{vets.completeAppointment(AppointmentDAO(appointment, PetDAO(), ClientDAO(),vets.getOneVet(name)))}
+
+
 
 
 }

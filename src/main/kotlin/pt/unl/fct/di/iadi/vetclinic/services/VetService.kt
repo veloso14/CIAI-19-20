@@ -12,11 +12,14 @@ class VetService(val vets: VetRepository,
 
 
 
-    fun getOneVet(name: String) =
+    fun getOneVet(name: String): VetDAO =
             vets.findById(name)
                     .orElseThrow { NotFoundException("There is no Client with Id $name") }
 
-  //  fun completeAppointment(apt: AppointmentDAO)
+    fun completeAppointment(apt: AppointmentDAO){
+        apt.updateComplete(true)
+        appointments.save(apt)
+    }
 
     /*  fun scheduleOfVet(name: String): List<VetScheduleDAO> {
         val vet = vets.findByIdWithAppointment(name)

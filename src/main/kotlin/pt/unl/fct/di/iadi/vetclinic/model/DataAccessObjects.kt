@@ -63,6 +63,9 @@ data class AppointmentDAO(
 ) {
     constructor() : this(0, LocalDateTime.MIN, LocalDateTime.MAX,"",false, PetDAO(), ClientDAO(), VetDAO())
     constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO, vet:VetDAO) : this(apt.id, apt.start, apt.end, apt.desc, apt.complete, pet, client, vet)
+    fun updateComplete(complete: Boolean) {
+        this.complete = complete
+    }
 }
 
 @Entity

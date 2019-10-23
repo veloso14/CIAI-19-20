@@ -17,7 +17,7 @@ class ClientService(val pets: PetRepository,
         //return emptyList()
     }
 
-    fun getOneClient(name: String) =
+    fun getOneClient(name: String): ClientDAO =
             clients.findById(name)
                     .orElseThrow { NotFoundException("There is no Client with Id $name") }
 
