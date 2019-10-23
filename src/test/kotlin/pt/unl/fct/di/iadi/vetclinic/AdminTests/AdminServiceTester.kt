@@ -28,6 +28,8 @@ class AdminServiceTester {
 
     companion object Constants {
         val veloso = UserDAO(1L, "Veloso", "joao.veloso@neec-fct.com", "jmveloso", "123456", 962839449, "Pio 12")
+        val admin = AdminDAO(1L, "admin", "admin@test.com", "admin", "123456", 962839449, "Pio 12", 0L)
+        val vet = VetDAO(1L, "admin", "admin@test.com", "admin", "123456", 962839449, "Pio 12", 0L, emptyList<AppointmentDAO>() as MutableList<AppointmentDAO>, false)
         val userDAO = mutableListOf(veloso);
     }
 
@@ -36,5 +38,26 @@ class AdminServiceTester {
         Mockito.`when`(repo.findById("jmveloso")).thenReturn(Optional.of(veloso));
         assertThat(admins.findEmployee("jmveloso"), equalTo(veloso))
     }
+
+    @Test
+    fun `find All`() {
+        repo.save(admin)
+        repo.save(veloso)
+        repo.save(vet)
+        assertThat(admins.getAllEmployees(), equalTo(listOf(admin, vet, veloso)))
+    }
+
+    @Test
+    fun `basic test on fireEmployee admin`() {
+        repo.deleteById("admin")
+        assertThat(repo.findAll().toList(), equalTo(emptyList()))
+    }
+    @Test
+    fun `basic test on fireEmployee vet`() {
+        repo.deleteById("admin")
+        assertThat(repo.findAll().toList(), equalTo(emptyList()))
+    }
+
+
 
 }

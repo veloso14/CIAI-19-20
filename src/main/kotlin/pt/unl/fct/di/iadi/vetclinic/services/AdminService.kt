@@ -12,7 +12,6 @@ class AdminService(
         val clients: ClientRepository,
         val appointments: AppointmentRepository,
         val users: UserRepository
-
 ) {
     // val logger = LoggerFactory.getLogger(AdminService::class.java)
 
@@ -45,11 +44,30 @@ class AdminService(
         }
         return appointments
     }
-    // fun getAppointmentsByVetId(id: Long): List<AppointmentDAO> = appointments.findAllByVetId(id).toList()
 
+    /*
 
-    // set Vet schedule keeping restrictions in mind
-    // #TODO
+    Em vez de criar um schedule complicado assumimos que todos os vets trabalham
+    das 9h as 17h de segunda a sexta. Sendo assim, todas as restricoes dos horarios
+    sao verificadas e apenas sera necessario verificar se a data de um appointment
+    é valida na marcacao
+
+    fun setVetSchedule(id: String) {
+        val vet = findEmployee(id)
+
+        if (vet is VetDAO) {
+            // TODO
+            //createSchedule(vet)
+        } else {
+            throw NotFoundException("Vet with given Id:${id} doesn't exist.")
+        }
+    }
+
+    fun createSchedule(vet: VetDAO) {
+        //TODO
+    }
+
+ */
 
 }
 

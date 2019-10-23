@@ -5,7 +5,9 @@ import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
+import pt.unl.fct.di.iadi.vetclinic.api.ShiftDTO
 import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -89,25 +91,6 @@ open class UserDAO(@Id @GeneratedValue val id: Long,
 
 
 }
-//
-//abstract class UserDAOtest {
-//    abstract var id: String
-//    abstract var email: String
-//    abstract var username: String
-//    abstract var password: String
-//    abstract var cellphone: Long
-//    abstract var address: String
-//}
-//
-//data class VetDAOtest(
-//        var appointments: MutableList<AppointmentDAO>,
-//        override var id: String,
-//        override var email: String,
-//        override var username: String,
-//        override var password: String,
-//        override var cellphone: Long,
-//        override var address: String
-//) : UserDAOtest()
 
 @Entity
 class ClientDAO(id: Long,
@@ -150,3 +133,28 @@ class AdminDAO(id: Long, name: String, email: String, username: String, password
     constructor(admin: AdminDAO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address, admin.employeeID)
 }
 
+@Entity
+data class ShiftDAO(
+        @Id @GeneratedValue val id: Long,
+        val start: Date,
+        val end: Date,
+        @ManyToOne val vet: VetDAO
+) {
+
+    fun getDuration(): Long {
+        return end.time - start.time
+    }
+
+    fun getStartDay(): Int {
+        return start.day
+    }
+
+    constructor(shift: ShiftDTO, vet: VetDAO) : this(shift.id, shift.start, shift.end, vet)
+}
+
+data class VetShiftsDAO(
+        val vet: VetDAO,
+        @OneToMany val shifts: List<ShiftDAO>
+) {
+
+}
