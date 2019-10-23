@@ -81,8 +81,8 @@ class PetServiceTester {
 
     @Test
     fun `test on retrieving appointments 1`() {
-        val consulta1 = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1", pantufas,ClientDAO())
-        val consulta2 = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1", pantufas,ClientDAO())
+        val consulta1 = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1", false,pantufas,ClientDAO(), VetDAO())
+        val consulta2 = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1",false, pantufas,ClientDAO(), VetDAO())
         pantufas.appointments = listOf(consulta1, consulta2)
 
         Mockito.`when`(repo.findByIdWithAppointment(pantufas.id)).thenReturn(Optional.of(pantufas))
@@ -101,7 +101,7 @@ class PetServiceTester {
 
     @Test
     fun `test on adding a new Appointment`() {
-        val consulta = AppointmentDAO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta", pantufas, ClientDAO())
+        val consulta = AppointmentDAO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, pantufas, ClientDAO(), VetDAO())
 
         pantufas.appointments = emptyList()
 
@@ -120,7 +120,7 @@ class PetServiceTester {
 
     @Test(expected = PreconditionFailedException::class)
     fun `test on adding a new Appointment (Precondition Failed)`() {
-        val consulta = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta", pantufas,ClientDAO())
+        val consulta = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, pantufas,ClientDAO(), VetDAO())
         pets.newAppointment(consulta)
     }
 }

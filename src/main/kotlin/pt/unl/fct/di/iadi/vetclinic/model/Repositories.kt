@@ -20,7 +20,10 @@ interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
 interface UserRepository : JpaRepository<UserDAO, String> {}
 
 interface BlaclListRepository : JpaRepository<BackListDAO, String> {}
-interface VetRepository : JpaRepository<UserDAO, String> {}
+interface VetRepository : JpaRepository<VetDAO, String> {
+    @Query("select c from VetDAO c inner join fetch c.appointments where c.name = :name")
+    fun findByIdWithAppointment(name: String): Optional<VetDAO>
+}
 interface AdminRepository : JpaRepository<UserDAO, String> {}
 interface ClientRepository : JpaRepository<ClientDAO, String> {
     @Query("select c from ClientDAO c inner join fetch c.appointments where c.name = :name")

@@ -25,6 +25,7 @@ import pt.unl.fct.di.iadi.vetclinic.api.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
@@ -120,7 +121,7 @@ class ClientControllerTester {
     @Test
     fun `Test checking appointments`() {
         val vicente = ClientDAO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
-        val apt = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX,"consulta", PetDAO(), vicente)
+        val apt = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX,"consulta",false, PetDAO(), vicente, VetDAO())
         vicente.appointments = listOf(apt)
 
         Mockito.`when`(clients.appointmentsOfClient("Vicente")).thenReturn(listOf(apt))
@@ -150,8 +151,8 @@ class ClientControllerTester {
     fun `Test adding an appointment to a client`() {
         val vicente = ClientDAO(1,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
 
-        val apt = AppointmentDTO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta")
-        val aptDAO = AppointmentDAO(apt, PetDAO(), vicente)
+        val apt = AppointmentDTO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false)
+        val aptDAO = AppointmentDAO(apt, PetDAO(), vicente, VetDAO())
         vicente.appointments = listOf(aptDAO)
 
         val aptJSON = mapper.writeValueAsString(apt)
@@ -171,8 +172,8 @@ class ClientControllerTester {
     fun `Bad request on id not 0`() {
         val vicente = ClientDAO(1,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
 
-        val apt = AppointmentDTO(2,LocalDateTime.MIN, LocalDateTime.MAX, "consulta")
-        val aptDAO = AppointmentDAO(apt,PetDAO(),vicente)
+        val apt = AppointmentDTO(2,LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false)
+        val aptDAO = AppointmentDAO(apt,PetDAO(),vicente, VetDAO())
         vicente.appointments = listOf(aptDAO)
 
         val aptJSON = mapper.writeValueAsString(apt)

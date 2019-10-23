@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 
 
@@ -39,7 +40,7 @@ class ClientController(val clients: ClientService) {
     fun newAppointment(@PathVariable name: String,
                        @RequestBody apt:AppointmentDTO) =
             handle4xx {
-                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(),clients.getOneClient(name))))
+                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(),clients.getOneClient(name), VetDAO())))
             }
 
    /* @ApiOperation(value = "View a list of registered clients", response = List::class)

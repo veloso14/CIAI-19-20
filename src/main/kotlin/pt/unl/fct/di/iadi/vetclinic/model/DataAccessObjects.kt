@@ -54,12 +54,15 @@ data class AppointmentDAO(
                             var start: LocalDateTime,
                             var end:LocalDateTime,
                             var desc:String,
+                            var complete:Boolean,
         @ManyToOne          var pet:PetDAO,
-        @ManyToOne          var client:ClientDAO
+        @ManyToOne          var client:ClientDAO,
+        @ManyToOne          var vet:VetDAO
+
 
 ) {
-    constructor() : this(0, LocalDateTime.MIN, LocalDateTime.MAX,"", PetDAO(), ClientDAO())
-    constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO) : this(apt.id, apt.start, apt.end, apt.desc, pet, client)
+    constructor() : this(0, LocalDateTime.MIN, LocalDateTime.MAX,"",false, PetDAO(), ClientDAO(), VetDAO())
+    constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO, vet:VetDAO) : this(apt.id, apt.start, apt.end, apt.desc, apt.complete, pet, client, vet)
 }
 
 @Entity
@@ -116,12 +119,12 @@ class VetDAO(
         cellphone: Long,
         address: String,
         var employeeID: Long,
-        @OneToMany(mappedBy = "pet")
-        var appointments: MutableList<AppointmentDAO>,
+        @OneToMany(mappedBy = "vet")
+        var appointments: List<AppointmentDAO>,
         var frozen: Boolean
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
     constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID,  vet.appointments, vet.frozen)
-
+    constructor() : this(0,"","","","",0,"",0, emptyList(), false)
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }

@@ -24,7 +24,7 @@ class VetClinicApplication {
             val pantufas = PetDAO(1L, "pantufas", "dog", emptyList<AppointmentDAO>(), emptyList<String>(), ClientDAO())
             val bigodes = PetDAO(2L, "bigode", "cat", emptyList<AppointmentDAO>(), emptyList<String>(), ClientDAO())
             pets.saveAll(listOf(pantufas,bigodes))
-            val consulta = AppointmentDAO(3L, LocalDateTime.MIN, LocalDateTime.MAX,"consulta", pantufas,ClientDAO())
+            val consulta = AppointmentDAO(3L, LocalDateTime.MIN, LocalDateTime.MAX,"consulta",false, pantufas,ClientDAO(), VetDAO())
             apts.save(consulta)
         }
 }
