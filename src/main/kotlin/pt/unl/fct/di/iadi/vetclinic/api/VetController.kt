@@ -20,7 +20,7 @@ class VetController(val vets: VetService) {
 
 
 
-    @ApiOperation(value = "Get the details of a single vet by id", response = PetDTO::class)
+    @ApiOperation(value = "Get the details of a single vet by id", response = VetDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved vet details"),
         ApiResponse(code = 401, message = "You are not authorized to view the resource"),

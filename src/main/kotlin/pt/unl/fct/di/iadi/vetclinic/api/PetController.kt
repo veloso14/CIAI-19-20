@@ -79,7 +79,7 @@ class PetController(val pets: PetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/appointments")
-    fun appointemntsOfPet(@PathVariable id:Long): List<AppointmentDTO> =
+    fun appointmentsOfPet(@PathVariable id:Long): List<AppointmentDTO> =
             handle4xx {
                 pets.appointmentsOfPet(id)
                         .map { AppointmentDTO(it) }

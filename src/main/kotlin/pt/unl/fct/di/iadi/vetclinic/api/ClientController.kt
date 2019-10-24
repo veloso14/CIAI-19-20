@@ -19,11 +19,25 @@ import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 
 class ClientController(val clients: ClientService) {
 
+    @ApiOperation(value = "List the appointments related to a Client", response = List::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
     @GetMapping("/{name}/appointments")
     fun appointmentsOfClient(@PathVariable name: String): List<AppointmentDTO> =
             handle4xx { clients.appointmentsOfClient(name).map { AppointmentDTO(it) } }
 
 
+    @ApiOperation(value = "Get the details of a single client by id", response = ClientDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved client details"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
     @GetMapping("/{name}")
     fun getOneClient(@PathVariable name: String): ClientDTO =
             handle4xx { clients.getOneClient(name).let { ClientDTO(it) } }
@@ -38,9 +52,9 @@ class ClientController(val clients: ClientService) {
     ])
     @PostMapping("/{name}/appointments")
     fun newAppointment(@PathVariable name: String,
-                       @RequestBody apt:AppointmentDTO) =
+                       @RequestBody apt:AppointmentDTO,@RequestBody pet:PetDTO ) =
             handle4xx {
-                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(),clients.getOneClient(name), VetDAO())))
+                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(pet, emptyList(), emptyList(),clients.getOneClient(name)),clients.getOneClient(name), VetDAO())))
             }
 
    /* @ApiOperation(value = "View a list of registered clients", response = List::class)

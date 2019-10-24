@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic.ClienTests
+package pt.unl.fct.di.iadi.vetclinic.ClientTests
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
@@ -27,10 +26,8 @@ import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 
 

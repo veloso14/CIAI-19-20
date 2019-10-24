@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic.ClienTests
+package pt.unl.fct.di.iadi.vetclinic.ClientTests
 
 
 import org.hamcrest.CoreMatchers.equalTo
@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringRunner
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientRepository
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
