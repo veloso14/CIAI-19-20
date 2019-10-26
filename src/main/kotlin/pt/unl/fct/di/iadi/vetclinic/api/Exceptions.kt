@@ -12,3 +12,7 @@ class HTTPNotFoundException(s:String) : Exception(s)
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 class HTTPBadRequestException(s:String) : Exception(s)
+
+class NotFoundException(s:String): RuntimeException(s)
+
+class PreconditionFailedException(s:String) : RuntimeException(s)
