@@ -123,11 +123,11 @@ class VetDAO(
         address: String,
         var employeeID: Long,
         @OneToMany(mappedBy = "vet")
-        var appointments: List<AppointmentDAO>,
+        var appointments: MutableList<AppointmentDAO>,
         var frozen: Boolean
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
     constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID,  vet.appointments, vet.frozen)
-    constructor() : this(0,"","","","",0,"",0, emptyList(), false)
+    constructor() : this(0,"","","","",0,"",0, mutableListOf<AppointmentDAO>(), false)
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }

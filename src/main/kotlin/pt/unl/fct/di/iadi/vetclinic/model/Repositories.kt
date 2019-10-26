@@ -16,7 +16,7 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
 }
 
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
-
+//interface VetScheduleRepository : JpaRepository<VetScheduleDAO, String> {}
 interface UserRepository : JpaRepository<UserDAO, String> {}
 
 interface BlaclListRepository : JpaRepository<BackListDAO, String> {}
@@ -29,3 +29,4 @@ interface ClientRepository : JpaRepository<ClientDAO, String> {
     @Query("select c from ClientDAO c inner join fetch c.appointments where c.name = :name")
     fun findByIdWithAppointment(name: String): Optional<ClientDAO>
 }
+
