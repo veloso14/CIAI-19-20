@@ -17,7 +17,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 @RestController
 @RequestMapping("/user/admin")
 
-class AdminController(val admin: AdminService, val users: UserService) {
+class AdminController(val admin: AdminService) {
     @ApiOperation(value = "View a list of registered users", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved user list"),

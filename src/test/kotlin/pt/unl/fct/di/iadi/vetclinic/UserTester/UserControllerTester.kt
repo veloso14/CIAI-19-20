@@ -87,6 +87,7 @@ class UserControllerTester {
 
     fun <T> nonNullAny(t: Class<T>): T = Mockito.any(t)
 
+    /*
     @Test
     fun `Test POST One Pet`() {
         val louro = PetDTO(0, "louro", "Papagaio")
@@ -101,5 +102,5 @@ class UserControllerTester {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(louroJSON))
                 .andExpect(status().isOk)
-    }
+    }*/
 }

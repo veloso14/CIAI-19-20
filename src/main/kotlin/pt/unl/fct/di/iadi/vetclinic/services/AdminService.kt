@@ -14,8 +14,10 @@ class AdminService(
         val pets: PetRepository,
         val clients: ClientRepository,
         val appointments: AppointmentRepository,
-        val users: UserRepository,
-        val schedules: VetScheduleRepository
+
+        val users: UserRepository
+     //   val schedules: VetScheduleRepository
+
 ) {
     // val logger = LoggerFactory.getLogger(AdminService::class.java)
 
@@ -57,7 +59,8 @@ class AdminService(
             // if (existingSchedule isPresent) throw Exception
             val schedule = createSchedule(vet)
             val vetSchedule = VetScheduleDAO(vet, schedule)
-            schedules.save(vetSchedule)
+           // schedules.save(vetSchedule)
+
 
         } else {
             throw NotFoundException("Vet with given Id:${id} doesn't exist.")

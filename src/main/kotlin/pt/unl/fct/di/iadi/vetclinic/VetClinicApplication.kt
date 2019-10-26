@@ -1,31 +1,32 @@
 package pt.unl.fct.di.iadi.vetclinic
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentRepository
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
+import org.springframework.context.annotation.Profile
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.time.LocalDateTime
+import java.util.*
 
 @SpringBootApplication
 class VetClinicApplication {
 
-    @Bean
+    @Bean()
+    @Profile("runtime") // to avoid conflicts with mocked repository components
     fun init(
-            pets: PetRepository,
+            pets:PetRepository,
             apts: AppointmentRepository
-    ) = CommandLineRunner {
-        // val client = ClientDAO(1L,"ss","uu","pp","pp",1L,"ss", emptyList())
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList())
-        val petsDAO = mutableListOf(pantufas, bigodes);
-        pets.saveAll(petsDAO)
-        val apt = AppointmentDAO(1L, LocalDateTime.now(), LocalDateTime.now(), "consulta", pantufas)
-        apts.save(apt)
-    }
+    ) =
+        CommandLineRunner {
+
+            val pantufas = PetDAO(1L, "pantufas", "dog", emptyList<AppointmentDAO>(), emptyList<String>(), ClientDAO())
+            val bigodes = PetDAO(2L, "bigode", "cat", emptyList<AppointmentDAO>(), emptyList<String>(), ClientDAO())
+            pets.saveAll(listOf(pantufas,bigodes))
+            val consulta = AppointmentDAO(3L, LocalDateTime.MIN, LocalDateTime.MAX,"consulta",false, pantufas,ClientDAO(), VetDAO())
+            apts.save(consulta)
+        }
 }
 
 fun main(args: Array<String>) {

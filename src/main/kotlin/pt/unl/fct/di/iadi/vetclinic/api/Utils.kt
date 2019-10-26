@@ -15,12 +15,27 @@ limitations under the License.
  */
 
 package pt.unl.fct.di.iadi.vetclinic.api
-
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
+import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 
+/**
+ * This function is used to wrap the implementation of a controller
+ * and convert the inner exceptions used in services to exceptions
+ * used in the api layer. This can also be implemented using Spring
+ * exception handlers.
+ */
 fun <T> handle404(inner: () -> T): T =
         try {
             inner()
         } catch (e: NotFoundException) {
             throw HTTPNotFoundException(e.message ?: "Not Found")
+        }
+
+fun <T> handle4xx(inner: () -> T): T =
+        try {
+            inner()
+        } catch (e: NotFoundException) {
+            throw HTTPNotFoundException(e.message ?: "Not Found")
+        } catch (e : PreconditionFailedException ) {
+            throw HTTPBadRequestException(e.message ?: "Bad Request")
         }

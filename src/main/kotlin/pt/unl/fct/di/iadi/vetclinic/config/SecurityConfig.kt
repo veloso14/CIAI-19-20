@@ -21,6 +21,8 @@ class SecurityConfig(
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
+                //Obter json do swagger daqui
+                .antMatchers("/v2/api-docs").permitAll()
                 //Permite mais endpoints
                 .antMatchers(HttpMethod.POST, "/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/register/**").permitAll()
