@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic
+package pt.unl.fct.di.iadi.vetclinic.PetTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -31,7 +31,6 @@ import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 import java.time.LocalDateTime
-import java.util.*
 import kotlin.collections.ArrayList
 
 

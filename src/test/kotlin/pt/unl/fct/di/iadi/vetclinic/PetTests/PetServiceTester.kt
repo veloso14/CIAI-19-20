@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic
+package pt.unl.fct.di.iadi.vetclinic.PetTests
 
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
@@ -81,7 +81,7 @@ class PetServiceTester {
 
     @Test
     fun `test on retrieving appointments 1`() {
-        val consulta1 = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1", false,pantufas,ClientDAO(), VetDAO())
+        val consulta1 = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1", false, pantufas,ClientDAO(), VetDAO())
         val consulta2 = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1",false, pantufas,ClientDAO(), VetDAO())
         pantufas.appointments = listOf(consulta1, consulta2)
 
