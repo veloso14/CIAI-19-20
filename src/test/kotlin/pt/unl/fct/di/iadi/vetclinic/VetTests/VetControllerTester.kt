@@ -44,8 +44,8 @@ class VetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 500, emptyList(),false)
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 600, emptyList(),false)
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 500, mutableListOf<AppointmentDAO>(),false)
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 600, mutableListOf<AppointmentDAO>(),false)
 
         val vetsDAO = ArrayList(listOf(antonio, chenel))
 
@@ -85,11 +85,11 @@ class VetControllerTester {
 
     @Test
     fun `Test checking appointments`() {
-        val vicente = VetDAO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao",500,emptyList(), false)
+        val vicente = VetDAO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao",500,mutableListOf<AppointmentDAO>(), false)
         val apt = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX,"consulta",false, PetDAO(), ClientDAO(), vicente)
-        vicente.appointments = listOf(apt)
+        vicente.appointments = mutableListOf(apt)
 
-        Mockito.`when`(vets.appointmentsOfVet("Vicente")).thenReturn(listOf(apt))
+        Mockito.`when`(vets.appointmentsOfVet("Vicente")).thenReturn(mutableListOf(apt))
 
         //val result =
         mvc.perform(get("$vetsURL/Vicente/appointments"))
