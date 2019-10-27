@@ -519,7 +519,7 @@
         "tags": [
           "admin-controller"
         ],
-        "summary": "getAllAppointments",
+        "summary": "View a list of all appointments",
         "operationId": "getAllAppointmentsUsingGET",
         "consumes": [
           "application/json"
@@ -529,19 +529,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successfully retrieved appointments list",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/AppointmentDTO"
+                "type": "object"
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "You are not authorized to view this resource"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Accessing the resource you were trying to reach is forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -554,7 +554,7 @@
         "tags": [
           "admin-controller"
         ],
-        "summary": "getAppointmentsByVetId",
+        "summary": "View a list of appointments of a given vet id",
         "operationId": "getAppointmentsByVetIdUsingGET",
         "consumes": [
           "application/json"
@@ -573,19 +573,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successfully retrieved vet appointments list",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/AppointmentDTO"
+                "type": "object"
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "You are not authorized to view this resource"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Accessing the resource you were trying to reach is forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -598,7 +598,7 @@
         "tags": [
           "admin-controller"
         ],
-        "summary": "getAllClients",
+        "summary": "View a list of all clients",
         "operationId": "getAllClientsUsingGET",
         "consumes": [
           "application/json"
@@ -608,19 +608,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successfully retrieved clients list",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/UserDTO"
+                "type": "object"
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "You are not authorized to view this resource"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Accessing the resource you were trying to reach is forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -633,7 +633,7 @@
         "tags": [
           "admin-controller"
         ],
-        "summary": "View a list of registered users",
+        "summary": "View a list of all employees",
         "operationId": "getAllUsersUsingGET",
         "consumes": [
           "application/json"
@@ -643,7 +643,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Successfully retrieved user list",
+            "description": "Successfully retrieved employees list",
             "schema": {
               "type": "array",
               "items": {
@@ -664,12 +664,12 @@
       }
     },
     "/user/admin/employees/{id}": {
-      "get": {
+      "post": {
         "tags": [
           "admin-controller"
         ],
-        "summary": "fireEmployee",
-        "operationId": "fireEmployeeUsingGET",
+        "summary": "Fire employee with given id",
+        "operationId": "fireEmployeeUsingPOST",
         "consumes": [
           "application/json"
         ],
@@ -687,13 +687,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Successfully fired employee with given id",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "You are not authorized to view this resource"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Accessing the resource you were trying to reach is forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -706,7 +715,7 @@
         "tags": [
           "admin-controller"
         ],
-        "summary": "getAllPets",
+        "summary": "View a list of all pets",
         "operationId": "getAllPetsUsingGET",
         "consumes": [
           "application/json"
@@ -716,19 +725,19 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "Successfully retrieved pets list",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/PetDTO"
+                "type": "object"
               }
             }
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "You are not authorized to view this resource"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Accessing the resource you were trying to reach is forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -737,12 +746,12 @@
       }
     },
     "/user/admin/schedule/{id}": {
-      "get": {
+      "post": {
         "tags": [
           "admin-controller"
         ],
-        "summary": "setVetSchedule",
-        "operationId": "setVetScheduleUsingGET",
+        "summary": "Assign empty schedule to vet with given id",
+        "operationId": "setVetScheduleUsingPOST",
         "consumes": [
           "application/json"
         ],
@@ -760,13 +769,22 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Successfully set vet schedule",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "201": {
+            "description": "Created"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "You are not authorized to view this resource"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Accessing the resource you were trying to reach is forbidden"
           },
           "404": {
             "description": "Not Found"
@@ -1344,6 +1362,47 @@
         }
       }
     },
+    "/user/vet/{name}/schedule": {
+      "get": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "Get the schedule related to a Vet",
+        "operationId": "scheduleOfVetUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved schedule",
+            "schema": {
+              "$ref": "#/definitions/VetScheduleDAO"
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      }
+    },
     "/users/all": {
       "get": {
         "tags": [
@@ -1731,36 +1790,38 @@
       "type": "object",
       "required": [
         "client",
+        "complete",
         "desc",
         "end",
+        "id",
         "pet",
         "start",
         "vet"
       ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
+        "client": {
+          "$ref": "#/definitions/ClientDAO"
         },
-        "start": {
-          "type": "string",
-          "format": "date-time"
+        "complete": {
+          "type": "boolean"
+        },
+        "desc": {
+          "type": "string"
         },
         "end": {
           "type": "string",
           "format": "date-time"
         },
-        "desc": {
-          "type": "string"
-        },
-        "complete": {
-          "type": "boolean"
+        "id": {
+          "type": "integer",
+          "format": "int64"
         },
         "pet": {
           "$ref": "#/definitions/PetDAO"
         },
-        "client": {
-          "$ref": "#/definitions/ClientDAO"
+        "start": {
+          "type": "string",
+          "format": "date-time"
         },
         "vet": {
           "$ref": "#/definitions/VetDAO"
@@ -1817,13 +1878,31 @@
       "required": [
         "address",
         "appointments",
+        "cellphone",
         "email",
+        "id",
         "name",
         "password",
         "pets",
         "username"
       ],
       "properties": {
+        "address": {
+          "type": "string"
+        },
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDAO"
+          }
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
         "id": {
           "type": "integer",
           "format": "int64"
@@ -1831,20 +1910,7 @@
         "name": {
           "type": "string"
         },
-        "email": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
         "password": {
-          "type": "string"
-        },
-        "cellphone": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "address": {
           "type": "string"
         },
         "pets": {
@@ -1853,11 +1919,8 @@
             "$ref": "#/definitions/PetDAO"
           }
         },
-        "appointments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AppointmentDAO"
-          }
+        "username": {
+          "type": "string"
         }
       }
     },
@@ -1931,27 +1994,25 @@
       "type": "object",
       "required": [
         "appointments",
+        "id",
         "name",
         "notes",
         "owner",
         "species"
       ],
       "properties": {
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDAO"
+          }
+        },
         "id": {
           "type": "integer",
           "format": "int64"
         },
         "name": {
           "type": "string"
-        },
-        "species": {
-          "type": "string"
-        },
-        "appointments": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/AppointmentDAO"
-          }
         },
         "notes": {
           "type": "array",
@@ -1961,6 +2022,9 @@
         },
         "owner": {
           "$ref": "#/definitions/ClientDAO"
+        },
+        "species": {
+          "type": "string"
         }
       }
     },
@@ -1981,6 +2045,53 @@
         },
         "species": {
           "type": "string"
+        }
+      }
+    },
+    "ScheduleDAO": {
+      "type": "object",
+      "required": [
+        "id",
+        "schedule",
+        "vet"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "schedule": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ShiftDAO"
+          }
+        },
+        "vet": {
+          "$ref": "#/definitions/VetDAO"
+        }
+      }
+    },
+    "ShiftDAO": {
+      "type": "object",
+      "required": [
+        "available",
+        "id",
+        "schedule",
+        "vet"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "schedule": {
+          "$ref": "#/definitions/ScheduleDAO"
+        },
+        "vet": {
+          "$ref": "#/definitions/VetDAO"
         }
       }
     },
@@ -2082,38 +2193,18 @@
       "required": [
         "address",
         "appointments",
+        "cellphone",
         "email",
+        "employeeID",
+        "frozen",
+        "id",
         "name",
         "password",
         "username"
       ],
       "properties": {
-        "id": {
-          "type": "integer",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "email": {
-          "type": "string"
-        },
-        "username": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        },
-        "cellphone": {
-          "type": "integer",
-          "format": "int64"
-        },
         "address": {
           "type": "string"
-        },
-        "employeeID": {
-          "type": "integer",
-          "format": "int64"
         },
         "appointments": {
           "type": "array",
@@ -2121,8 +2212,32 @@
             "$ref": "#/definitions/AppointmentDAO"
           }
         },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "employeeID": {
+          "type": "integer",
+          "format": "int64"
+        },
         "frozen": {
           "type": "boolean"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
         }
       }
     },
@@ -2165,6 +2280,45 @@
         },
         "username": {
           "type": "string"
+        }
+      }
+    },
+    "VetScheduleDAO": {
+      "type": "object",
+      "required": [
+        "id",
+        "shifts",
+        "vet"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "shifts": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/ScheduleDAO"
+          }
+        },
+        "vet": {
+          "$ref": "#/definitions/VetDAO"
+        }
+      }
+    },
+    "VetScheduleDTO": {
+      "type": "object",
+      "required": [
+        "id",
+        "vet"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "vet": {
+          "$ref": "#/definitions/VetDAO"
         }
       }
     }
