@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.VetScheduleDAO
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
@@ -45,6 +46,18 @@ class VetController(val vets: VetService) {
                 vets.appointmentsOfVet(name)
                         .map { AppointmentDTO(it) }
             }
+    @ApiOperation(value = "Get the schedule related to a Vet", response = VetScheduleDAO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved schedule"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/{name}/schedule")
+    fun scheduleOfVet(@PathVariable name:String): VetScheduleDTO =             handle4xx {
+        vets.scheduleOfVet(name).let { VetScheduleDTO(it) }
+
+    }
 
     @ApiOperation(value = "View a list of registered pets", response = List::class)
     @ApiResponses(value = [

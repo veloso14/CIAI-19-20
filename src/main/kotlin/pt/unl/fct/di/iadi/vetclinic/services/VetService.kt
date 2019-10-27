@@ -1,14 +1,15 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
+import pt.unl.fct.di.iadi.vetclinic.api.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.model.*
 
 @Service
 class VetService(val vets: VetRepository,
                     val appointments: AppointmentRepository,
                  val pets: PetRepository,
-                 val clients: ClientRepository
-                /* val schedules: VetScheduleRepository*/) {
+                 val clients: ClientRepository,
+                 val schedules: VetScheduleRepository) {
 
 
 
@@ -21,14 +22,13 @@ class VetService(val vets: VetRepository,
         appointments.save(apt)
     }
 
-    /*  fun scheduleOfVet(name: String): List<VetScheduleDAO> {
-        val vet = vets.findByIdWithAppointment(name)
-                .orElseThrow { NotFoundException("There is no Pet with Id $name") }
+      fun scheduleOfVet(name: String): VetScheduleDAO {
 
-        return vet.schedules // This redirection has pre-fetching
+        val schedule = schedules.findByVetId(name).orElseThrow { NotFoundException("There is no Pet with Id $name") }
+        return schedule // This redirection has pre-fetching
     }
 
-     */
+
 
     fun appointmentsOfVet(name: String): List<AppointmentDAO> {
         val vet = vets.findByIdWithAppointment(name)

@@ -71,3 +71,7 @@ data class VetAptsDTO(val vet:VetDTO, val appointments:List<AppointmentDTO>)
 class AdminDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
     constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address, admin.employeeID)
 }
+
+data class VetScheduleDTO(val id: Long, val vet: VetDAO){
+    constructor(schedule:VetScheduleDAO):this(schedule.id,schedule.vet)
+}

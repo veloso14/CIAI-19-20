@@ -16,7 +16,10 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
 }
 
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
-interface VetScheduleRepository : JpaRepository<VetScheduleDAO, Long> {}
+interface VetScheduleRepository : JpaRepository<VetScheduleDAO, Long> {
+    @Query("select s from VetScheduleDAO s where s.vet.name = :id")
+    fun findByVetId(id:String) : Optional <VetScheduleDAO>
+}
 interface UserRepository : JpaRepository<UserDAO, String> {}
 
 interface BlaclListRepository : JpaRepository<BackListDAO, String> {}
