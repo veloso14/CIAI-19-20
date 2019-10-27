@@ -21,6 +21,9 @@ class SecurityConfig(
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/users/all").hasRole("ADMIN")
+                .antMatchers("/users/*").hasRole("ADMIN")
+                .antMatchers("/appointments").hasRole("ADMIN")
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
                 //Permite mais endpoints
@@ -43,21 +46,21 @@ class SecurityConfig(
                 .authorities(emptyList())
                 .and()
                 //Cliente
-                .withUser("client")
+                .withUser("CLIENT")
                 .password(BCryptPasswordEncoder().encode("password"))
                 .authorities(emptyList())
                 .roles("USER","CLIENT")
                 .and()
                 //Veterinario
-                .withUser("vet")
+                .withUser("VET")
                 .password(BCryptPasswordEncoder().encode("password"))
                 .authorities(emptyList())
                 .roles("USER","VETERINARIO")
                 .and()
                 //Admin
-                .withUser("admin")
+                .withUser("ADMIN")
                 .password(BCryptPasswordEncoder().encode("password"))
-                .authorities(emptyList())
+                .authorities("USER","ADMIN","VETERINARIO")
                 .roles("USER","ADMIN","VETERINARIO")
                 .and()
                 .passwordEncoder(BCryptPasswordEncoder())
