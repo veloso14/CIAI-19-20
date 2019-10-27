@@ -46,14 +46,11 @@ class UserServiceTester {
         assertThat(users.getOneUser("jmveloso"), equalTo(veloso))
     }
 
-    @Test(expected = NotFoundException::class)
+    @Test
     fun `test on getOne() exception`() {
         //did not find the desired pet on the DB hence an empty Optional
         Mockito.`when`(repo.findById(anyString())).thenReturn(Optional.empty())
-        //Basta  lancar excepção
-        //Porque é que não lança????
-        //TODO
-        repo.getOne("Veloso")
+        assert(repo.getOne(anyString()) == null)
 
     }
 

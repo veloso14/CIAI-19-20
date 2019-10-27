@@ -31,6 +31,13 @@ fun <T> handle404(inner: () -> T): T =
             throw HTTPNotFoundException(e.message ?: "Not Found")
         }
 
+fun <T> handle200(inner: () -> T): T =
+        try {
+            inner()
+        } catch (e: NotFoundException) {
+            throw HTTPNotFoundException(e.message ?: "Not Found")
+        }
+
 fun <T> handle4xx(inner: () -> T): T =
         try {
             inner()

@@ -15,7 +15,7 @@ class UserService(val users: UserRepository) {
         users.save(client)
     }
 
-    fun getOneUser(id: String) =
+    fun getOneUser(id: String):UserDAO =
             users.findById(id).orElseThrow { NotFoundException("There is no client with Id $id") }
 
 

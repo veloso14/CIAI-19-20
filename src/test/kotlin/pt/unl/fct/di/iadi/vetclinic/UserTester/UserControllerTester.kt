@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -46,29 +47,33 @@ class UserControllerTester {
 
         val userDAO = ArrayList(listOf(veloso))
 
-        //val userDTO = userDAO.map { PetDTO(it.id, it.name, it.email , it.address , it.password) }
-
         val userURL = "/users"
     }
 
     @Test
-    fun `Test GET all pets`() {
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    fun `Test GET all users`() {
         Mockito.`when`(users.getAllUser()).thenReturn(userDAO)
 
-        val result = mvc.perform(get(userURL))
+        val result = mvc.perform(get(userURL+ "/all"))
                 .andExpect(status().isOk())
                 .andReturn()
 
         val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<List<UserDTO>>(responseString)
-        //assertThat(responseDTO, equalTo(UserDTO))
+        val responseDTO = mapper.readValue<ArrayList<UserDTO>>(responseString)
+        assertThat(responseDTO.get(0).email , equalTo(veloso.email))
+        assertThat(responseDTO.get(0).address , equalTo(veloso.address))
+        assertThat(responseDTO.get(0).cellphone , equalTo(veloso.cellphone))
+        assertThat(responseDTO.get(0).username , equalTo(veloso.username))
     }
 
-    @Test
-    fun `Test Get One Pet`() {
-        Mockito.`when`(users.getOneUser("jm.veloso")).thenReturn(veloso)
 
-        val result = mvc.perform(get("$userURL/1"))
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    fun `Test Get One User`() {
+        Mockito.`when`(users.getOneUser("jmveloso")).thenReturn(veloso)
+
+        val result = mvc.perform(get("$userURL/jmveloso"))
                 .andExpect(status().isOk)
                 .andReturn()
 
@@ -78,29 +83,23 @@ class UserControllerTester {
     }
 
     @Test
-    fun `Test GET One Pet (Not Found)`() {
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["USER"])
+    fun `Test cliente não tem permissoes`() {
+        Mockito.`when`(users.getOneUser("jmveloso")).thenReturn(veloso)
+
+        mvc.perform(get("$userURL/jmveloso"))
+                .andExpect(status().isForbidden)
+                .andReturn()
+
+    }
+
+    @Test
+    fun `Test GET One User (Not Found)`() {
         Mockito.`when`(users.getOneUser("jm.veloso")).thenThrow(NotFoundException("not found"))
 
         mvc.perform(get("$userURL/2"))
                 .andExpect(status().is4xxClientError)
     }
 
-    fun <T> nonNullAny(t: Class<T>): T = Mockito.any(t)
 
-    /*
-    @Test
-    fun `Test POST One Pet`() {
-        val louro = PetDTO(0, "louro", "Papagaio")
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species, emptyList(), emptyList())
-
-        val louroJSON = mapper.writeValueAsString(louro)
-
-        Mockito.`when`(users.addNewUser(nonNullAny(UserDAO::class.java)))
-                .then { assertThat(it.getArgument(0), equalTo(louroDAO)) }
-
-        mvc.perform(post(userURL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(louroJSON))
-                .andExpect(status().isOk)
-    }*/
 }
