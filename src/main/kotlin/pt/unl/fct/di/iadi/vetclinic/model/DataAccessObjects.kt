@@ -16,12 +16,11 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.model
 
-import ch.qos.logback.core.net.server.Client
+import org.hibernate.annotations.Fetch
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.api.ClientDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 import javax.validation.constraints.NotNull
 
@@ -141,14 +140,18 @@ class AdminDAO(id: Long, name: String, email: String, username: String, password
 @Entity
 data class ShiftDAO(
         @Id @GeneratedValue val id: Long,
-        //val start: LocalDateTime,
-        //val end: LocalDateTime,
         @ManyToOne val vet: VetDAO,
         var available: Boolean
 ) {
 
-    constructor(shift: ShiftDAO, vet: VetDAO) : this(shift.id, /*shift.start, shift.end,*/ vet, true)
+    @ManyToOne
+    lateinit var schedule: ScheduleDAO
 
+    constructor(vet: VetDAO, schedule: ScheduleDAO) : this(vet = vet) {
+        this.schedule = schedule
+    }
+
+    constructor(shift: ShiftDAO, vet: VetDAO) : this(shift.id, /*shift.start, shift.end,*/ vet, true)
 
     constructor(vet: VetDAO) : this(0, /* LocalDateTime.MIN,LocalDateTime.MAX,*/ vet, true)
 
@@ -157,12 +160,25 @@ data class ShiftDAO(
     }
 }
 
-data class VetScheduleDAO(
+@Entity
+data class ScheduleDAO(
+        @Id @GeneratedValue val id : Long,
+        @OneToOne
         val vet: VetDAO,
-        @OneToMany val shifts: MutableMap<Int, MutableList<ShiftDAO>>
+        @OneToMany(mappedBy = "schedule")
+        val schedule: MutableList<ShiftDAO>
 ) {
-    fun getScheduleByDay(day: Int): List<ShiftDAO>? {
-        return shifts[day]
-    }
+        constructor(list: MutableList<ShiftDAO>) : this(0, VetDAO(), list)
+        constructor(vet: VetDAO, list: MutableList<ShiftDAO>) : this(0, vet, list)
+}
+
+@Entity
+data class VetScheduleDAO(
+        @Id @GeneratedValue val id: Long,
+        @OneToOne val vet: VetDAO,
+        @ElementCollection
+        val shifts: MutableMap<Int, ScheduleDAO>
+) {
+    constructor(vet:VetDAO, shifts: MutableMap<Int, ScheduleDAO>) : this(0, VetDAO(),  shifts)
 }
 

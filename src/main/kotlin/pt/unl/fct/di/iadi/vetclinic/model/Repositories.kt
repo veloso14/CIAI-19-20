@@ -16,7 +16,7 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
 }
 
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
-//interface VetScheduleRepository : JpaRepository<VetScheduleDAO, String> {}
+interface VetScheduleRepository : JpaRepository<VetScheduleDAO, Long> {}
 interface UserRepository : JpaRepository<UserDAO, String> {}
 
 interface BlaclListRepository : JpaRepository<BackListDAO, String> {}

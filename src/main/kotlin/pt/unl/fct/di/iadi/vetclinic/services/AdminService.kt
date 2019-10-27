@@ -2,11 +2,6 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.Month
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 @Service
@@ -58,7 +53,7 @@ class AdminService(
             // val existingSchedule = schedules.findById(...)
             // if (existingSchedule isPresent) throw Exception
             val schedule = createSchedule(vet)
-            val vetSchedule = VetScheduleDAO(vet, schedule)
+            val vetSchedule = VetScheduleDAO(0L, vet, schedule)
            // schedules.save(vetSchedule)
 
 
@@ -67,11 +62,12 @@ class AdminService(
         }
     }
 
-    fun createSchedule(vet: VetDAO): MutableMap<Int, MutableList<ShiftDAO>> {
-        val newSchedule = mutableMapOf<Int, MutableList<ShiftDAO>>()
+    fun createSchedule(vet: VetDAO): MutableMap<Int, ScheduleDAO> {
+        val newSchedule = mutableMapOf<Int, ScheduleDAO>()
         for (x in 0..29) {
             val newShiftList = createShiftList(vet)
-            newSchedule[x] = newShiftList
+            val value = ScheduleDAO(vet, newShiftList)
+            newSchedule[x] = value
         }
         return newSchedule
     }
