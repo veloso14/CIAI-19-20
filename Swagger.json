@@ -1,0 +1,2172 @@
+﻿{
+  "swagger": "2.0",
+  "info": {
+    "description": "IADI 2019 VetClinic REST API",
+    "version": "1.0.0",
+    "title": "Spring Boot REST API Example for IADI 2019/20",
+    "contact": {
+      "name": "Bernardo Amaral , João Miguel Veloso,Luís Vinhas Grilo",
+      "url": "https://jmveloso.com/",
+      "email": "jm.veloso@campus.fct.unl.pt"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "pet-controller",
+      "description": "Management operations of Pets in the IADI 2019 Pet Clinic"
+    },
+    {
+      "name": "vet-controller",
+      "description": "Management operations of Pets in the IADI 2019 Pet Clinic"
+    },
+    {
+      "name": "admin-controller",
+      "description": "Management operations of ADMIN in the IADI 2019 Pet Clinic"
+    },
+    {
+      "name": "client-controller",
+      "description": "Management operations of Clients in the IADI 2019 Pet Clinic"
+    },
+    {
+      "name": "user-controller",
+      "description": "User Controller"
+    },
+    {
+      "name": "appointment-controller",
+      "description": "Management operations of Pets in the IADI 2019 Pet Clinic"
+    }
+  ],
+  "paths": {
+    "/appointments": {
+      "get": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "summary": "View a list of registered appointments",
+        "operationId": "getAllAppointmentsUsingGET_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "summary": "Add a new appointments",
+        "operationId": "addNewAppointmentUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "apt",
+            "description": "apt",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added an appointments",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/appointments/{id}": {
+      "get": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "summary": "Get the details of a single appointment by id",
+        "operationId": "getOneAppointmentUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved appointment details",
+            "schema": {
+              "$ref": "#/definitions/AppointmentDTO"
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "summary": "Delete an appointment",
+        "operationId": "deleteAppointmentUsingDELETE",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted an appointment",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          }
+        }
+      }
+    },
+    "/pets": {
+      "get": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "View a list of registered pets",
+        "operationId": "getAllPetsUsingGET_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "Add a new pet",
+        "operationId": "addNewPetUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "pet",
+            "description": "pet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PetDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added a pet",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/pets/{id}": {
+      "get": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "Get the details of a single pet by id",
+        "operationId": "getOnePetUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved pet details",
+            "schema": {
+              "$ref": "#/definitions/PetDTO"
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "Update a pet",
+        "operationId": "updatePetUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "pet",
+            "description": "pet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PetDTO"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated a pet",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "Delete a pet",
+        "operationId": "deletePetUsingDELETE",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted a pet",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          }
+        }
+      }
+    },
+    "/pets/{id}/appointments": {
+      "get": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "List the appointments related to a Pet",
+        "operationId": "appointmentsOfPetUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of appointments",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "pet-controller"
+        ],
+        "summary": "Add a new appointment to a pet",
+        "operationId": "newAppointmentUsingPOST_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "apt",
+            "description": "apt",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added an appointment to a pet",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      }
+    },
+    "/user/admin/appointments": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "getAllAppointments",
+        "operationId": "getAllAppointmentsUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AppointmentDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/admin/appointments/{id}": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "getAppointmentsByVetId",
+        "operationId": "getAppointmentsByVetIdUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AppointmentDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/admin/clients": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "getAllClients",
+        "operationId": "getAllClientsUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/UserDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/admin/employees": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "View a list of registered users",
+        "operationId": "getAllUsersUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved user list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/admin/employees/{id}": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "fireEmployee",
+        "operationId": "fireEmployeeUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/admin/pets": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "getAllPets",
+        "operationId": "getAllPetsUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PetDTO"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/admin/schedule/{id}": {
+      "get": {
+        "tags": [
+          "admin-controller"
+        ],
+        "summary": "setVetSchedule",
+        "operationId": "setVetScheduleUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/client/{name}": {
+      "get": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "Get the details of a single client by id",
+        "operationId": "getOneClientUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved client details",
+            "schema": {
+              "$ref": "#/definitions/ClientDTO"
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "Delete a client",
+        "operationId": "deleteClientUsingDELETE",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted a client",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          }
+        }
+      }
+    },
+    "/user/client/{name}/appointments": {
+      "get": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "List the appointments related to a Client",
+        "operationId": "appointmentsOfClientUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of appointments",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "Add a new appointment to a pet",
+        "operationId": "newAppointmentUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "apt",
+            "description": "apt",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentDTO"
+            }
+          },
+          {
+            "in": "body",
+            "name": "pet",
+            "description": "pet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PetDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added an appointment to a pet",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      }
+    },
+    "/user/client/{name}/pets": {
+      "get": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "List the pets related to a Client",
+        "operationId": "petsOfClientUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of pets",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "Add a new pet to a client",
+        "operationId": "newPetUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "pet",
+            "description": "pet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PetDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully added an appointment to a client",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "client-controller"
+        ],
+        "summary": "Delete a pet",
+        "operationId": "removePetUsingDELETE",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "pet",
+            "description": "pet",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/PetDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully deleted a pet",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          }
+        }
+      }
+    },
+    "/user/vet/appointments": {
+      "get": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "View a list of registered clients",
+        "operationId": "getAllAppointmentsUsingGET_2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/vet/clients": {
+      "get": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "View a list of registered clients",
+        "operationId": "getAllClientsUsingGET_1",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/vet/pets": {
+      "get": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "View a list of registered pets",
+        "operationId": "getAllPetsUsingGET_2",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved list",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/vet/{name}": {
+      "get": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "Get the details of a single vet by id",
+        "operationId": "getOneVetUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved vet details",
+            "schema": {
+              "$ref": "#/definitions/VetDTO"
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      }
+    },
+    "/user/vet/{name}/appointment": {
+      "put": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "Update a appointment",
+        "operationId": "completeAppointmentUsingPUT",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "appointment",
+            "description": "appointment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AppointmentDTO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully updated a appointment",
+            "schema": {
+              "$ref": "#/definitions/Unit"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "You are not authorized to use this resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/user/vet/{name}/appointments": {
+      "get": {
+        "tags": [
+          "vet-controller"
+        ],
+        "summary": "List the appointments related to a Vet",
+        "operationId": "appointmentsOfVetUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved the list of appointments",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            }
+          },
+          "401": {
+            "description": "You are not authorized to view the resource"
+          },
+          "403": {
+            "description": "Accessing the resource you were trying to reach is forbidden"
+          },
+          "404": {
+            "description": "The resource you were trying to reach is not found"
+          }
+        }
+      }
+    },
+    "/users/all": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Obtem todos os utilizadores é necessário ser admin",
+        "operationId": "getAllUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Utilizador não encontrado"
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Faz logout do utilizador com o ID fornecido",
+        "operationId": "logoutUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "token",
+            "description": "token",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/BackListDAO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Utilizador não encontrado"
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Register um novo USER",
+        "operationId": "registerUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserDAO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Falhou"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/register/admin": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Registo Admin",
+        "operationId": "registerAdminUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/AdminDAO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Falhou"
+          },
+          "403": {
+            "description": "Proibido"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/register/client": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Registar Cliente",
+        "operationId": "registerClientUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ClientDAO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Falhou"
+          },
+          "403": {
+            "description": "Proibido"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/register/vet": {
+      "post": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Registar Veterinário",
+        "operationId": "registerVetUsingPOST",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VetDAO"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Falhou"
+          },
+          "403": {
+            "description": "Proibido"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Get USER account",
+        "operationId": "getUserUsingGET",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "401": {
+            "description": "Falhou"
+          },
+          "403": {
+            "description": "Proibido"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "summary": "Delete USER account",
+        "operationId": "deleteUserUsingDELETE",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "*/*"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso",
+            "schema": {
+              "$ref": "#/definitions/UserDTO"
+            }
+          },
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Falhou"
+          },
+          "403": {
+            "description": "Proibido"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "AdminDAO": {
+      "type": "object",
+      "required": [
+        "address",
+        "email",
+        "name",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "employeeID": {
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "AppointmentDAO": {
+      "type": "object",
+      "required": [
+        "client",
+        "desc",
+        "end",
+        "pet",
+        "start",
+        "vet"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "pet": {
+          "$ref": "#/definitions/PetDAO"
+        },
+        "client": {
+          "$ref": "#/definitions/ClientDAO"
+        },
+        "vet": {
+          "$ref": "#/definitions/VetDAO"
+        }
+      }
+    },
+    "AppointmentDTO": {
+      "type": "object",
+      "required": [
+        "complete",
+        "desc",
+        "end",
+        "id",
+        "start"
+      ],
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "end": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "BackListDAO": {
+      "type": "object",
+      "required": [
+        "key"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "ClientDAO": {
+      "type": "object",
+      "required": [
+        "address",
+        "appointments",
+        "email",
+        "name",
+        "password",
+        "pets",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "pets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PetDAO"
+          }
+        },
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDAO"
+          }
+        }
+      }
+    },
+    "ClientDTO": {
+      "type": "object",
+      "required": [
+        "address",
+        "cellphone",
+        "email",
+        "id",
+        "name",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "Optional«UserDTO»": {
+      "type": "object",
+      "properties": {
+        "empty": {
+          "type": "boolean"
+        },
+        "present": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PetAptsDTO": {
+      "type": "object",
+      "required": [
+        "appointments",
+        "pet"
+      ],
+      "properties": {
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDTO"
+          }
+        },
+        "pet": {
+          "$ref": "#/definitions/PetDTO"
+        }
+      }
+    },
+    "PetDAO": {
+      "type": "object",
+      "required": [
+        "appointments",
+        "name",
+        "notes",
+        "owner",
+        "species"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "species": {
+          "type": "string"
+        },
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDAO"
+          }
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owner": {
+          "$ref": "#/definitions/ClientDAO"
+        }
+      }
+    },
+    "PetDTO": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "species"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "species": {
+          "type": "string"
+        }
+      }
+    },
+    "Unit": {
+      "type": "object"
+    },
+    "UserDAO": {
+      "type": "object",
+      "required": [
+        "address",
+        "email",
+        "name",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        }
+      }
+    },
+    "UserDTO": {
+      "type": "object",
+      "required": [
+        "address",
+        "cellphone",
+        "email",
+        "id",
+        "name",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    },
+    "VetAptsDTO": {
+      "type": "object",
+      "required": [
+        "appointments",
+        "vet"
+      ],
+      "properties": {
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDTO"
+          }
+        },
+        "vet": {
+          "$ref": "#/definitions/VetDTO"
+        }
+      }
+    },
+    "VetDAO": {
+      "type": "object",
+      "required": [
+        "address",
+        "appointments",
+        "email",
+        "name",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "address": {
+          "type": "string"
+        },
+        "employeeID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "appointments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/AppointmentDAO"
+          }
+        },
+        "frozen": {
+          "type": "boolean"
+        }
+      }
+    },
+    "VetDTO": {
+      "type": "object",
+      "required": [
+        "address",
+        "cellphone",
+        "email",
+        "employeeID",
+        "id",
+        "name",
+        "password",
+        "username"
+      ],
+      "properties": {
+        "address": {
+          "type": "string"
+        },
+        "cellphone": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "email": {
+          "type": "string"
+        },
+        "employeeID": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "id": {
+          "type": "integer",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
