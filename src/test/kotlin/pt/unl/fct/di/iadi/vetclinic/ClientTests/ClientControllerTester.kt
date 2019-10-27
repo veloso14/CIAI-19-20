@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -75,6 +76,7 @@ class ClientControllerTester {
     } */
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test Get One Client`() {
         Mockito.`when`(clients.getOneClient("Antonio")).thenReturn(antonio)
 
@@ -115,6 +117,7 @@ class ClientControllerTester {
     */
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test checking appointments`() {
         val vicente = ClientDAO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
         val apt = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX,"consulta",false, PetDAO(), vicente, VetDAO())
@@ -144,6 +147,7 @@ class ClientControllerTester {
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test adding an appointment to a client`() {
         val vicente = ClientDAO(1,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
 
