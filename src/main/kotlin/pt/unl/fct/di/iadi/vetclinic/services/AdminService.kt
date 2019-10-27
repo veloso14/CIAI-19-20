@@ -2,6 +2,7 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.util.*
 
 
 @Service
@@ -23,13 +24,14 @@ class AdminService(
 
     fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
 
-    private fun findEmployee(id: String): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
+    fun findEmployee(id: String): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
 
     // if employee is admin remove account; if employee is vet freeze account
     fun fireEmployee(id:String) {
         val user = findEmployee(id)
         if (user is AdminDAO) {
-            users.deleteById(id)
+            users.delete(user)
+            //users.deleteById(id)
         } else if (user is VetDAO) {
             user.updateFrozen(true)
         }

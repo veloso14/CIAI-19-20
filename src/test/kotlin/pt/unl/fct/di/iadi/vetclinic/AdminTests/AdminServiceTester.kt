@@ -39,4 +39,19 @@ class AdminServiceTester {
         assertThat(admins.getAllEmployees(), equalTo(adminDAO as List<UserDAO>))
     }
 
+    @Test
+    fun `basic test on findEmployee`() {
+        Mockito.`when`(repo.findById("admin")).thenReturn(Optional.of(admin));
+        assertThat(admins.findEmployee("admin"), equalTo(admin as UserDAO))
+
+    }
+
+    @Test
+    fun `basic test on fireEmployees ADMIN`() {
+        //cant find user with id admin, apesar de existir
+        //teste findEmployee funciona mas falha aqui
+        Mockito.`when`( admins.fireEmployee("admin"))
+        assertThat(admins.getAllEmployees(), equalTo(adminDAO as List<UserDAO>))
+    }
+
 }
