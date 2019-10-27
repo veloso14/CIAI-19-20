@@ -9,9 +9,8 @@ class AdminService(
         val pets: PetRepository,
         val clients: ClientRepository,
         val appointments: AppointmentRepository,
-
-        val users: UserRepository
-     //   val schedules: VetScheduleRepository
+        val users: UserRepository,
+        val schedules: VetScheduleRepository
 
 ) {
     // val logger = LoggerFactory.getLogger(AdminService::class.java)
@@ -24,7 +23,7 @@ class AdminService(
 
     fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
 
-    fun findEmployee(id: String): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
+    private fun findEmployee(id: String): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
 
     // if employee is admin remove account; if employee is vet freeze account
     fun fireEmployee(id:String) {
@@ -46,23 +45,19 @@ class AdminService(
         return appointments
     }
 
+    // creates empty schedule and saves to rep
     fun setVetSchedule(id: String) {
         val vet = findEmployee(id)
         if (vet is VetDAO) {
-            // check first if said vet already has a schedule created and throw exception if that's the case TODO
-            // val existingSchedule = schedules.findById(...)
-            // if (existingSchedule isPresent) throw Exception
             val schedule = createSchedule(vet)
             val vetSchedule = VetScheduleDAO(0L, vet, schedule)
-           // schedules.save(vetSchedule)
-
-
+            schedules.save(vetSchedule)
         } else {
             throw NotFoundException("Vet with given Id:${id} doesn't exist.")
         }
     }
 
-    fun createSchedule(vet: VetDAO): MutableMap<Int, ScheduleDAO> {
+    private fun createSchedule(vet: VetDAO): MutableMap<Int, ScheduleDAO> {
         val newSchedule = mutableMapOf<Int, ScheduleDAO>()
         for (x in 0..29) {
             val newShiftList = createShiftList(vet)
@@ -88,13 +83,6 @@ class AdminService(
         return list
     }
 
-    // como somar de 30 em 30 minutos
-//    fun createShift(x: Int) {
-//        val year = 2019
-//        val month = Month.OCTOBER
-//        val start = LocalDateTime.of(year, month, x, 9, 30)
-//        val end = start.plusMinutes(30)
-//    }
 
 }
 
