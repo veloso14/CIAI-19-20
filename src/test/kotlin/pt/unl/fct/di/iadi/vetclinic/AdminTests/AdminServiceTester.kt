@@ -26,8 +26,8 @@ class AdminServiceTester {
 
     companion object Constants {
 
-        val admin = AdminDAO(1L, "admin", "admin@admin.pt", "admin", "123456", 965216264, "morada", 123)
-        val vet = VetDAO(1L, "vet", "vet@vet.pt", "vet", "123456", 928764321, "morada", 123, emptyArray<AppointmentDAO>().toMutableList(), false)
+        val admin = AdminDAO(1L, "admin", "admin@admin.pt", "admin", "123456", 965216264, "morada", 123,"")
+        val vet = VetDAO(1L, "vet", "vet@vet.pt", "vet", "123456", 928764321, "morada", 123,"", emptyArray<AppointmentDAO>().toMutableList(), false)
         // val veloso = UserDAO(1L, "Veloso", "joao.veloso@neec-fct.com", "jmveloso", "123456", 962839449, "Pio 12")
       //  val userDAO = mutableListOf(veloso);
         val adminDAO = listOf(admin, vet)

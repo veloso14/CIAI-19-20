@@ -121,20 +121,21 @@ class VetDAO(
         cellphone: Long,
         address: String,
         var employeeID: Long,
+        var picture: String,
         @OneToMany(mappedBy = "vet")
         var appointments: MutableList<AppointmentDAO>,
         var frozen: Boolean
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
-    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID,  vet.appointments, vet.frozen)
-    constructor() : this(0,"","","","",0,"",0, mutableListOf<AppointmentDAO>(), false)
+    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID,vet.picture,  vet.appointments, vet.frozen)
+    constructor() : this(0,"","","","",0,"",0,"", mutableListOf<AppointmentDAO>(), false)
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }
 
 }
 @Entity
-class AdminDAO(id: Long, name: String, email: String, username: String, password: String, cellphone: Long, address: String, var employeeID: Long) : UserDAO(id, name, email, username, password, cellphone, address) {
-    constructor(admin: AdminDAO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address, admin.employeeID)
+class AdminDAO(id: Long, name: String, email: String, username: String, password: String, cellphone: Long, address: String, var employeeID: Long, var picture: String) : UserDAO(id, name, email, username, password, cellphone, address) {
+    constructor(admin: AdminDAO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address, admin.employeeID, admin.picture)
 }
 
 @Entity

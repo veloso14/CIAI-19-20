@@ -30,8 +30,8 @@ class VetServiceTester {
 
     companion object Constants {
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 500, mutableListOf<AppointmentDAO>(),false)
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 600, mutableListOf<AppointmentDAO>(),false)
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 500,"", mutableListOf<AppointmentDAO>(),false)
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 600,"", mutableListOf<AppointmentDAO>(),false)
 
         val vetsDAO = mutableListOf(antonio, chenel);
 
