@@ -123,5 +123,47 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
     }
 
+    @Test
+    fun `Test booking an appointment`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+
+        val apt = AppointmentDTO(0, Date(), "consulta",0,1)
+        val aptDAO = AppointmentDAO(apt, PetDAO(), veloso)
+        veloso.appointments = listOf(aptDAO)
+
+        val aptJSON = mapper.writeValueAsString(apt)
+
+        Mockito.`when`(clients.newAppointment(nonNullAny(AppointmentDAO::class.java)))
+                .then { assertThat( it.getArgument(0), equalTo(aptDAO)); it.getArgument(0) }
+
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+
+        mvc.perform(post("$clientsURL/1/appointments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(aptJSON))
+                .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Bad request on id not 0`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val apt = AppointmentDTO(2, Date(), "consulta",0,1)
+        val aptDAO = AppointmentDAO(apt,PetDAO(), veloso)
+        veloso.appointments = listOf(aptDAO)
+
+        val aptJSON = mapper.writeValueAsString(apt)
+
+        Mockito.`when`(clients.newAppointment(nonNullAny(AppointmentDAO::class.java)))
+                .thenThrow( PreconditionFailedException("id 0"))
+
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+
+        mvc.perform(post("$clientsURL/1/appointments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(aptJSON))
+                .andExpect(status().is4xxClientError)
+
+    }
+
 
 }

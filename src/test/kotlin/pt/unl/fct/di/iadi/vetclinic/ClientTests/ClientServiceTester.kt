@@ -76,6 +76,30 @@ class ClientServiceTester {
         assertThat(clients.appointmentsOfClient(antonio.id), equalTo(antonio.appointments))
     }
 
+    @Test
+    fun `test on adding a new Appointment`() {
+        val consulta = AppointmentDAO(0, Date(), "consulta", PetDAO(), antonio)
+
+        antonio.appointments = emptyList()
+
+        Mockito.`when`(aptRepo.save(Mockito.any(AppointmentDAO::class.java)))
+                .then {
+                    val apt:AppointmentDAO = it.getArgument(0)
+                    assertThat(apt.id, equalTo(0L))
+                    assertThat(apt.desc, equalTo(consulta.desc))
+                    assertThat(apt.date, equalTo(consulta.date))
+                    assertThat(apt.client, equalTo(antonio))
+                    apt
+                }
+        clients.newAppointment(consulta)
+    }
+
+    @Test(expected = PreconditionFailedException::class)
+    fun `test on adding a new Appointment (Precondition Failed)`() {
+        val consulta = AppointmentDAO(1, Date(), "consulta", PetDAO(), antonio)
+        clients.newAppointment(consulta)
+    }
+
 
 
 
