@@ -115,7 +115,7 @@ class ClientControllerTester {
     }
 
     @Test
-    fun `Test checking appointments of non pet`() {
+    fun `Test checking appointments of non client`() {
         Mockito.`when`(clients.appointmentsOfClient(1))
                 .thenThrow(NotFoundException("not found"))
 
@@ -164,6 +164,40 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
 
     }
+
+    @Test
+    fun `Test checking pets`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val louro = PetDAO(1, "louro", "Papagaio", emptyList(), veloso)
+
+        veloso.pets = listOf(louro)
+
+        val louroDAO = ArrayList(listOf(louro))
+        val louroDTO = louroDAO.map{PetDTO(it.id, it.name, it.species, it.owner.id)}
+
+
+        Mockito.`when`(clients.petsOfClient(1)).thenReturn(listOf(louro))
+
+
+        val result = mvc.perform(get("$clientsURL/1/pets"))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<PetDTO>>(responseString)
+        assertThat(responseDTO, equalTo(louroDTO))
+    }
+
+    @Test
+    fun `Test checking pets of non client`() {
+        Mockito.`when`(clients.petsOfClient(1))
+                .thenThrow(NotFoundException("not found"))
+
+        mvc.perform(get("$clientsURL/1/pets"))
+                .andExpect(status().is4xxClientError)
+    }
+
+
 
 
 }

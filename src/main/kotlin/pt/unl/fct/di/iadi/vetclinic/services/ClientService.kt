@@ -33,11 +33,23 @@ class ClientService(val pets: PetRepository,
                 appointments.save(apt)*/
 
     fun newAppointment(apt: AppointmentDAO) =
-            // defensive programming
 
                 petService.newAppointment(apt)
 
+    fun petsOfClient(id: Long): List<PetDAO> {
+        val client = clients.findByIdWithPet(id)
+                .orElseThrow { NotFoundException("There is no Client with Id $id") }
 
+        return client.pets
+    }
+
+
+    fun newPet(pet: PetDAO) =
+            // defensive programming
+            if (pet.id != 0L)
+                throw PreconditionFailedException("Id must be 0 in insertion")
+            else
+                pets.save(pet)
 
 
 

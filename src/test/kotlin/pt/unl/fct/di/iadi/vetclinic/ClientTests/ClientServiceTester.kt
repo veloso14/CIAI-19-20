@@ -31,6 +31,9 @@ class ClientServiceTester {
     @MockBean
     lateinit var aptRepo:AppointmentRepository
 
+    @MockBean
+    lateinit var petRepo:PetRepository
+
     companion object Constants {
 
         val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", emptyList(), emptyList())
@@ -98,6 +101,51 @@ class ClientServiceTester {
     fun `test on adding a new Appointment (Precondition Failed)`() {
         val consulta = AppointmentDAO(1, Date(), "consulta", PetDAO(), antonio)
         clients.newAppointment(consulta)
+    }
+
+    @Test
+    fun `test on retrieving pets 1`() {
+        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
+        antonio.pets = listOf(pantufas,bigodes)
+
+        Mockito.`when`(repo.findByIdWithPet(antonio.id)).thenReturn(Optional.of(antonio))
+
+        assertThat(clients.petsOfClient(antonio.id), equalTo(antonio.pets))
+    }
+
+    @Test
+    fun `test on retrieving pets 2`() {
+        antonio.pets = emptyList()
+
+        Mockito.`when`(repo.findByIdWithPet(antonio.id)).thenReturn(Optional.of(antonio))
+
+        assertThat(clients.petsOfClient(antonio.id), equalTo(antonio.pets))
+    }
+
+    @Test
+    fun `test on adding a new Pet`() {
+        val pantufas = PetDAO(0, "pantufas", "Dog", emptyList(), antonio)
+
+        antonio.pets = emptyList()
+
+        Mockito.`when`(petRepo.save(Mockito.any(PetDAO::class.java)))
+                .then {
+                    val pet:PetDAO = it.getArgument(0)
+                    assertThat(pet.id, equalTo(0L))
+                    assertThat(pet.name, equalTo(pantufas.name))
+                    assertThat(pet.species, equalTo(pantufas.species))
+                    assertThat(pet.appointments, equalTo(pantufas.appointments))
+                    assertThat(pet.owner, equalTo(antonio))
+                    pet
+                }
+        clients.newPet(pantufas)
+    }
+
+    @Test(expected = PreconditionFailedException::class)
+    fun `test on adding a new Pet (Precondition Failed)`() {
+        val pantufas = PetDAO(1, "pantufas", "Dog", emptyList(), ClientDAO())
+        clients.newPet(pantufas)
     }
 
 

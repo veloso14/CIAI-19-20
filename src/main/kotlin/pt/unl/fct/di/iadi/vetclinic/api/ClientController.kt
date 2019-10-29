@@ -61,6 +61,33 @@ class ClientController(val clients: ClientService, val pets:PetService) {
            // pets.newAppointment(pet.id,apt)
             }
 
+    @ApiOperation(value = "List the pets related to a client", response = List::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved the list of pets"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/{id}/pets")
+    fun petsOfClient(@PathVariable id:Long): List<PetDTO> =
+            handle4xx {
+                clients.petsOfClient(id)
+                        .map { PetDTO(it) }
+            }
+
+    @ApiOperation(value = "Add a new pet to a client", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added a pet to a client"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @PostMapping("/{id}/pets")
+    fun newPet(@PathVariable id:Long,
+                       @RequestBody pet:PetDTO) =
+            handle4xx {
+                PetDTO(clients.newPet(PetDAO(pet, pets.getOnePet(pet.id).appointments,clients.getOneClient(id))))
+            }
 
 
 
