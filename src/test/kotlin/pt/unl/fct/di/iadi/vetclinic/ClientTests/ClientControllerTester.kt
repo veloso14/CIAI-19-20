@@ -145,7 +145,7 @@ class ClientControllerTester {
     }
 
     @Test
-    fun `Bad request on id not 0`() {
+    fun `Bad request add appointment on id not 0`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val apt = AppointmentDTO(2, Date(), "consulta",0,1)
         val aptDAO = AppointmentDAO(apt,PetDAO(), veloso)
@@ -195,6 +195,51 @@ class ClientControllerTester {
 
         mvc.perform(get("$clientsURL/1/pets"))
                 .andExpect(status().is4xxClientError)
+    }
+
+    @Test
+    fun `Test new pet`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+
+        val louro = PetDTO(0, "louro", "Papagaio", 1)
+
+        val louroDAO = PetDAO(louro, emptyList(), veloso)
+
+        veloso.pets = listOf(louroDAO)
+
+        val aptJSON = mapper.writeValueAsString(louro)
+
+        Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
+                .then { assertThat( it.getArgument(0), equalTo(louroDAO)); it.getArgument(0) }
+
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+
+        mvc.perform(post("$clientsURL/1/pets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(aptJSON))
+                .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Bad request add pet on id not 0`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val louro = PetDTO(2, "louro", "Papagaio", 1)
+        val louroDAO = PetDAO(louro, emptyList(), veloso)
+
+        veloso.pets = listOf(louroDAO)
+
+        val aptJSON = mapper.writeValueAsString(louro)
+
+        Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
+                .thenThrow( PreconditionFailedException("id 0"))
+
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+
+        mvc.perform(post("$clientsURL/1/pets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(aptJSON))
+                .andExpect(status().is4xxClientError)
+
     }
 
 
