@@ -13,14 +13,18 @@ class VetService(val vets: VetRepository,
 
     fun getOneVet(id: Long): VetDAO =
             vets.findById(id)
-                    .orElseThrow { NotFoundException("There is no Client with Id $id") }
+                    .orElseThrow { NotFoundException("There is no vet with Id $id") }
 
-   /* fun completeAppointment(apt: AppointmentDAO){
-        apt.updateComplete(true)
+    fun completeAppointment(id:Long, desc:String){
+
+        val apt = appointments.findById(id)
+                .orElseThrow { NotFoundException("There is no Appointment with Id $id") }
+
+        apt.complete(desc)
         appointments.save(apt)
     }
 
-    */
+
 
     /*
     fun scheduleOfVet(name: String): VetScheduleDAO {
@@ -31,19 +35,18 @@ class VetService(val vets: VetRepository,
 */
 
 
-   /* fun appointmentsOfVet(name: String): List<AppointmentDAO> {
-        val vet = vets.findByIdWithAppointment(name)
-                .orElseThrow { NotFoundException("There is no Pet with Id $name") }
+    fun appointmentsOfVet(id: Long): List<AppointmentDAO> {
+        val vet = vets.findByIdWithAppointment(id)
+                .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 
         return vet.appointments // This redirection has pre-fetching
-    }*/
+    }
 
     fun getAllPets(): List<PetDAO> = pets.findAll().toList()
 
     fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
 
     fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
-
 
 
 

@@ -92,5 +92,26 @@ class VetServiceTester {
         assertThat(vets.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
     }
 
+    @Test
+    fun `test on retrieving appointments 1`() {
+        val consulta1 = AppointmentDAO(1, Date(), "consulta1", PetDAO(), ClientDAO(), antonio)
+        val consulta2 = AppointmentDAO(2, Date(), "consulta1", PetDAO(), ClientDAO(), antonio)
+        antonio.appointments = listOf(consulta1, consulta2)
+
+        Mockito.`when`(repo.findByIdWithAppointment(antonio.id)).thenReturn(Optional.of(antonio))
+
+        assertThat(vets.appointmentsOfVet(antonio.id), equalTo(antonio.appointments))
+    }
+
+    @Test
+    fun `test on retrieving appointments 2`() {
+        antonio.appointments = emptyList()
+
+        Mockito.`when`(repo.findByIdWithAppointment(antonio.id)).thenReturn(Optional.of(antonio))
+
+        assertThat(vets.appointmentsOfVet(antonio.id), equalTo(antonio.appointments))
+    }
+
+
 
 }

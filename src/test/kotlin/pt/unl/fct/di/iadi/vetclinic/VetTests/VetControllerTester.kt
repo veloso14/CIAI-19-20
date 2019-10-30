@@ -148,6 +148,40 @@ class VetControllerTester {
         assertThat(responseDTO, equalTo(consultasDTO))
     }
 
+    @Test
+    fun `Test checking appointments`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio",10, false, emptyList<AppointmentDAO>())
+
+        val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), veloso, vet)
+
+        veloso.appointments = listOf(apt)
+
+        val aptDAO = ArrayList(listOf(apt))
+        val aptDTO = aptDAO.map{AppointmentDTO(it.id,it.date,it.desc, it.pet.id, it.client.id, it.vet.id)}
+
+
+        Mockito.`when`(vets.appointmentsOfVet(1)).thenReturn(listOf(apt))
+
+
+        val result = mvc.perform(get("$vetsURL/1/appointments"))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
+        assertThat(responseDTO, equalTo(aptDTO))
+    }
+
+    @Test
+    fun `Test checking appointments of non client`() {
+        Mockito.`when`(vets.appointmentsOfVet(1))
+                .thenThrow(NotFoundException("not found"))
+
+        mvc.perform(get("$vetsURL/1/appointments"))
+                .andExpect(status().is4xxClientError)
+    }
+
 
 
 

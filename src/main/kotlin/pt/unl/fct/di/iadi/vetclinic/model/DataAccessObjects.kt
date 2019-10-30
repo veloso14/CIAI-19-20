@@ -54,17 +54,23 @@ data class AppointmentDAO(
 ) {
     constructor() : this(0, Date(),"", PetDAO(), ClientDAO(), VetDAO())
     constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO, vet: VetDAO) : this(apt.id, apt.date, apt.desc, pet, client, vet)
+
+    // se desc for diferente de "" entao o appointment esta completo
+    fun complete(desc: String){
+        this.desc = desc
+    }
 }
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-open class UserDAO(@Id @GeneratedValue val id: Long,
-                   var name: String,
-                   var email: String,
-                   var username: String,
-                   var password: String,
-                   var cellphone: Long,
-                   var address: String) {
+open class UserDAO(@Id @GeneratedValue  val id: Long,
+                                        var name: String,
+                                        var email: String,
+                   @Column(unique=true) var username: String,
+                                        var password: String,
+                                        var cellphone: Long,
+                                        var address: String
+) {
     constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address)
     fun update(other:UserDAO) {
         this.email = other.email
