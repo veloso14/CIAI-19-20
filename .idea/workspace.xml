@@ -35,21 +35,6 @@
     </option>
   </component>
   <component name="RunManager" selected="JUnit.VetControllerTester">
-    <configuration name="ClientControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="vetclinit" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.ClientControllerTester" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="UserControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -95,6 +80,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VetControllerTester.Test GET all appointments" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="vetclinit" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.VetTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetControllerTester" />
+      <option name="METHOD_NAME" value="Test GET all appointments" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="VetServiceTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -120,10 +121,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.VetControllerTester" />
+        <item itemvalue="JUnit.VetControllerTester.Test GET all appointments" />
         <item itemvalue="JUnit.VetServiceTester" />
         <item itemvalue="JUnit.UserControllerTester" />
         <item itemvalue="JUnit.UserServiceTester" />
-        <item itemvalue="JUnit.ClientControllerTester" />
       </list>
     </recent_temporary>
   </component>
@@ -137,7 +138,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1572367530659</updated>
-      <workItem from="1572367541010" duration="30010000" />
+      <workItem from="1572367541010" duration="30300000" />
     </task>
     <servers />
   </component>

@@ -107,10 +107,10 @@ class VetControllerTester {
 
 
     @Test
-    fun `Test GET all vets`() {
+    fun `Test GET all pets`() {
         Mockito.`when`(vets.getAllPets()).thenReturn(petsDAO)
 
-        val result = mvc.perform(get(vetsURL))
+        val result = mvc.perform(get("$vetsURL/pets"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize<Any>(petsDTO.size)))
                 .andReturn()
@@ -124,7 +124,7 @@ class VetControllerTester {
     fun `Test GET all clients`() {
         Mockito.`when`(vets.getAllClients()).thenReturn(clientsDAO)
 
-        val result = mvc.perform(get(vetsURL))
+        val result = mvc.perform(get("$vetsURL/clients"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize<Any>(clientsDTO.size)))
                 .andReturn()
@@ -138,7 +138,7 @@ class VetControllerTester {
     fun `Test GET all appointments`() {
         Mockito.`when`(vets.getAllAppointments()).thenReturn(consultasDAO)
 
-        val result = mvc.perform(get(vetsURL))
+        val result = mvc.perform(get("$vetsURL/appointments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize<Any>(consultasDTO.size)))
                 .andReturn()
