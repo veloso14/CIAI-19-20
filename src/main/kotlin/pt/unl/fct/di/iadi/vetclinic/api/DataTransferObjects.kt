@@ -16,10 +16,7 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.api
 
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.util.*
 
 /**
@@ -56,3 +53,7 @@ class ClientDTO(id: Long, name: String, email: String,username: String,password:
 }
 
 data class ClientPetsDTO(val client:ClientDTO, val pets:List<PetDTO>)
+
+class VetDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
+    constructor(vet: VetDAO) : this(vet.id, vet.name,vet.email,vet.username,vet.password, vet.cellphone,vet.address, vet.employeeID)
+}

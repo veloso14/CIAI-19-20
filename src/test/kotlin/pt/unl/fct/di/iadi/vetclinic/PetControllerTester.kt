@@ -62,6 +62,8 @@ class PetControllerTester {
             petsDAO.map { PetAptsDTO(PetDTO(it.id, it.name, it.species,0),
                                             it.appointments.map { AppointmentDTO(it) }) }
 
+
+
         val petsURL = "/pets"
     }
 

@@ -94,4 +94,25 @@ class ClientDAO(id: Long,
     constructor() : this(0,"","","","",0,"", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
 }
 
+@Entity
+class VetDAO(
+        id: Long,
+        name: String,
+        email: String,
+        username: String,
+        password: String,
+        cellphone: Long,
+        address: String,
+        var employeeID: Long,
+        var frozen: Boolean
+) : UserDAO(id,name, email ,  username , password, cellphone, address) {
+    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen)
+    constructor() : this(0,"","","","",0,"",0, false)
+    fun updateFrozen(frozen: Boolean) {
+        this.frozen = frozen
+    }
+
+
+}
+
 
