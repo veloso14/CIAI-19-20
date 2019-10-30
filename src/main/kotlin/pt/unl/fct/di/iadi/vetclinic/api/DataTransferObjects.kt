@@ -54,6 +54,10 @@ class ClientDTO(id: Long, name: String, email: String,username: String,password:
 
 data class ClientPetsDTO(val client:ClientDTO, val pets:List<PetDTO>)
 
-class VetDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
-    constructor(vet: VetDAO) : this(vet.id, vet.name,vet.email,vet.username,vet.password, vet.cellphone,vet.address, vet.employeeID)
+class VetDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long, var frozen:Boolean) : UserDTO(id, name,email,username,password,cellphone,address) {
+    constructor(vet: VetDAO) : this(vet.id, vet.name,vet.email,vet.username,vet.password, vet.cellphone,vet.address, vet.employeeID, vet.frozen)
+}
+
+class AdminDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
+    constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address, admin.employeeID)
 }

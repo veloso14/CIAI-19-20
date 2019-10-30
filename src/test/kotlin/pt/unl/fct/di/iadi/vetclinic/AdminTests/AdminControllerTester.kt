@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic.VetTests
+package pt.unl.fct.di.iadi.vetclinic.AdminTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -21,10 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.*
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,13 +30,13 @@ import kotlin.collections.ArrayList
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class VetControllerTester {
+class AdminControllerTester {
 
     @Autowired
     lateinit var mvc:MockMvc
 
     @MockBean
-    lateinit var vets: VetService
+    lateinit var admins: AdminService
 
 
     companion object {
@@ -47,6 +44,14 @@ class VetControllerTester {
         // see: https://github.com/FasterXML/jackson-module-kotlin
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
+
+        val cid = AdminDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11)
+        val curro = AdminDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12)
+        val adminsDAO = mutableListOf(cid, curro);
+
+        val adminsDTO =
+                adminsDAO.map { AdminDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.employeeID) }
+
 
         val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false, emptyList<AppointmentDAO>())
         val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false, emptyList<AppointmentDAO>())
@@ -60,7 +65,7 @@ class VetControllerTester {
         val petsDAO = mutableListOf(pantufas, bigodes);
 
         val petsDTO =
-                petsDAO.map {PetDTO(it.id, it.name, it.species, 0) }
+                petsDAO.map {PetDTO(it.id, it.name, it.species, it.owner.id) }
 
 
         val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
@@ -79,38 +84,38 @@ class VetControllerTester {
         val consultasDTO = consultasDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id, it.vet.id) }
 
 
-        val vetsURL = "/vets"
+
+        val adminsURL = "/admins"
     }
 
     @Test
-    fun `Test Get One vet`() {
-        Mockito.`when`(vets.getOneVet(1)).thenReturn(antonio)
+    fun `Test Get One Admin`() {
+        Mockito.`when`(admins.getOneAdmin(1)).thenReturn(cid)
 
-        val result = mvc.perform(get("$vetsURL/1"))
+        val result = mvc.perform(get("$adminsURL/1"))
                 .andExpect(status().isOk)
                 .andReturn()
 
         val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<VetDTO>(responseString)
-        assertThat(responseDTO, equalTo(vetsDTO[0]))
+        val responseDTO = mapper.readValue<AdminDTO>(responseString)
+        assertThat(responseDTO, equalTo(adminsDTO[0]))
     }
 
     @Test
-    fun `Test GET One Vet (Not Found)`() {
-        Mockito.`when`(vets.getOneVet(2)).thenThrow(NotFoundException("not found"))
+    fun `Test GET One Admin (Not Found)`() {
+        Mockito.`when`(admins.getOneAdmin(2)).thenThrow(NotFoundException("not found"))
 
-        mvc.perform(get("$vetsURL/2"))
+        mvc.perform(get("$adminsURL/2"))
                 .andExpect(status().is4xxClientError)
     }
 
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
-
     @Test
     fun `Test GET all pets`() {
-        Mockito.`when`(vets.getAllPets()).thenReturn(petsDAO)
+        Mockito.`when`(admins.getAllPets()).thenReturn(petsDAO)
 
-        val result = mvc.perform(get("$vetsURL/pets"))
+        val result = mvc.perform(get("$adminsURL/pets"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize<Any>(petsDTO.size)))
                 .andReturn()
@@ -122,9 +127,9 @@ class VetControllerTester {
 
     @Test
     fun `Test GET all clients`() {
-        Mockito.`when`(vets.getAllClients()).thenReturn(clientsDAO)
+        Mockito.`when`(admins.getAllClients()).thenReturn(clientsDAO)
 
-        val result = mvc.perform(get("$vetsURL/clients"))
+        val result = mvc.perform(get("$adminsURL/clients"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize<Any>(clientsDTO.size)))
                 .andReturn()
@@ -136,9 +141,9 @@ class VetControllerTester {
 
     @Test
     fun `Test GET all appointments`() {
-        Mockito.`when`(vets.getAllAppointments()).thenReturn(consultasDAO)
+        Mockito.`when`(admins.getAllAppointments()).thenReturn(consultasDAO)
 
-        val result = mvc.perform(get("$vetsURL/appointments"))
+        val result = mvc.perform(get("$adminsURL/appointments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize<Any>(consultasDTO.size)))
                 .andReturn()
@@ -149,22 +154,87 @@ class VetControllerTester {
     }
 
     @Test
-    fun `Test checking appointments`() {
-        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+    fun `Test GET all admins`() {
+        Mockito.`when`(admins.getAllAdmins()).thenReturn(adminsDAO)
+
+        val result = mvc.perform(get(adminsURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize<Any>(adminsDTO.size)))
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<AdminDTO>>(responseString)
+        assertThat(responseDTO, equalTo(adminsDTO))
+    }
+
+    @Test
+    fun `Test GET all vets`() {
+        Mockito.`when`(admins.getAllVets()).thenReturn(vetsDAO)
+
+        val result = mvc.perform(get("$adminsURL/vets"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize<Any>(vetsDTO.size)))
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<VetDTO>>(responseString)
+        assertThat(responseDTO, equalTo(vetsDTO))
+    }
+
+
+    @Test
+    fun `Test hire One Vet`() {
+        val vinhas = VetDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao", 11, false)
+
+        val vinhasDAO = VetDAO(vinhas.id,vinhas.name,vinhas.email,vinhas.username, vinhas.password, vinhas.cellphone, vinhas.address, vinhas.employeeID,vinhas.frozen, emptyList<AppointmentDAO>() )
+
+        val vinhasJSON = mapper.writeValueAsString(vinhas)
+
+        Mockito.`when`(admins.hireVet(nonNullAny(VetDAO::class.java)))
+                .then { assertThat(it.getArgument(0), equalTo(vinhasDAO)); it.getArgument(0) }
+
+        mvc.perform(post("$adminsURL/vets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(vinhasJSON))
+                .andExpect(status().isOk)
+    }
+
+    @Test
+    fun `Test hire One Admin`() {
+        val vinhas = AdminDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao", 11)
+
+        val vinhasDAO = AdminDAO(vinhas.id,vinhas.name,vinhas.email,vinhas.username, vinhas.password, vinhas.cellphone, vinhas.address, vinhas.employeeID)
+
+        val vinhasJSON = mapper.writeValueAsString(vinhas)
+
+        Mockito.`when`(admins.hireAdmin(nonNullAny(AdminDAO::class.java)))
+                .then { assertThat(it.getArgument(0), equalTo(vinhasDAO)); it.getArgument(0) }
+
+        mvc.perform(post(adminsURL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(vinhasJSON))
+                .andExpect(status().isOk)
+    }
+
+    //fazer dos fires
+
+    @Test
+    fun `Test checking appointments of a vet`() {
+        //val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio",10, false, emptyList<AppointmentDAO>())
 
-        val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), veloso, vet)
+        val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), ClientDAO(), vet)
 
-        veloso.appointments = listOf(apt)
+        vet.appointments = listOf(apt)
 
         val aptDAO = ArrayList(listOf(apt))
         val aptDTO = aptDAO.map{AppointmentDTO(it.id,it.date,it.desc, it.pet.id, it.client.id, it.vet.id)}
 
 
-        Mockito.`when`(vets.appointmentsOfVet(1)).thenReturn(listOf(apt))
+        Mockito.`when`(admins.getVetsAppointments(1)).thenReturn(listOf(apt))
 
 
-        val result = mvc.perform(get("$vetsURL/1/appointments"))
+        val result = mvc.perform(get("$adminsURL/vets/1/appointments"))
                 .andExpect(status().isOk)
                 .andReturn()
 
@@ -175,12 +245,14 @@ class VetControllerTester {
 
     @Test
     fun `Test checking appointments of non vet`() {
-        Mockito.`when`(vets.appointmentsOfVet(1))
+        Mockito.`when`(admins.getVetsAppointments(1))
                 .thenThrow(NotFoundException("not found"))
 
-        mvc.perform(get("$vetsURL/1/appointments"))
+        mvc.perform(get("$adminsURL/vets/1/appointments"))
                 .andExpect(status().is4xxClientError)
     }
+
+
 
 
 

@@ -9,7 +9,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
 @Api(value = "VetClinic Management System - Vet API",
-        description = "Management operations of Pets in the IADI 2019 Pet Clinic")
+        description = "Management operations of Vets in the IADI 2019 Pet Clinic")
 @RestController
 @RequestMapping("/vets")
 class VetController(val vets: VetService) {
@@ -75,7 +75,7 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/appointments")
-    fun appointmentsOfClient(@PathVariable id: Long): List<AppointmentDTO> =
+    fun appointmentsOfVet(@PathVariable id: Long): List<AppointmentDTO> =
             handle4xx { vets.appointmentsOfVet(id).map { AppointmentDTO(it) } }
 
 

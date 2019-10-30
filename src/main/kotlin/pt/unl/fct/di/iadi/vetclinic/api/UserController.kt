@@ -10,7 +10,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @Api(value = "VetClinic Management System - User API",
-        description = "Management operations of Pets in the IADI 2019 Pet Clinic")
+        description = "Management operations of Users in the IADI 2019 Pet Clinic")
 @RestController
 @RequestMapping("/users")
 class UserController(val users: UserService) {

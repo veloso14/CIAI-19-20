@@ -35,3 +35,7 @@ interface VetRepository : JpaRepository<VetDAO, Long> {
    @Query("select c from VetDAO c inner join fetch c.appointments where c.id = :id")
     fun findByIdWithAppointment(id: Long): Optional<VetDAO>
 }
+
+interface AdminRepository : JpaRepository<AdminDAO, Long> {
+
+}

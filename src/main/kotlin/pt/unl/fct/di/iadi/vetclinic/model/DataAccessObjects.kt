@@ -16,10 +16,7 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.model
 
-import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
-import pt.unl.fct.di.iadi.vetclinic.api.ClientDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.api.UserDTO
+import pt.unl.fct.di.iadi.vetclinic.api.*
 import java.util.*
 import javax.persistence.*
 
@@ -116,13 +113,26 @@ class VetDAO(
         var appointments:List<AppointmentDAO>
 
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
-    constructor(vet: VetDAO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen, apts)
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen, apts)
     constructor() : this(0,"","","","",0,"",0, false, emptyList<AppointmentDAO>())
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }
 
 
+}
+
+@Entity
+class AdminDAO(id: Long,
+               name: String,
+               email: String,
+               username: String,
+               password: String,
+               cellphone: Long,
+               address: String,
+               var employeeID: Long) : UserDAO(id, name, email, username, password, cellphone, address) {
+    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address, admin.employeeID)
+    constructor() : this(0,"","","","",0,"",0)
 }
 
 
