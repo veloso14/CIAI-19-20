@@ -37,13 +37,13 @@ class AdminServiceTester {
     lateinit var aptRepo:AppointmentRepository
 
     companion object Constants {
-        val cid = AdminDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11)
-        val curro = AdminDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12)
+        val cid = AdminDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11)
+        val curro = AdminDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12)
         val adminsDAO = mutableListOf(cid, curro);
 
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false, emptyList<AppointmentDAO>())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false, emptyList<AppointmentDAO>())
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
@@ -142,13 +142,14 @@ class AdminServiceTester {
                     assertThat(vet.password, equalTo(antonio.password))
                     assertThat(vet.cellphone, equalTo(antonio.cellphone))
                     assertThat(vet.address, equalTo(antonio.address))
+                    assertThat(vet.photo, equalTo(antonio.photo))
                     assertThat(vet.employeeID, equalTo(antonio.employeeID))
                     assertThat(vet.frozen, equalTo(antonio.frozen))
                     assertThat(vet.appointments, equalTo(antonio.appointments))
                     vet
                 }
 
-        admins.hireVet(VetDAO(0L, antonio.name, antonio.email, antonio.username, antonio.password, antonio.cellphone, antonio.address, antonio.employeeID, antonio.frozen, antonio.appointments))
+        admins.hireVet(VetDAO(0L, antonio.name, antonio.email, antonio.username, antonio.password, antonio.cellphone, antonio.address,antonio.photo, antonio.employeeID, antonio.frozen, antonio.appointments))
     }
 
     @Test(expected = PreconditionFailedException::class)
@@ -168,11 +169,12 @@ class AdminServiceTester {
                     assertThat(admin.password, equalTo(cid.password))
                     assertThat(admin.cellphone, equalTo(cid.cellphone))
                     assertThat(admin.address, equalTo(cid.address))
+                    assertThat(admin.photo, equalTo(cid.photo))
                     assertThat(admin.employeeID, equalTo(cid.employeeID))
                     admin
                 }
 
-        admins.hireAdmin(AdminDAO(0L, cid.name, cid.email, cid.username, cid.password, cid.cellphone, cid.address, cid.employeeID))
+        admins.hireAdmin(AdminDAO(0L, cid.name, cid.email, cid.username, cid.password, cid.cellphone, cid.address,cid.photo, cid.employeeID))
     }
 
     @Test(expected = PreconditionFailedException::class)

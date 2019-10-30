@@ -48,12 +48,12 @@ class VetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false, emptyList<AppointmentDAO>())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false, emptyList<AppointmentDAO>())
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
-                vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.employeeID, it.frozen) }
+                vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.photo,it.employeeID, it.frozen) }
 
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
         val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
@@ -151,7 +151,7 @@ class VetControllerTester {
     @Test
     fun `Test checking appointments`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio",10, false, emptyList<AppointmentDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>())
 
         val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), veloso, vet)
 

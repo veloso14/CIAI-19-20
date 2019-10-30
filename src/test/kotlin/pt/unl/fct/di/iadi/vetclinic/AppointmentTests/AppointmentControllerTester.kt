@@ -54,7 +54,7 @@ class AppointmentControllerTester {
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio",10, false, emptyList<AppointmentDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>())
 
 
         val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())

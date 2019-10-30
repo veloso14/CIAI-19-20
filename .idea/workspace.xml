@@ -34,7 +34,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.AdminControllerTester">
+  <component name="RunManager" selected="JUnit.VetControllerTester">
     <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -120,9 +120,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.VetControllerTester" />
         <item itemvalue="JUnit.AdminControllerTester" />
         <item itemvalue="JUnit.AdminServiceTester" />
-        <item itemvalue="JUnit.VetControllerTester" />
         <item itemvalue="JUnit.AdminServiceTester.test on firing a vet" />
         <item itemvalue="JUnit.PetServiceTester" />
       </list>
@@ -138,7 +138,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1572367530659</updated>
-      <workItem from="1572367541010" duration="44847000" />
+      <workItem from="1572367541010" duration="46538000" />
     </task>
     <servers />
   </component>

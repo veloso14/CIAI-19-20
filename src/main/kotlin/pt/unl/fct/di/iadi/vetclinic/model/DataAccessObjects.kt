@@ -107,14 +107,15 @@ class VetDAO(
         password: String,
         cellphone: Long,
         address: String,
+        var photo:String,
         var employeeID: Long,
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet")
         var appointments:List<AppointmentDAO>
 
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen, apts)
-    constructor() : this(0,"","","","",0,"",0, false, emptyList<AppointmentDAO>())
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts)
+    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>())
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }
@@ -130,9 +131,10 @@ class AdminDAO(id: Long,
                password: String,
                cellphone: Long,
                address: String,
+               var photo:String,
                var employeeID: Long) : UserDAO(id, name, email, username, password, cellphone, address) {
-    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address, admin.employeeID)
-    constructor() : this(0,"","","","",0,"",0)
+    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, admin.employeeID)
+    constructor() : this(0,"","","","",0,"","",0)
 }
 
 
