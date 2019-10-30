@@ -9,6 +9,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
+import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
 @Api(value = "VetClinic Management System - Client API",
@@ -17,7 +18,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.PetService
 @RequestMapping("/clients")
 
 //???
-class ClientController(val clients: ClientService, val pets:PetService) {
+class ClientController(val clients: ClientService, val pets:PetService, val vets: VetService) {
 
 
     @ApiOperation(value = "Get the details of a single client by id", response = ClientDTO::class)
@@ -57,7 +58,7 @@ class ClientController(val clients: ClientService, val pets:PetService) {
                        @RequestBody apt:AppointmentDTO,@RequestBody pet:PetDTO) =
             handle4xx {
                 //aqui obter lista dos apts do pet???
-               AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id))))
+               AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id), vets.getOneVet(apt.vetID))))
            // pets.newAppointment(pet.id,apt)
             }
 

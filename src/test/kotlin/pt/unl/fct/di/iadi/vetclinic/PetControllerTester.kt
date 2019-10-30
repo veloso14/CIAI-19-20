@@ -26,6 +26,7 @@ import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
@@ -123,7 +124,7 @@ class PetControllerTester {
     @Test
     fun `Test checking appointments`() {
         val louro = PetDAO(1, "louro", "Papagaio", emptyList(), ClientDAO())
-        val apt = AppointmentDAO(2, Date(),"consulta", louro,louro.owner)
+        val apt = AppointmentDAO(2, Date(),"consulta", louro,louro.owner, VetDAO())
         louro.appointments = listOf(apt)
 
         Mockito.`when`(pets.appointmentsOfPet(1)).thenReturn(listOf(apt))
@@ -152,8 +153,8 @@ class PetControllerTester {
     @Test
     fun `Test adding an appointment to a pet`() {
         val louro = PetDAO(1, "louro", "Papagaio", emptyList(), ClientDAO())
-        val apt = AppointmentDTO(0, Date(), "consulta",1,0)
-        val aptDAO = AppointmentDAO(apt,louro, ClientDAO())
+        val apt = AppointmentDTO(0, Date(), "consulta",1,0, 0)
+        val aptDAO = AppointmentDAO(apt,louro, ClientDAO(), VetDAO())
         louro.appointments = listOf(aptDAO)
 
         val aptJSON = mapper.writeValueAsString(apt)
@@ -172,8 +173,8 @@ class PetControllerTester {
     @Test
     fun `Bad request on id not 0`() {
         val louro = PetDAO(1, "louro", "Papagaio", emptyList(), ClientDAO())
-        val apt = AppointmentDTO(2, Date(), "consulta",1,0)
-        val aptDAO = AppointmentDAO(apt,louro, ClientDAO())
+        val apt = AppointmentDTO(2, Date(), "consulta",1,0, 0)
+        val aptDAO = AppointmentDAO(apt,louro, ClientDAO(), VetDAO())
         louro.appointments = listOf(aptDAO)
 
         val aptJSON = mapper.writeValueAsString(apt)

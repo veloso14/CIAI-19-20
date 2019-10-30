@@ -49,10 +49,11 @@ data class AppointmentDAO(
                             var date: Date,
                             var desc:String,
         @ManyToOne          var pet:PetDAO,
-        @ManyToOne          var client: ClientDAO
+        @ManyToOne          var client: ClientDAO,
+        @ManyToOne          var vet: VetDAO
 ) {
-    constructor() : this(0, Date(),"", PetDAO(), ClientDAO())
-    constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO) : this(apt.id, apt.date, apt.desc, pet, client)
+    constructor() : this(0, Date(),"", PetDAO(), ClientDAO(), VetDAO())
+    constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO, vet: VetDAO) : this(apt.id, apt.date, apt.desc, pet, client, vet)
 }
 
 @Entity
@@ -104,10 +105,13 @@ class VetDAO(
         cellphone: Long,
         address: String,
         var employeeID: Long,
-        var frozen: Boolean
+        var frozen: Boolean,
+        @OneToMany(mappedBy = "vet")
+        var appointments:List<AppointmentDAO>
+
 ) : UserDAO(id,name, email ,  username , password, cellphone, address) {
-    constructor(vet: VetDAO) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen)
-    constructor() : this(0,"","","","",0,"",0, false)
+    constructor(vet: VetDAO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.employeeID, vet.frozen, apts)
+    constructor() : this(0,"","","","",0,"",0, false, emptyList<AppointmentDAO>())
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }

@@ -25,16 +25,16 @@ class ClientService(val pets: PetRepository,
 
 
 
-   /* fun newAppointment(apt: AppointmentDAO) =
+    fun newAppointment(apt: AppointmentDAO) =
             // defensive programming
             if (apt.id != 0L)
                 throw PreconditionFailedException("Id must be 0 in insertion")
             else
-                appointments.save(apt)*/
+                appointments.save(apt)
 
-    fun newAppointment(apt: AppointmentDAO) =
+  //  fun newAppointment(apt: AppointmentDAO) =
 
-                petService.newAppointment(apt)
+   //             petService.newAppointment(apt)
 
     fun petsOfClient(id: Long): List<PetDAO> {
         val client = clients.findByIdWithPet(id)

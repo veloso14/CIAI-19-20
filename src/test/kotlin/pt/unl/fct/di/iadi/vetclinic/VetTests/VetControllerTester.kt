@@ -48,8 +48,8 @@ class VetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false)
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false)
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false, emptyList<AppointmentDAO>())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false, emptyList<AppointmentDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
@@ -72,11 +72,11 @@ class VetControllerTester {
 
 
 
-        val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO())
-        val consulta2 = AppointmentDAO(2L, Date(), "consulta1", PetDAO(), ClientDAO())
+        val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
+        val consulta2 = AppointmentDAO(2L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
         val consultasDAO = mutableListOf(consulta1, consulta2);
 
-        val consultasDTO = consultasDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id) }
+        val consultasDTO = consultasDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id, it.vet.id) }
 
 
         val vetsURL = "/vets"

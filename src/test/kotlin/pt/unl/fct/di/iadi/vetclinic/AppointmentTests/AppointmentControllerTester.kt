@@ -23,13 +23,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetAptsDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
-import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
-import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
+import pt.unl.fct.di.iadi.vetclinic.model.*
+import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
@@ -47,7 +42,10 @@ class AppointmentControllerTester {
     lateinit var apts:AppointmentService
 
     @MockBean
-    lateinit var pets:PetService
+    lateinit var clients: ClientService
+
+    @MockBean
+    lateinit var pets: PetService
 
     companion object {
         // To avoid all annotations JsonProperties in data classes
@@ -55,12 +53,16 @@ class AppointmentControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO())
-        val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO())
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio",10, false, emptyList<AppointmentDAO>())
+
+
+        val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
+        val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
-        val aptsDTO = aptsDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id) }
+        val aptsDTO = aptsDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id, it.vet.id) }
 
         val aptsURL = "/appointments"
     }
@@ -102,8 +104,10 @@ class AppointmentControllerTester {
 
     @Test
     fun `Test POST One appointment`() {
-        val revisao = AppointmentDTO(0, Date(), "revisao",1L,0)
-        val revisaoDAO = AppointmentDAO(revisao.id,revisao.date,revisao.desc, pantufas,ClientDAO())
+        //val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+
+        val revisao = AppointmentDTO(0, Date(), "revisao",1,1,1)
+        val revisaoDAO = AppointmentDAO(revisao.id,revisao.date,revisao.desc, pantufas,veloso, vet)
 
         val revisaoJSON = mapper.writeValueAsString(revisao)
 

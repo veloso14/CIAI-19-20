@@ -28,8 +28,8 @@ class AppointmentServiceTester {
 
 
     companion object Constants {
-        val consulta = AppointmentDAO(1L, Date(), "consulta",PetDAO(), ClientDAO())
-        val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO())
+        val consulta = AppointmentDAO(1L, Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
+        val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
 
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
@@ -69,7 +69,7 @@ class AppointmentServiceTester {
                     apt
                 }
 
-        apts.addNewAppointment(AppointmentDAO(0L, consulta.date, consulta.desc, consulta.pet, consulta.client))
+        apts.addNewAppointment(AppointmentDAO(0L, consulta.date, consulta.desc, consulta.pet, consulta.client, consulta.vet))
     }
 
     @Test(expected = PreconditionFailedException::class)

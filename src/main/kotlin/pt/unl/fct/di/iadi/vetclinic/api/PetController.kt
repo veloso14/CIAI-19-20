@@ -9,13 +9,14 @@ import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
+import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
 @Api(value = "VetClinic Management System - Pet API",
         description = "Management operations of Pets in the IADI 2019 Pet Clinic")
 @RestController
 @RequestMapping("/pets")
-class PetController(val pets: PetService) {
+class PetController(val pets: PetService, val vets:VetService) {
 
     @ApiOperation(value = "View a list of registered pets", response = List::class)
     @ApiResponses(value = [
@@ -95,6 +96,6 @@ class PetController(val pets: PetService) {
     fun newAppointment(@PathVariable id:Long,
                        @RequestBody apt:AppointmentDTO) =
             handle4xx {
-                AppointmentDTO(pets.newAppointment(AppointmentDAO(apt, pets.getOnePet(id),pets.getOnePet(id).owner)))
+                AppointmentDTO(pets.newAppointment(AppointmentDAO(apt, pets.getOnePet(id),pets.getOnePet(id).owner, vets.getOneVet(apt.vetID))))
             }
 }

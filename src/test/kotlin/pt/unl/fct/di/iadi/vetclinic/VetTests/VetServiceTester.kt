@@ -37,8 +37,8 @@ class VetServiceTester {
     lateinit var aptRepo:AppointmentRepository
 
     companion object Constants {
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false)
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false)
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", 11, false, emptyList<AppointmentDAO>())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", 12, false, emptyList<AppointmentDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
@@ -49,8 +49,8 @@ class VetServiceTester {
         val campuzano = ClientDAO(2L,"Tomas","camp@gmail.com","camp","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         val clientsDAO = mutableListOf(manzanares, campuzano);
 
-        val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO())
-        val consulta2 = AppointmentDAO(2L, Date(), "consulta1", PetDAO(), ClientDAO())
+        val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
+        val consulta2 = AppointmentDAO(2L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
         val consultasDAO = mutableListOf(consulta1, consulta2);
 
     }
