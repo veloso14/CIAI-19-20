@@ -20,8 +20,8 @@ class PetRepoTester {
     lateinit var pets:PetRepository
 
     companion object Constants {
-        val pantufas = PetDAO(-1L, "pantufas", "Dog", emptyList(), ClientDAO())
-        val bigodes = PetDAO(-1L, "bigodes", "Cat", emptyList(), ClientDAO())
+        val pantufas = PetDAO(-1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(-1L, "bigodes", "Cat",false, emptyList(), ClientDAO())
     }
 
     // IMPORTANT: the database is not cleaned between tests, it means that it will keep the pets

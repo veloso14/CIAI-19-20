@@ -28,8 +28,8 @@ import java.util.*
  * Relations are added in subsequent DTO classes.
  */
 
-data class PetDTO(val id:Long, val name:String, val species:String, val ownerID:Long) {
-    constructor(pet: PetDAO) : this(pet.id,pet.name,pet.species, pet.owner.id)
+data class PetDTO(val id:Long, val name:String, val species:String, val frozen:Boolean, val ownerID:Long) {
+    constructor(pet: PetDAO) : this(pet.id,pet.name,pet.species,pet.frozen, pet.owner.id)
 }
 
 data class PetAptsDTO(val pet:PetDTO, val appointments:List<AppointmentDTO>)

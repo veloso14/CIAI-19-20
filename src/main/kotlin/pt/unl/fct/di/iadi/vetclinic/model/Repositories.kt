@@ -11,8 +11,11 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
     fun findByName(name:String): MutableIterable<PetDAO>
 
     // A query that loads all Pets with prefetching of the appointments associated
-    @Query("select p from PetDAO p left join fetch p.appointments where p.id = :id")
+    @Query("select p from PetDAO p left join fetch p.appointments where p.id = :id and p.frozen = false ")
     fun findByIdWithAppointment(id:Long) : Optional<PetDAO>
+
+    @Query("select p from PetDAO p where  p.frozen = 'false' ")
+    fun findAllNoFrozen() : List<PetDAO>
 }
 
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>

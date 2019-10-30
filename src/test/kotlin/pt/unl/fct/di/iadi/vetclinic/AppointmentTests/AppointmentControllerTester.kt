@@ -59,7 +59,7 @@ class AppointmentControllerTester {
 
         val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
         val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
         val aptsDTO = aptsDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id, it.vet.id) }

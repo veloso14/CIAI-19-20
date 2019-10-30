@@ -51,6 +51,12 @@ class ClientService(val pets: PetRepository,
             else
                 pets.save(pet)
 
+    fun deletePet(id:Long) = pets.getOne(id).let { it.frozenPet();pets.save(it) }
+
+
+
+    }
+
 
 
 

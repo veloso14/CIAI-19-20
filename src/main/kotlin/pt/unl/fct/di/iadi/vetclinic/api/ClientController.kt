@@ -90,6 +90,16 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                 PetDTO(clients.newPet(PetDAO(pet, pets.getOnePet(pet.id).appointments,clients.getOneClient(id))))
             }
 
+    @ApiOperation(value = "Delete a pet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully deleted a pet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/pets/{id}")
+    fun deletePet( @PathVariable id: Long) =
+            handle4xx { clients.deletePet(id) }
+
 
 
 

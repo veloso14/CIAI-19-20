@@ -174,12 +174,12 @@ class ClientControllerTester {
     @Test
     fun `Test checking pets`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val louro = PetDAO(1, "louro", "Papagaio", emptyList(), veloso)
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), veloso)
 
         veloso.pets = listOf(louro)
 
         val louroDAO = ArrayList(listOf(louro))
-        val louroDTO = louroDAO.map{PetDTO(it.id, it.name, it.species, it.owner.id)}
+        val louroDTO = louroDAO.map{PetDTO(it.id, it.name, it.species,it.frozen, it.owner.id)}
 
 
         Mockito.`when`(clients.petsOfClient(1)).thenReturn(listOf(louro))
@@ -207,7 +207,7 @@ class ClientControllerTester {
     fun `Test new pet`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
 
-        val louro = PetDTO(0, "louro", "Papagaio", 1)
+        val louro = PetDTO(0, "louro", "Papagaio",false, 1)
 
         val louroDAO = PetDAO(louro, emptyList(), veloso)
 
@@ -229,7 +229,7 @@ class ClientControllerTester {
     @Test
     fun `Bad request add pet on id not 0`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val louro = PetDTO(2, "louro", "Papagaio", 1)
+        val louro = PetDTO(2, "louro", "Papagaio",false, 1)
         val louroDAO = PetDAO(louro, emptyList(), veloso)
 
         veloso.pets = listOf(louroDAO)

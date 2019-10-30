@@ -46,8 +46,8 @@ class AdminServiceTester {
         val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
         val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())

@@ -105,8 +105,8 @@ class ClientServiceTester {
 
     @Test
     fun `test on retrieving pets 1`() {
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         antonio.pets = listOf(pantufas,bigodes)
 
         Mockito.`when`(repo.findByIdWithPet(antonio.id)).thenReturn(Optional.of(antonio))
@@ -125,7 +125,7 @@ class ClientServiceTester {
 
     @Test
     fun `test on adding a new Pet`() {
-        val pantufas = PetDAO(0, "pantufas", "Dog", emptyList(), antonio)
+        val pantufas = PetDAO(0, "pantufas", "Dog",false, emptyList(), antonio)
 
         antonio.pets = emptyList()
 
@@ -144,7 +144,7 @@ class ClientServiceTester {
 
     @Test(expected = PreconditionFailedException::class)
     fun `test on adding a new Pet (Precondition Failed)`() {
-        val pantufas = PetDAO(1, "pantufas", "Dog", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1, "pantufas", "Dog",false, emptyList(), ClientDAO())
         clients.newPet(pantufas)
     }
 

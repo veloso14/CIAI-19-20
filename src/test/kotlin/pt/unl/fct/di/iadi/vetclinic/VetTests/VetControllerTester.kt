@@ -55,12 +55,12 @@ class VetControllerTester {
         val vetsDTO =
                 vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.photo,it.employeeID, it.frozen) }
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
         val petsDTO =
-                petsDAO.map {PetDTO(it.id, it.name, it.species, 0) }
+                petsDAO.map {PetDTO(it.id, it.name, it.species,it.frozen, 0) }
 
 
         val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())

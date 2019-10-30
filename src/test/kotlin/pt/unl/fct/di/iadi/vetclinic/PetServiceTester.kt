@@ -30,8 +30,8 @@ class PetServiceTester {
     lateinit var aptRepo:AppointmentRepository
 
     companion object Constants {
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
     }
@@ -66,11 +66,12 @@ class PetServiceTester {
                     assertThat(pet.id, equalTo(0L))
                     assertThat(pet.name, equalTo(pantufas.name))
                     assertThat(pet.species, equalTo(pantufas.species))
+                    assertThat(pet.frozen, equalTo(pantufas.frozen))
                     assertThat(pet.appointments, equalTo(pantufas.appointments))
                     pet
                 }
 
-        pets.addNewPet(PetDAO(0L, pantufas.name, pantufas.species, pantufas.appointments, pantufas.owner))
+        pets.addNewPet(PetDAO(0L, pantufas.name, pantufas.species,pantufas.frozen ,pantufas.appointments, pantufas.owner))
     }
 
     @Test(expected = PreconditionFailedException::class)

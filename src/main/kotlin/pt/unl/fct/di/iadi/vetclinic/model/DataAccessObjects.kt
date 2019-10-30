@@ -25,18 +25,23 @@ data class PetDAO(
         @Id @GeneratedValue val id:Long,
                             var name: String,
                             var species: String,
+                            var frozen: Boolean,
         @OneToMany(mappedBy = "pet")
                             var appointments:List<AppointmentDAO>,
         @ManyToOne          var owner: ClientDAO
 ) {
-    constructor() : this(0,"","", emptyList(), ClientDAO())
+    constructor() : this(0,"","",false, emptyList(), ClientDAO())
 
-    constructor(pet: PetDTO, apts:List<AppointmentDAO>, owner: ClientDAO) : this(pet.id,pet.name,pet.species, apts, owner)
+    constructor(pet: PetDTO, apts:List<AppointmentDAO>, owner: ClientDAO) : this(pet.id,pet.name,pet.species,pet.frozen, apts, owner)
 
     fun update(other:PetDAO) {
         this.name = other.name
         this.species = other.species
         this.appointments = other.appointments
+    }
+
+    fun frozenPet() {
+        this.frozen = true
     }
 }
 

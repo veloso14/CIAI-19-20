@@ -34,7 +34,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.VetControllerTester">
+  <component name="RunManager" selected="JUnit.PetServiceTester">
     <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -50,33 +50,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AdminServiceTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PetControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.*" />
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.AdminServiceTester" />
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.PetControllerTester" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="AdminServiceTester.test on firing a vet" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="vetclinit" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.AdminServiceTester" />
-      <option name="METHOD_NAME" value="test on firing a vet" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -92,6 +76,22 @@
       <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic" />
       <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.PetServiceTester" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="PetServiceTester.basic test on getAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="vetclinit" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.PetServiceTester" />
+      <option name="METHOD_NAME" value="basic test on getAll" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -120,11 +120,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.PetServiceTester" />
+        <item itemvalue="JUnit.PetServiceTester.basic test on getAll" />
+        <item itemvalue="JUnit.PetControllerTester" />
         <item itemvalue="JUnit.VetControllerTester" />
         <item itemvalue="JUnit.AdminControllerTester" />
-        <item itemvalue="JUnit.AdminServiceTester" />
-        <item itemvalue="JUnit.AdminServiceTester.test on firing a vet" />
-        <item itemvalue="JUnit.PetServiceTester" />
       </list>
     </recent_temporary>
   </component>
@@ -138,7 +138,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1572367530659</updated>
-      <workItem from="1572367541010" duration="46538000" />
+      <workItem from="1572367541010" duration="49793000" />
     </task>
     <servers />
   </component>

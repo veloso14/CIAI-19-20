@@ -53,14 +53,14 @@ class PetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
 
         val petsDAO = ArrayList(listOf(pantufas, bigodes))
 
         val petsAptsDTO =
-            petsDAO.map { PetAptsDTO(PetDTO(it.id, it.name, it.species,0),
+            petsDAO.map { PetAptsDTO(PetDTO(it.id, it.name, it.species,it.frozen,0),
                                             it.appointments.map { AppointmentDTO(it) }) }
 
 
@@ -107,8 +107,8 @@ class PetControllerTester {
 
     @Test
     fun `Test POST One Pet`() {
-        val louro = PetDTO(0, "louro", "Papagaio",1)
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species, emptyList(), veloso)
+        val louro = PetDTO(0, "louro", "Papagaio",false,1)
+        val louroDAO = PetDAO(louro.id, louro.name, louro.species, louro.frozen, emptyList(), veloso)
 
         val louroJSON = mapper.writeValueAsString(louro)
 
@@ -123,7 +123,7 @@ class PetControllerTester {
 
     @Test
     fun `Test checking appointments`() {
-        val louro = PetDAO(1, "louro", "Papagaio", emptyList(), ClientDAO())
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), ClientDAO())
         val apt = AppointmentDAO(2, Date(),"consulta", louro,louro.owner, VetDAO())
         louro.appointments = listOf(apt)
 
@@ -152,7 +152,7 @@ class PetControllerTester {
 
     @Test
     fun `Test adding an appointment to a pet`() {
-        val louro = PetDAO(1, "louro", "Papagaio", emptyList(), ClientDAO())
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), ClientDAO())
         val apt = AppointmentDTO(0, Date(), "consulta",1,0, 0)
         val aptDAO = AppointmentDAO(apt,louro, ClientDAO(), VetDAO())
         louro.appointments = listOf(aptDAO)
@@ -172,7 +172,7 @@ class PetControllerTester {
 
     @Test
     fun `Bad request on id not 0`() {
-        val louro = PetDAO(1, "louro", "Papagaio", emptyList(), ClientDAO())
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), ClientDAO())
         val apt = AppointmentDTO(2, Date(), "consulta",1,0, 0)
         val aptDAO = AppointmentDAO(apt,louro, ClientDAO(), VetDAO())
         louro.appointments = listOf(aptDAO)

@@ -29,7 +29,7 @@ class UserController(val users: UserService) {
 
     @ApiOperation(value = "Update a user", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully updated a pet"),
+        ApiResponse(code = 200, message = "Successfully updated a user"),
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
