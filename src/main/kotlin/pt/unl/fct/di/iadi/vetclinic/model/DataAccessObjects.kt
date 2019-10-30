@@ -65,7 +65,15 @@ open class UserDAO(@Id @GeneratedValue val id: Long,
                    var cellphone: Long,
                    var address: String) {
     constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address)
+    fun update(other:UserDAO) {
+        this.email = other.email
+        this.cellphone = other.cellphone
+        this.address = other.address
+    }
 
+    fun changePassword(password: String){
+        this.password = password
+    }
 
 }
 
