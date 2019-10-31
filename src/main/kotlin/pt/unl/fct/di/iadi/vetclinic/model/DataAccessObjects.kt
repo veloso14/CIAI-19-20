@@ -65,14 +65,16 @@ data class AppointmentDAO(
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-open class UserDAO(@Id @GeneratedValue  val id: Long,
-                                        var name: String,
-                                        var email: String,
-                   @Column(unique=true) var username: String,
-                                        var password: String,
-                                        var cellphone: Long,
-                                        var address: String
+abstract class UserDAO( @Id @GeneratedValue open val id: Long,
+                        open val name: String,
+                        open  var email: String,
+                        open var username: String,
+                        open var password: String,
+                        open var cellphone: Long,
+                        open var address: String
 ) {
+
+
     constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address)
     fun update(other:UserDAO) {
         this.email = other.email
@@ -87,38 +89,38 @@ open class UserDAO(@Id @GeneratedValue  val id: Long,
 }
 
 @Entity
-class ClientDAO(id: Long,
-                name: String,
-                email: String,
-                username: String,
-                password: String,
-                cellphone: Long,
-                address: String,
-                @OneToMany(mappedBy = "owner")
+data class ClientDAO(override val id: Long,
+                     override val name: String,
+                     override  var email: String,
+                     override  var username: String,
+                     override  var password: String,
+                     override  var cellphone: Long,
+                     override  var address: String,
+                     @OneToMany(mappedBy = "owner")
                 var pets:List<PetDAO>,
-                @OneToMany(mappedBy = "client")
+                     @OneToMany(mappedBy = "client")
                 var appointments:List<AppointmentDAO>
-) : UserDAO(id, name, email, username, password, cellphone, address) {
+) : UserDAO(id,name, email, username, password,cellphone,address) {
     constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address, pets, apts)
     constructor() : this(0,"","","","",0,"", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
 }
 
 @Entity
-class VetDAO(
-        id: Long,
-        name: String,
-        email: String,
-        username: String,
-        password: String,
-        cellphone: Long,
-        address: String,
+data class VetDAO(
+        override val id: Long,
+        override  val name: String,
+        override  var email: String,
+        override  var username: String,
+        override  var password: String,
+        override  var cellphone: Long,
+        override  var address: String,
         var photo:String,
         var employeeID: Long,
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet")
         var appointments:List<AppointmentDAO>
 
-) : UserDAO(id,name, email ,  username , password, cellphone, address) {
+) : UserDAO(id,name, email, username, password,cellphone,address) {
     constructor(vet: VetDTO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts)
     constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>())
     fun updateFrozen(frozen: Boolean) {
@@ -129,15 +131,15 @@ class VetDAO(
 }
 
 @Entity
-class AdminDAO(id: Long,
-               name: String,
-               email: String,
-               username: String,
-               password: String,
-               cellphone: Long,
-               address: String,
-               var photo:String,
-               var employeeID: Long) : UserDAO(id, name, email, username, password, cellphone, address) {
+data class AdminDAO( override val id: Long,
+                    override  val name: String,
+                    override  var email: String,
+                    override  var username: String,
+                    override  var password: String,
+                    override  var cellphone: Long,
+                    override  var address: String,
+                    var photo:String,
+                    var employeeID: Long) : UserDAO(id,name, email, username, password,cellphone,address) {
     constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, admin.employeeID)
     constructor() : this(0,"","","","",0,"","",0)
 }

@@ -27,10 +27,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
-import pt.unl.fct.di.iadi.vetclinic.services.ClientService
-import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
-import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
+import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,6 +42,12 @@ class PetControllerTester {
 
     @MockBean
     lateinit var pets:PetService
+
+    @MockBean
+    lateinit var vets: VetService
+
+    @MockBean
+    lateinit var clients:ClientService
 
 
     companion object {
@@ -107,8 +110,8 @@ class PetControllerTester {
 
     @Test
     fun `Test POST One Pet`() {
-        val louro = PetDTO(0, "louro", "Papagaio",false,1)
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species, louro.frozen, emptyList(), veloso)
+        val louro = PetDTO(0, "louro", "Papagaio",false,0)
+        val louroDAO = PetDAO(louro.id, louro.name, louro.species, louro.frozen, emptyList(), ClientDAO())
 
         val louroJSON = mapper.writeValueAsString(louro)
 
@@ -152,9 +155,12 @@ class PetControllerTester {
 
     @Test
     fun `Test adding an appointment to a pet`() {
+
+        val juli = ClientDAO(1L,"Julian","julian@gmail.com","juli","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val lopez = VetDAO(1L,"Lopez","lopez@gmail.com","chavez","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>())
         val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), ClientDAO())
-        val apt = AppointmentDTO(0, Date(), "consulta",1,0, 0)
-        val aptDAO = AppointmentDAO(apt,louro, ClientDAO(), VetDAO())
+        val apt = AppointmentDTO(1, Date(), "consulta",1,1, 1)
+        val aptDAO = AppointmentDAO(apt,louro, juli, lopez)
         louro.appointments = listOf(aptDAO)
 
         val aptJSON = mapper.writeValueAsString(apt)
@@ -162,7 +168,8 @@ class PetControllerTester {
         Mockito.`when`(pets.newAppointment(nonNullAny(AppointmentDAO::class.java)))
                 .then { assertThat( it.getArgument(0), equalTo(aptDAO)); it.getArgument(0) }
 
-        Mockito.`when`(pets.getOnePet(1)).thenReturn(louro)
+        Mockito.`when`(pets.getOnePet(1)).thenReturn(
+                louro)
 
         mvc.perform(post("$petsURL/1/appointments")
                 .contentType(MediaType.APPLICATION_JSON)

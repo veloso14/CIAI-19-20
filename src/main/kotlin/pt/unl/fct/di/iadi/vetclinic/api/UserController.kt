@@ -15,7 +15,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 @RequestMapping("/users")
 class UserController(val users: UserService) {
 
-
+/*
     @ApiOperation(value = "Get the details of a single user by id", response = UserDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved user details"),
@@ -49,5 +49,8 @@ class UserController(val users: UserService) {
 
     */
 
+ */
+
 
 }
+

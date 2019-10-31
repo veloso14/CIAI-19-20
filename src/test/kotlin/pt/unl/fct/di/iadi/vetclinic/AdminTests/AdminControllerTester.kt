@@ -164,7 +164,7 @@ class AdminControllerTester {
 
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<List<AdminDTO>>(responseString)
-        assertThat(responseDTO, equalTo(adminsDTO))
+         assertThat(responseDTO, equalTo(adminsDTO))
     }
 
     @Test
