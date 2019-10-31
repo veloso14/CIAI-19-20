@@ -42,3 +42,7 @@ interface VetRepository : JpaRepository<VetDAO, Long> {
 interface AdminRepository : JpaRepository<AdminDAO, Long> {
 
 }
+
+interface ScheduleRepository : JpaRepository<ScheduleDAO, Long>
+
+interface  ShiftRepository : JpaRepository<ShiftDAO, Long>

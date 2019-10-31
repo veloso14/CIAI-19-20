@@ -129,11 +129,13 @@ data class VetDAO(
         var employeeID: Long,
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
-        var appointments:List<AppointmentDAO>
+        var appointments:List<AppointmentDAO>,
+        @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
+        var schedules:List<ScheduleDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address) {
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts)
-    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>())
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
+    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }
@@ -155,4 +157,32 @@ data class AdminDAO( override val id: Long,
     constructor() : this(0,"","","","",0,"","",0)
 }
 
+@Entity
+data class ShiftDAO(
+        @Id @GeneratedValue val id: Long,
+        var available: Boolean,
+        @ManyToOne  val schedule: ScheduleDAO
+) {
+
+
+    constructor(shift: ShiftDTO, schedule: ScheduleDAO) : this(shift.id, shift.avaiable, schedule)
+    constructor() : this(0, true, ScheduleDAO())
+
+    fun setAvailableFalse() {
+        this.available = false
+    }
+}
+
+@Entity
+data class ScheduleDAO(
+        @Id @GeneratedValue val id : Long,
+        @ManyToOne
+        val vet: VetDAO,
+        @OneToMany(mappedBy = "schedule")
+        val shifts: List<ShiftDAO>
+) {
+
+    constructor(schedule: ScheduleDTO, vet: VetDAO, shifts:List<ShiftDAO> ) : this(schedule.id, vet, shifts)
+    constructor() : this (0, VetDAO(), emptyList<ShiftDAO>())
+}
 

@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
+import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
+import pt.unl.fct.di.iadi.vetclinic.model.ScheduleDAO
 import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
@@ -88,7 +90,7 @@ class VetController(val vets: VetService) {
     ])
     @PutMapping("/info/{id}")
     fun updatePet(@RequestBody user: VetDTO, @PathVariable id: Long) =
-            handle4xx { vets.updateUser(id, VetDAO(user, emptyList())) }
+            handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())) }
 
      @ApiOperation(value = "Change the password of a vet", response = Unit::class)
      @ApiResponses(value = [

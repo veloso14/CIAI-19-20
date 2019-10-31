@@ -65,3 +65,11 @@ data class VetDTO(override val  id: Long, override val name: String, override va
 data class AdminDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,var photo:String, var employeeID: Long) : UserDTO(id, name,email, username,password,cellphone,address) {
     constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address,admin.photo, admin.employeeID)
 }
+
+data class ShiftDTO(val id:Long, var avaiable: Boolean, val scheduleID: Long ){
+    constructor(shift: ShiftDAO) : this(shift.id, shift.available, shift.schedule.id)
+}
+
+data class ScheduleDTO(val id:Long, val vetID: Long ){
+    constructor(schedule: ScheduleDAO) : this(schedule.id, schedule.vet.id)
+}

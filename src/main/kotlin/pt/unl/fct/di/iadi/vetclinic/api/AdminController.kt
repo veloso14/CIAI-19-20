@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
+import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
+import pt.unl.fct.di.iadi.vetclinic.model.ScheduleDAO
 import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
@@ -86,7 +88,7 @@ class AdminController(val admins: AdminService) {
     ])
     @PostMapping("/vets")
     fun addNewVet(@RequestBody vet: VetDTO): VetDTO =
-            VetDTO(admins.hireVet(VetDAO(vet, emptyList())))
+            VetDTO(admins.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())))
 
     @ApiOperation(value = "Hire new admin", response = Unit::class)
     @ApiResponses(value = [

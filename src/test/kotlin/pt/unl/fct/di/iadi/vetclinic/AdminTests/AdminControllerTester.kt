@@ -53,8 +53,8 @@ class AdminControllerTester {
                 adminsDAO.map { AdminDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.photo,it.employeeID) }
 
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>())
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
@@ -186,7 +186,7 @@ class AdminControllerTester {
     fun `Test hire One Vet`() {
         val vinhas = VetDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao","rosto.jpg", 11, false)
 
-        val vinhasDAO = VetDAO(vinhas.id,vinhas.name,vinhas.email,vinhas.username, vinhas.password, vinhas.cellphone, vinhas.address,vinhas.photo, vinhas.employeeID,vinhas.frozen, emptyList<AppointmentDAO>() )
+        val vinhasDAO = VetDAO(vinhas.id,vinhas.name,vinhas.email,vinhas.username, vinhas.password, vinhas.cellphone, vinhas.address,vinhas.photo, vinhas.employeeID,vinhas.frozen, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>() )
 
         val vinhasJSON = mapper.writeValueAsString(vinhas)
 
@@ -221,7 +221,7 @@ class AdminControllerTester {
     @Test
     fun `Test checking appointments of a vet`() {
         //val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
 
         val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), ClientDAO(), vet)
 

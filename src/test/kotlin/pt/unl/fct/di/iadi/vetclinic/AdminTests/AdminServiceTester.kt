@@ -42,8 +42,8 @@ class AdminServiceTester {
         val adminsDAO = mutableListOf(cid, curro);
 
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>())
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
@@ -146,10 +146,11 @@ class AdminServiceTester {
                     assertThat(vet.employeeID, equalTo(antonio.employeeID))
                     assertThat(vet.frozen, equalTo(antonio.frozen))
                     assertThat(vet.appointments, equalTo(antonio.appointments))
+                    assertThat(vet.schedules, equalTo(antonio.schedules))
                     vet
                 }
 
-        admins.hireVet(VetDAO(0L, antonio.name, antonio.email, antonio.username, antonio.password, antonio.cellphone, antonio.address,antonio.photo, antonio.employeeID, antonio.frozen, antonio.appointments))
+        admins.hireVet(VetDAO(0L, antonio.name, antonio.email, antonio.username, antonio.password, antonio.cellphone, antonio.address,antonio.photo, antonio.employeeID, antonio.frozen, antonio.appointments, antonio.schedules))
     }
 
     @Test(expected = PreconditionFailedException::class)

@@ -21,7 +21,7 @@ class VetClinicApplication {
             vets: VetRepository
     ) =
         CommandLineRunner {
-           val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>())
+           val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
             vets.save(vet)
             val pantufas = PetDAO(1L, "pantufas", "dog",false, emptyList<AppointmentDAO>(), ClientDAO())
             val bigodes = PetDAO(2L, "bigode", "cat",false, emptyList<AppointmentDAO>(), ClientDAO())

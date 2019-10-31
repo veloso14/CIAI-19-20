@@ -23,10 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetAptsDTO
 import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -157,7 +154,7 @@ class PetControllerTester {
     fun `Test adding an appointment to a pet`() {
 
         val juli = ClientDAO(1L,"Julian","julian@gmail.com","juli","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
-        val lopez = VetDAO(1L,"Lopez","lopez@gmail.com","chavez","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>())
+        val lopez = VetDAO(1L,"Lopez","lopez@gmail.com","chavez","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
         val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), ClientDAO())
         val apt = AppointmentDTO(1, Date(), "consulta",1,1, 1)
         val aptDAO = AppointmentDAO(apt,louro, juli, lopez)
