@@ -7,8 +7,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.*
 @Service
 class ClientService(val pets: PetRepository,
                     val clients: ClientRepository,
-                    val appointments: AppointmentRepository,
-                    val petService: PetService) {
+                    val appointments: AppointmentRepository) {
 
 
     fun appointmentsOfClient(id: Long): List<AppointmentDAO> {
@@ -32,9 +31,6 @@ class ClientService(val pets: PetRepository,
             else
                 appointments.save(apt)
 
-  //  fun newAppointment(apt: AppointmentDAO) =
-
-   //             petService.newAppointment(apt)
 
     fun petsOfClient(id: Long): List<PetDAO> {
         val client = clients.findByIdWithPet(id)
@@ -53,6 +49,10 @@ class ClientService(val pets: PetRepository,
 
     fun deletePet(id:Long) = pets.getOne(id).let { it.frozenPet();pets.save(it) }
 
+    fun updateUser(id: Long, user: ClientDAO) =
+            getOneClient(id).let { it.update(user); clients.save(it) }
+
+    fun updatePassword(id: Long, password: String) = getOneClient(id).let { it.changePassword(password); clients.save(it) }
 
 
     }

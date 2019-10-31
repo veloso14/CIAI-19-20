@@ -129,5 +129,27 @@ class AdminController(val admins: AdminService) {
     fun appointmentsOfVet(@PathVariable id: Long): List<AppointmentDTO> =
             handle4xx { admins.getVetsAppointments(id).map { AppointmentDTO(it) } }
 
+    @ApiOperation(value = "Update contact info of a admin", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully updated a user"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/info/{id}")
+    fun updatePet(@RequestBody user: AdminDTO, @PathVariable id: Long) =
+            handle4xx { admins.updateUser(id,AdminDAO(user)) }
+
+    @ApiOperation(value = "Change the password of a admin", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully changed the password"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/password/{id}")
+    fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
+            handle4xx { admins.updatePassword(id, pass) }
+
+
+
 
 }

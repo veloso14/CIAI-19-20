@@ -76,15 +76,22 @@ abstract class UserDAO( @Id @GeneratedValue open val id: Long,
 
 
     constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address)
-    fun update(other:UserDAO) {
+    open fun update(other:UserDAO) {
+
         this.email = other.email
         this.cellphone = other.cellphone
         this.address = other.address
+
+
     }
 
-    fun changePassword(password: String){
+
+
+    open fun changePassword(password: String) {
         this.password = password
     }
+
+
 
 }
 
@@ -101,6 +108,10 @@ data class ClientDAO(override val id: Long,
                      @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL])
                 var appointments:List<AppointmentDAO>
 ) : UserDAO(id,name, email, username, password,cellphone,address) {
+
+    override fun update(other: UserDAO) {
+        super.update(other)
+    }
     constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address, pets, apts)
     constructor() : this(0,"","","","",0,"", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
 }

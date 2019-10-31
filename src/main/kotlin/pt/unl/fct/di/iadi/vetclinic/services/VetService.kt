@@ -49,5 +49,11 @@ class VetService(val vets: VetRepository,
     fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
 
 
+    fun updateUser(id: Long, user: VetDAO) =
+            getOneVet(id).let { it.update(user); vets.save(it) }
+
+    fun updatePassword(id: Long, password: String) = getOneVet(id).let { it.changePassword(password); vets.save(it) }
+
+
 
 }

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
+import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
@@ -77,6 +78,29 @@ class VetController(val vets: VetService) {
     @GetMapping("/{id}/appointments")
     fun appointmentsOfVet(@PathVariable id: Long): List<AppointmentDTO> =
             handle4xx { vets.appointmentsOfVet(id).map { AppointmentDTO(it) } }
+
+
+    @ApiOperation(value = "Update contact info of a vet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully updated a user"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/info/{id}")
+    fun updatePet(@RequestBody user: VetDTO, @PathVariable id: Long) =
+            handle4xx { vets.updateUser(id, VetDAO(user, emptyList())) }
+
+     @ApiOperation(value = "Change the password of a vet", response = Unit::class)
+     @ApiResponses(value = [
+         ApiResponse(code = 200, message = "Successfully changed the password"),
+         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+     ])
+     @PutMapping("/password/{id}")
+     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
+             handle4xx { vets.updatePassword(id, pass) }
+
+
 
 
 }
