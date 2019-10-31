@@ -25,6 +25,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
+import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 import java.time.LocalDateTime
 import java.util.*
@@ -41,6 +42,9 @@ class ClientControllerTester {
 
     @MockBean
     lateinit var clients:ClientService
+
+    @MockBean
+    lateinit var pets: PetService
 
     companion object {
         // To avoid all annotations JsonProperties in data classes
@@ -66,7 +70,6 @@ class ClientControllerTester {
    // @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test Get One Client`() {
         Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
-       // print("----------------- "+ clients.getOneClient(1))
 
         val result = mvc.perform(get("$clientsURL/2"))
                 .andExpect(status().isOk)
@@ -74,9 +77,6 @@ class ClientControllerTester {
 
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<ClientDTO>(responseString)
-        print("nome do obtido: "+responseDTO.name )
-        print("---------")
-        print("nome do gajo " + clientsDTO[1].name )
         assertThat(responseDTO, equalTo(clientsDTO[1]))
 
 
@@ -205,9 +205,9 @@ class ClientControllerTester {
 
     @Test
     fun `Test new pet`() {
-        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
 
-        val louro = PetDTO(0, "louro", "Papagaio",false, 1)
+        val louro = PetDTO(0, "louro", "Papagaio",false, 0)
 
         val louroDAO = PetDAO(louro, emptyList(), veloso)
 

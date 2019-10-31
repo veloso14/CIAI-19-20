@@ -59,7 +59,7 @@ class AppointmentControllerTester {
 
         val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
         val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
-        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), veloso)
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
         val aptsDTO = aptsDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id, it.vet.id) }
@@ -104,10 +104,11 @@ class AppointmentControllerTester {
 
     @Test
     fun `Test POST One appointment`() {
-        //val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
 
-        val revisao = AppointmentDTO(0, Date(), "revisao",1,1,1)
-        val revisaoDAO = AppointmentDAO(revisao.id,revisao.date,revisao.desc, pantufas,veloso, vet)
+        val caramelo =  PetDAO(0, "pantufas", "Dog",false, emptyList(), veloso)
+
+        val revisao = AppointmentDTO(0, Date(), "revisao",0,1,1)
+        val revisaoDAO = AppointmentDAO(revisao.id,revisao.date,revisao.desc, caramelo,veloso, vet)
 
         val revisaoJSON = mapper.writeValueAsString(revisao)
 

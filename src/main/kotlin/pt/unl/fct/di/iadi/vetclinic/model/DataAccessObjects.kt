@@ -26,7 +26,7 @@ data class PetDAO(
                             var name: String,
                             var species: String,
                             var frozen: Boolean,
-        @OneToMany(mappedBy = "pet")
+        @OneToMany(mappedBy = "pet", cascade = [CascadeType.ALL])
                             var appointments:List<AppointmentDAO>,
         @ManyToOne          var owner: ClientDAO
 ) {
@@ -96,9 +96,9 @@ data class ClientDAO(override val id: Long,
                      override  var password: String,
                      override  var cellphone: Long,
                      override  var address: String,
-                     @OneToMany(mappedBy = "owner")
+                     @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
                 var pets:List<PetDAO>,
-                     @OneToMany(mappedBy = "client")
+                     @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL])
                 var appointments:List<AppointmentDAO>
 ) : UserDAO(id,name, email, username, password,cellphone,address) {
     constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address, pets, apts)
@@ -117,7 +117,7 @@ data class VetDAO(
         var photo:String,
         var employeeID: Long,
         var frozen: Boolean,
-        @OneToMany(mappedBy = "vet")
+        @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var appointments:List<AppointmentDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address) {
