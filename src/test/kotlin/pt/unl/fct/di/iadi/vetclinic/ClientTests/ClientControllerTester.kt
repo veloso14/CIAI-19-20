@@ -205,14 +205,12 @@ class ClientControllerTester {
     @Test
     fun `Test new pet`() {
 
-        val louro = PetDTO(0, "louro", "Papagaio",false, 0)
+        val louro = PetDTO(0, "louro", "Papagaio",false, 1)
 
 
         val louroDAO = PetDAO(louro, emptyList(), ClientDAO())
 
-        val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", listOf<PetDAO>(louroDAO), emptyList<AppointmentDAO>())
-
-
+        val veloso = ClientDAO(1,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         veloso.pets = listOf(louroDAO)
 
         val aptJSON = mapper.writeValueAsString(louro)
@@ -230,18 +228,19 @@ class ClientControllerTester {
 
     @Test
     fun `Bad request add pet on id not 0`() {
-        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val louro = PetDTO(2, "louro", "Papagaio",false, 1)
-        val louroDAO = PetDAO(louro, emptyList(), veloso)
+        val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+       // val louro = PetDTO(2, "louro", "Papagaio",false, 1)
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), veloso)
+        //val louroDAO = PetDAO(louro, emptyList(), veloso)
 
-        veloso.pets = listOf(louroDAO)
+        veloso.pets = listOf(louro)
 
         val aptJSON = mapper.writeValueAsString(louro)
 
         Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
                 .thenThrow( PreconditionFailedException("id 0"))
 
-        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+        Mockito.`when`(clients.getOneClient(0)).thenReturn(veloso)
 
         mvc.perform(post("$clientsURL/1/pets")
                 .contentType(MediaType.APPLICATION_JSON)

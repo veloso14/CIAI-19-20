@@ -14,8 +14,8 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
     @Query("select p from PetDAO p left join fetch p.appointments where p.id = :id and p.frozen = false ")
     fun findByIdWithAppointment(id:Long) : Optional<PetDAO>
 
-    @Query("select p from PetDAO p where  p.frozen = 'false' ")
-    fun findAllNoFrozen() : List<PetDAO>
+    @Query("select p from PetDAO p  where  p.frozen = false")
+    fun findAllByFrozenFalse():List<PetDAO>
 }
 
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
@@ -35,8 +35,11 @@ interface ClientRepository : JpaRepository<ClientDAO, Long> {
 }
 
 interface VetRepository : JpaRepository<VetDAO, Long> {
-   @Query("select c from VetDAO c inner join fetch c.appointments where c.id = :id")
+   @Query("select c from VetDAO c inner join fetch c.appointments where c.id = :id and c.frozen = false")
     fun findByIdWithAppointment(id: Long): Optional<VetDAO>
+
+    @Query("select c from VetDAO c  where  c.frozen = :id")
+    fun findAllByFrozenFalse():List<VetDAO>
 }
 
 interface AdminRepository : JpaRepository<AdminDAO, Long> {

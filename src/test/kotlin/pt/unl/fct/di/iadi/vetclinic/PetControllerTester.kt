@@ -153,10 +153,10 @@ class PetControllerTester {
     @Test
     fun `Test adding an appointment to a pet`() {
 
-        val juli = ClientDAO(1L,"Julian","julian@gmail.com","juli","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
-        val lopez = VetDAO(1L,"Lopez","lopez@gmail.com","chavez","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val juli = ClientDAO(1,"Julian","julian@gmail.com","juli","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val lopez = VetDAO(1,"Lopez","lopez@gmail.com","chavez","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
         val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), ClientDAO())
-        val apt = AppointmentDTO(1, Date(), "consulta",1,1, 1)
+        val apt = AppointmentDTO(0, Date(), "consulta",1,1, 1)
         val aptDAO = AppointmentDAO(apt,louro, juli, lopez)
         louro.appointments = listOf(aptDAO)
 
