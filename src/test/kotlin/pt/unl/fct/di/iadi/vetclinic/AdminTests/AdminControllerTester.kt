@@ -73,7 +73,7 @@ class AdminControllerTester {
         val clientsDAO = mutableListOf(manzanares, campuzano)
 
         val clientsDTO =
-                clientsDAO.map { ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address) }
+                clientsDAO.map { ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address, it.photo) }
 
 
 

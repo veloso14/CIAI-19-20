@@ -46,23 +46,24 @@ abstract class UserDTO( open val id: Long,
                         open val username: String,
                         open var password: String,
                         open var cellphone: Long,
-                        open  var address: String) {
+                        open  var address: String,
+                        open var photo:String  ) {
 
     //constructor(user: UserDAO) : this()
 }
 
 
-data class ClientDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String) : UserDTO(id, name,email, username,password,cellphone,address) {
-    constructor(client: ClientDAO) : this(client.id, client.name, client.email,client.username,client.password, client.cellphone,client.address)
+data class ClientDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String, override var photo:String) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
+    constructor(client: ClientDAO) : this(client.id, client.name, client.email,client.username,client.password, client.cellphone,client.address, client.photo)
 }
 
 data class ClientPetsDTO(val client:ClientDTO, val pets:List<PetDTO>)
 
-data class VetDTO(override val  id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,var photo:String, var employeeID: Long, var frozen:Boolean) : UserDTO(id, name,email, username,password,cellphone,address) {
+data class VetDTO(override val  id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,override var photo:String, var employeeID: Long, var frozen:Boolean) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
     constructor(vet: VetDAO) : this(vet.id, vet.name,vet.email,vet.username,vet.password, vet.cellphone,vet.address, vet.photo, vet.employeeID, vet.frozen)
 }
 //data
-data class AdminDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,var photo:String, var employeeID: Long) : UserDTO(id, name,email, username,password,cellphone,address) {
+data class AdminDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,override var photo:String, var employeeID: Long) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
     constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address,admin.photo, admin.employeeID)
 }
 

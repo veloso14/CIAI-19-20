@@ -56,7 +56,7 @@ class ClientControllerTester {
        // val clientsPetsDTO =
               //  clientsDAO.map { ClientPetsDTO(ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone,it.address),it.pets.map { PetDTO(it) }) }
 
-        val clientsDTO = clientsDAO.map{ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone,it.address)}
+        val clientsDTO = clientsDAO.map{ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone,it.address, it.photo)}
 
 
         val clientsURL = "/clients"
@@ -131,7 +131,7 @@ class ClientControllerTester {
         val aptDAO = AppointmentDAO(apt, PetDAO(), ClientDAO(), VetDAO())
         veloso.appointments = listOf(aptDAO)
 
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, listOf<AppointmentDAO>(aptDAO), emptyList<ScheduleDAO>())
+        //val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, listOf<AppointmentDAO>(aptDAO), emptyList<ScheduleDAO>())
 
 
         val aptJSON = mapper.writeValueAsString(apt)
