@@ -126,11 +126,13 @@ class ClientControllerTester {
     @Test
     fun `Test booking an appointment`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
 
         val apt = AppointmentDTO(0, Date(), "consulta",0,1, 1)
-        val aptDAO = AppointmentDAO(apt, PetDAO(), veloso, vet)
+        val aptDAO = AppointmentDAO(apt, PetDAO(), ClientDAO(), VetDAO())
         veloso.appointments = listOf(aptDAO)
+
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, listOf<AppointmentDAO>(aptDAO), emptyList<ScheduleDAO>())
+
 
         val aptJSON = mapper.writeValueAsString(apt)
 
@@ -202,11 +204,14 @@ class ClientControllerTester {
 
     @Test
     fun `Test new pet`() {
-        val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
 
         val louro = PetDTO(0, "louro", "Papagaio",false, 0)
 
-        val louroDAO = PetDAO(louro, emptyList(), veloso)
+
+        val louroDAO = PetDAO(louro, emptyList(), ClientDAO())
+
+        val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", listOf<PetDAO>(louroDAO), emptyList<AppointmentDAO>())
+
 
         veloso.pets = listOf(louroDAO)
 

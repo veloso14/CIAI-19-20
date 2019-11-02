@@ -137,7 +137,7 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @PutMapping("/info/{id}")
+    @PutMapping("/{id}/info")
     fun updatePet(@RequestBody user: AdminDTO, @PathVariable id: Long) =
             handle4xx { admins.updateUser(id,AdminDAO(user)) }
 
@@ -147,7 +147,7 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @PutMapping("/password/{id}")
+    @PutMapping("/{id}/password")
     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
             handle4xx { admins.updatePassword(id, pass) }
 

@@ -43,8 +43,10 @@ class AdminService(val admins: AdminRepository,
 
     fun fireVet(id:Long){
         val user = findEmployee(id)
-        if (user is VetDAO)
-        user.updateFrozen(true)
+        if (user is VetDAO){
+            user.updateFrozen(true)
+            vets.save(user)
+        }
     }
 
     fun fireAdmin(id:Long){
