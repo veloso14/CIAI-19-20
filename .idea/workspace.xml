@@ -42,24 +42,23 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PetRepoTester">
-    <configuration name="ClientControllerTester.Bad request add pet on id not 0" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.VetControllerTester">
+    <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.*" />
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.ClientControllerTester" />
-      <option name="METHOD_NAME" value="Bad request add pet on id not 0" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.AdminControllerTester" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClientControllerTester.Test booking an appointment" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ClientControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
         <pattern>
@@ -69,8 +68,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests" />
       <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.ClientControllerTester" />
-      <option name="METHOD_NAME" value="Test booking an appointment" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -90,22 +88,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="PetControllerTester.Bad request on id not 0" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="vetclinit" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.PetControllerTester" />
-      <option name="METHOD_NAME" value="Bad request on id not 0" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="PetRepoTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -121,6 +103,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="VetControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="vetclinit" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.VetTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetControllerTester" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="VetClinicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="vetclinit" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pt.unl.fct.di.iadi.vetclinic.VetClinicApplication" />
@@ -130,11 +127,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.VetControllerTester" />
+        <item itemvalue="JUnit.ClientControllerTester" />
+        <item itemvalue="JUnit.AdminControllerTester" />
         <item itemvalue="JUnit.PetRepoTester" />
         <item itemvalue="JUnit.PetControllerTester" />
-        <item itemvalue="JUnit.PetControllerTester.Bad request on id not 0" />
-        <item itemvalue="JUnit.ClientControllerTester.Bad request add pet on id not 0" />
-        <item itemvalue="JUnit.ClientControllerTester.Test booking an appointment" />
       </list>
     </recent_temporary>
   </component>
@@ -177,29 +174,9 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt</url>
-          <line>98</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt</url>
-          <line>90</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt</url>
           <line>220</line>
           <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/PetService.kt</url>
-          <line>26</line>
-          <option name="timeStamp" value="9" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/PetRepoTester.kt</url>
-          <line>48</line>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

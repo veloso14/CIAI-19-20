@@ -110,7 +110,7 @@ class AdminControllerTester {
     }
 
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
-
+/*
     @Test
     fun `Test GET all pets`() {
         Mockito.`when`(admins.getAllPets()).thenReturn(petsDAO)
@@ -153,6 +153,8 @@ class AdminControllerTester {
         assertThat(responseDTO, equalTo(consultasDTO))
     }
 
+ */
+
     @Test
     fun `Test GET all admins`() {
         Mockito.`when`(admins.getAllAdmins()).thenReturn(adminsDAO)
@@ -165,20 +167,6 @@ class AdminControllerTester {
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<List<AdminDTO>>(responseString)
          assertThat(responseDTO, equalTo(adminsDTO))
-    }
-
-    @Test
-    fun `Test GET all vets`() {
-        Mockito.`when`(admins.getAllVets()).thenReturn(vetsDAO)
-
-        val result = mvc.perform(get("$adminsURL/vets"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize<Any>(vetsDTO.size)))
-                .andReturn()
-
-        val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<List<VetDTO>>(responseString)
-        assertThat(responseDTO, equalTo(vetsDTO))
     }
 
 
@@ -218,6 +206,7 @@ class AdminControllerTester {
 
     //fazer dos fires
 
+    /*
     @Test
     fun `Test checking appointments of a vet`() {
         //val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
@@ -251,6 +240,8 @@ class AdminControllerTester {
         mvc.perform(get("$adminsURL/vets/1/appointments"))
                 .andExpect(status().is4xxClientError)
     }
+
+     */
 
 
 

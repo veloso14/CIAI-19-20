@@ -114,6 +114,11 @@ data class ClientDAO(override val id: Long,
     override fun update(other: UserDAO) {
         super.update(other)
     }
+
+    override fun changePassword(password: String) {
+        super.changePassword(password)
+    }
+
     constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address,client.photo, pets, apts)
     constructor() : this(0,"","","","",0,"","", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
     constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(id, name, email, username, password, cellphone, address,"", pets, apts)
@@ -143,6 +148,15 @@ data class VetDAO(
         this.frozen = frozen
     }
 
+    //secalhar nao e preciso declarar as funcoes
+    override fun update(other: UserDAO) {
+        super.update(other)
+    }
+
+    override fun changePassword(password: String) {
+        super.changePassword(password)
+    }
+
 
 }
 
@@ -158,6 +172,14 @@ data class AdminDAO( override val id: Long,
                     var employeeID: Long) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
     constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, admin.employeeID)
     constructor() : this(0,"","","","",0,"","",0)
+
+    override fun update(other: UserDAO) {
+        super.update(other)
+    }
+
+    override fun changePassword(password: String) {
+        super.changePassword(password)
+    }
 }
 
 @Entity

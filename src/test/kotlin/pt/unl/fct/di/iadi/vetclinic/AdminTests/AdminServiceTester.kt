@@ -82,6 +82,7 @@ class AdminServiceTester {
         assertThat(admins.getAllAdmins(), equalTo(adminsDAO as List<AdminDAO>))
     }
 
+    /*
     @Test
     fun `basic test on getAllPets`() {
         Mockito.`when`(petsRepo.findAll()).thenReturn(petsDAO);
@@ -103,13 +104,9 @@ class AdminServiceTester {
         assertThat(admins.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
     }
 
-    @Test
-    fun `basic test on getAllVets`() {
-        Mockito.`when`(vetsRepo.findAll()).thenReturn(vetsDAO);
+     */
 
-        assertThat(admins.getAllVets(), equalTo(vetsDAO as List<VetDAO>))
-    }
-
+/*
     @Test
     fun `test on retrieving appointments 1`() {
         val consulta1 = AppointmentDAO(1, Date(), "consulta1", PetDAO(), ClientDAO(), antonio)
@@ -129,6 +126,8 @@ class AdminServiceTester {
 
         assertThat(admins.getVetsAppointments(antonio.id), equalTo(antonio.appointments))
     }
+
+ */
 
     @Test
     fun `test on hiring a new vet`() {

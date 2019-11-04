@@ -22,7 +22,7 @@ class ClientService(val pets: PetRepository,
             clients.findById(id)
                     .orElseThrow { NotFoundException("There is no Client with Id $id") }
 
-
+    fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
 
     fun newAppointment(apt: AppointmentDAO) =
             // defensive programming

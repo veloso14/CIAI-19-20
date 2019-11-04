@@ -19,6 +19,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/appointments")
 class AppointmentController(val apts: AppointmentService, val pets: PetService, val vets: VetService) {
 
+    //TODO admin, vet
     @ApiOperation(value = "View a list of registered appointments", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -28,6 +29,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     @GetMapping("")
     fun getAllAppointments() = apts.getAllAppointments().map { AppointmentDTO(it) }
 
+    //TODO client
     @ApiOperation(value = "Add a new appointments", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointments"),
@@ -38,7 +40,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     fun addNewAppointment(@RequestBody apt: AppointmentDTO): AppointmentDTO =
             AppointmentDTO(apts.addNewAppointment(AppointmentDAO( apt, pets.getOnePet(apt.petID),pets.getOnePet(apt.petID).owner, vets.getOneVet(apt.vetID))))
 
-
+    //TODO admin, vet
     @ApiOperation(value = "Get the details of a single appointment by id", response = AppointmentDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved appointment details"),

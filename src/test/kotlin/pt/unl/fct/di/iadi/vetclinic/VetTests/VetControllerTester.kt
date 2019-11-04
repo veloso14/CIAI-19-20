@@ -102,7 +102,7 @@ class VetControllerTester {
 
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
-
+/*
     @Test
     fun `Test GET all pets`() {
         Mockito.`when`(vets.getAllPets()).thenReturn(petsDAO)
@@ -144,6 +144,8 @@ class VetControllerTester {
         val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
         assertThat(responseDTO, equalTo(consultasDTO))
     }
+
+ */
 
     @Test
     fun `Test checking appointments`() {

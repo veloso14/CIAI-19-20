@@ -21,13 +21,11 @@ class AdminService(val admins: AdminRepository,
 
     fun getAllAdmins(): List<AdminDAO> = admins.findAll().toList()
 
-    fun getAllVets(): List<VetDAO> = vets.findAll().toList()
+  //  fun getAllPets(): List<PetDAO> = pets.findAll().toList()
 
-    fun getAllPets(): List<PetDAO> = pets.findAll().toList()
+ //   fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
 
-    fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
-
-    fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
+ //   fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
 
     fun hireVet(vet:VetDAO) =
         if (vet.id != 0L)
@@ -55,10 +53,12 @@ class AdminService(val admins: AdminRepository,
             users.delete(user)
     }
 
-    fun getVetsAppointments(id:Long): List<AppointmentDAO>{
+   /* fun getVetsAppointments(id:Long): List<AppointmentDAO>{
         return vetService.appointmentsOfVet(id)
 
     }
+
+    */
 
 
     fun updateUser(id: Long, user: AdminDAO) =

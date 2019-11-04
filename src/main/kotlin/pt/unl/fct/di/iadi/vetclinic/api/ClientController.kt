@@ -21,6 +21,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 class ClientController(val clients: ClientService, val pets:PetService, val vets: VetService) {
 
 
+    //TODO users
     @ApiOperation(value = "Get the details of a single client by id", response = ClientDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved client details"),
@@ -32,20 +33,32 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun getOneClient(@PathVariable id: Long): ClientDTO =
             handle4xx { clients.getOneClient(id).let { ClientDTO(it) } }
 
+    //TODO admin, vet
+    @ApiOperation(value = "View a list of registered clients", response = List::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved list"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @GetMapping("")
+    fun getAllClients() = clients.getAllClients().map { ClientDTO(it) }
+
+    //TODO client
      @ApiOperation(value = "List the appointments related to a Client", response = List::class)
- @ApiResponses(value = [
+     @ApiResponses(value = [
      ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
      ApiResponse(code = 401, message = "You are not authorized to view the resource"),
      ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
      ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
- ])
- @GetMapping("/{id}/appointments")
- fun appointmentsOfClient(@PathVariable id: Long): List<AppointmentDTO> =
+     ])
+    @GetMapping("/{id}/appointments")
+     fun appointmentsOfClient(@PathVariable id: Long): List<AppointmentDTO> =
          handle4xx { clients.appointmentsOfClient(id).map { AppointmentDTO(it) } }
 
 
 
 
+    //TODO client
     @ApiOperation(value = "Book an appointment", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
@@ -62,6 +75,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
            // pets.newAppointment(pet.id,apt)
             }
 
+    //TODO client
     @ApiOperation(value = "List the pets related to a client", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of pets"),
@@ -76,6 +90,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                         .map { PetDTO(it) }
             }
 
+    //TODO client
     @ApiOperation(value = "Add a new pet to a client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a pet to a client"),
@@ -91,6 +106,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                 PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
 
+    //TODO client
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully deleted a pet"),
@@ -101,16 +117,18 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun deletePet( @PathVariable id: Long) =
             handle4xx { clients.deletePet(id) }
 
-    @ApiOperation(value = "Update contact info of a vet", response = Unit::class)
+    //TODO client
+    @ApiOperation(value = "Update contact info of a client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/info")
-    fun updatePet(@RequestBody user: ClientDTO, @PathVariable id: Long) =
+    fun updateClient(@RequestBody user: ClientDTO, @PathVariable id: Long) =
             handle4xx { clients.updateUser(id, ClientDAO(user, emptyList(), emptyList())) }
 
+    //TODO client
      @ApiOperation(value = "Change the password of a client", response = Unit::class)
      @ApiResponses(value = [
          ApiResponse(code = 200, message = "Successfully changed the password"),

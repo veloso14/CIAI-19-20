@@ -19,6 +19,7 @@ class VetController(val vets: VetService) {
 
 
 
+    //TODO admin, vet
     @ApiOperation(value = "Get the details of a single vet by id", response = VetDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved vet details"),
@@ -30,36 +31,18 @@ class VetController(val vets: VetService) {
     fun getOneVet(@PathVariable id:Long) : VetDTO =
             handle4xx { vets.getOneVet(id).let { VetDTO(it) } }
 
-
-
-
-    @ApiOperation(value = "View a list of registered pets", response = List::class)
+    //TODO todos
+    @ApiOperation(value = "View a list of registered vets", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
         ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @GetMapping("/pets")
-    fun getAllPets() = vets.getAllPets().map { PetDTO(it) }
+    @GetMapping("")
+    fun getAllVets() = vets.getAllVets().map { VetDTO(it) }
 
-    @ApiOperation(value = "View a list of registered clients", response = List::class)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved list"),
-        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
-    ])
-    @GetMapping("/clients")
-    fun getAllClients() = vets.getAllClients().map { ClientDTO(it) }
 
-    @ApiOperation(value = "View a list of registered appointments", response = List::class)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved list"),
-        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
-    ])
-    @GetMapping("/appointments")
-    fun getAllAppointments() = vets.getAllAppointments().map { AppointmentDTO(it) }
-
+    //TODO vet
     @ApiOperation(value = "Complete an appointment", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully completed"),
@@ -70,6 +53,7 @@ class VetController(val vets: VetService) {
     fun completeAppointment(@RequestBody desc:String, @PathVariable id: Long) =
             handle4xx { vets.completeAppointment(id, desc)}
 
+    //TODO admin
     @ApiOperation(value = "List the appointments related to a Vet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
@@ -81,7 +65,7 @@ class VetController(val vets: VetService) {
     fun appointmentsOfVet(@PathVariable id: Long): List<AppointmentDTO> =
             handle4xx { vets.appointmentsOfVet(id).map { AppointmentDTO(it) } }
 
-
+    //TODO vet
     @ApiOperation(value = "Update contact info of a vet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
@@ -89,18 +73,32 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/info")
-    fun updatePet(@RequestBody user: VetDTO, @PathVariable id: Long) =
+    fun updateVet(@RequestBody user: VetDTO, @PathVariable id: Long) =
             handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())) }
 
-     @ApiOperation(value = "Change the password of a vet", response = Unit::class)
-     @ApiResponses(value = [
+    //TODO vet
+    @ApiOperation(value = "Change the password of a vet", response = Unit::class)
+    @ApiResponses(value = [
          ApiResponse(code = 200, message = "Successfully changed the password"),
          ApiResponse(code = 401, message = "You are not authorized to use this resource"),
          ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
-     ])
-     @PutMapping("/{id}/password")
-     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
-             handle4xx { vets.updatePassword(id, pass) }
+    ])
+    @PutMapping("/{id}/password")
+    fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
+            handle4xx { vets.updatePassword(id, pass) }
+
+
+    //TODO admin
+    @ApiOperation(value = "Hire new vet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added a vet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PostMapping("")
+    fun addNewVet(@RequestBody vet: VetDTO): VetDTO =
+            VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())))
+
 
 
 

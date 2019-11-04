@@ -43,7 +43,7 @@ class PetRepoTester {
 
     @Test
     @Transactional
-    fun `another test on save and delete`() {
+    fun `test on save and delete`() {
         pets.deleteAll()
         clients.save(dono)
         val pet0 = pets.save(pantufas)

@@ -70,7 +70,7 @@ class VetServiceTester {
 
         vets.getOneVet(0L)
     }
-
+/*
     @Test
     fun `basic test on getAllPets`() {
         Mockito.`when`(petsRepo.findAll()).thenReturn(petsDAO);
@@ -92,6 +92,8 @@ class VetServiceTester {
         assertThat(vets.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
     }
 
+
+ */
     @Test
     fun `test on retrieving appointments 1`() {
         val consulta1 = AppointmentDAO(1, Date(), "consulta1", PetDAO(), ClientDAO(), antonio)

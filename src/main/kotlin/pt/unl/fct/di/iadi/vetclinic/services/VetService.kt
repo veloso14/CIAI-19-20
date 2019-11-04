@@ -9,7 +9,7 @@ class VetService(val vets: VetRepository,
                  val pets: PetRepository,
                  val clients: ClientRepository) {
 
-
+    fun getAllVets(): List<VetDAO> = vets.findAll().toList()
 
     fun getOneVet(id: Long): VetDAO =
             vets.findById(id)
@@ -41,12 +41,19 @@ class VetService(val vets: VetRepository,
 
         return vet.appointments // This redirection has pre-fetching
     }
-
+/*
     fun getAllPets(): List<PetDAO> = pets.findAll().toList()
 
     fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
 
     fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
+
+ */
+
+    fun hireVet(vet:VetDAO) =
+            if (vet.id != 0L)
+                throw PreconditionFailedException("Id must be 0 in insertion")
+            else vets.save(vet)
 
 
     fun updateUser(id: Long, user: VetDAO) =
