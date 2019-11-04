@@ -23,7 +23,7 @@ class PetService(
         else
             pets.save(pet)
 
-    fun getOnePet(id: Long) =
+    fun getOnePet(id: Long) : PetDAO =
             pets.findById(id)
                 .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 

@@ -132,18 +132,14 @@ class ClientControllerTester {
         veloso.appointments = listOf(aptDAO)
 
         //val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, listOf<AppointmentDAO>(aptDAO), emptyList<ScheduleDAO>())
-
-
-        val aptJSON = mapper.writeValueAsString(apt)
+        //val aptJSON = mapper.writeValueAsString(apt)
 
         Mockito.`when`(clients.newAppointment(nonNullAny(AppointmentDAO::class.java)))
                 .then { assertThat( it.getArgument(0), equalTo(aptDAO)); it.getArgument(0) }
 
         Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
 
-        mvc.perform(post("$clientsURL/1/appointments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(aptJSON))
+        mvc.perform(get("$clientsURL/1/appointments"))
                 .andExpect(status().isOk)
     }
 
@@ -220,6 +216,8 @@ class ClientControllerTester {
 
         Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
 
+        Mockito.`when`(pets.getOnePet(1)).thenReturn(louroDAO)
+
         mvc.perform(post("$clientsURL/1/pets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(aptJSON))
@@ -235,16 +233,12 @@ class ClientControllerTester {
 
         veloso.pets = listOf(louro)
 
-        val aptJSON = mapper.writeValueAsString(louro)
-
         Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
                 .thenThrow( PreconditionFailedException("id 0"))
 
         Mockito.`when`(clients.getOneClient(0)).thenReturn(veloso)
 
-        mvc.perform(post("$clientsURL/1/pets")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(aptJSON))
+        mvc.perform(get("$clientsURL/1/pets"))
                 .andExpect(status().is4xxClientError)
 
     }

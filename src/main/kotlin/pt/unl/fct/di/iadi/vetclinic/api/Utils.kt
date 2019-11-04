@@ -27,7 +27,12 @@ import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 fun <T> handle4xx(inner: () -> T): T =
         try {
             inner()
-        } catch (e: NotFoundException) {
+
+        }
+        catch (e: IllegalArgumentException) {
+            throw HTTPNotFoundException(e.message ?: "Bad Request")
+        }
+        catch (e: NotFoundException) {
             throw HTTPNotFoundException(e.message ?: "Not Found")
         } catch (e : PreconditionFailedException ) {
             throw HTTPBadRequestException(e.message ?: "Bad Request")

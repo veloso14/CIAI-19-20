@@ -87,7 +87,8 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun newPet(@PathVariable id:Long,
                        @RequestBody pet:PetDTO) =
             handle4xx {
-                PetDTO(clients.newPet(PetDAO(pet, pets.getOnePet(pet.id).appointments,clients.getOneClient(id))))
+                var onePet = pets.getOnePet(id)
+                PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
 
     @ApiOperation(value = "Delete a pet", response = Unit::class)
