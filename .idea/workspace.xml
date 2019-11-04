@@ -75,18 +75,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ClientControllerTester.Test new pet" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="PetControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.*" />
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.ClientTests.ClientControllerTester" />
-      <option name="METHOD_NAME" value="Test new pet" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.PetControllerTester" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -132,10 +131,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.PetRepoTester" />
+        <item itemvalue="JUnit.PetControllerTester" />
         <item itemvalue="JUnit.PetControllerTester.Bad request on id not 0" />
         <item itemvalue="JUnit.ClientControllerTester.Bad request add pet on id not 0" />
         <item itemvalue="JUnit.ClientControllerTester.Test booking an appointment" />
-        <item itemvalue="JUnit.ClientControllerTester.Test new pet" />
       </list>
     </recent_temporary>
   </component>
@@ -154,6 +153,7 @@
       <workItem from="1572561709597" duration="688000" />
       <workItem from="1572711744483" duration="1645000" />
       <workItem from="1572872755764" duration="3869000" />
+      <workItem from="1572882686085" duration="790000" />
     </task>
     <servers />
   </component>
@@ -165,7 +165,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
@@ -196,8 +198,8 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/PetRepoTester.kt</url>
-          <line>74</line>
-          <option name="timeStamp" value="14" />
+          <line>48</line>
+          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
