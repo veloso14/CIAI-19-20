@@ -169,7 +169,7 @@ class AdminControllerTester {
          assertThat(responseDTO, equalTo(adminsDTO))
     }
 
-
+/*
     @Test
     fun `Test hire One Vet`() {
         val vinhas = VetDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao","rosto.jpg", 11, false)
@@ -186,7 +186,7 @@ class AdminControllerTester {
                 .content(vinhasJSON))
                 .andExpect(status().isOk)
     }
-
+    */
     @Test
     fun `Test hire One Admin`() {
         val vinhas = AdminDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao","rosto.jpg", 11)

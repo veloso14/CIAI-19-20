@@ -56,6 +56,17 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
          handle4xx { clients.appointmentsOfClient(id).map { AppointmentDTO(it) } }
 
 
+    //TODO todos
+    @ApiOperation(value = "New client", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added a client"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PostMapping("")
+    fun addNewClient(@RequestBody client: ClientDTO): ClientDTO =
+            ClientDTO(clients.newClient(ClientDAO(client, emptyList(), emptyList())))
+
 
 
     //TODO client
@@ -70,9 +81,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun newAppointment(@PathVariable id: Long,
                        @RequestBody apt:AppointmentDTO,@RequestBody pet:PetDTO) =
             handle4xx {
-                //aqui obter lista dos apts do pet???
                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id), vets.getOneVet(apt.vetID))))
-           // pets.newAppointment(pet.id,apt)
             }
 
     //TODO client
@@ -102,7 +111,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun newPet(@PathVariable id:Long,
                        @RequestBody pet:PetDTO) =
             handle4xx {
-                var onePet = pets.getOnePet(id)
+                val onePet = pets.getOnePet(id)
                 PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
 

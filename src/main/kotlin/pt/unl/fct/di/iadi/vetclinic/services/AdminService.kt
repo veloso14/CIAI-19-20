@@ -2,6 +2,8 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.util.*
+
 
 @Service
 class AdminService(val admins: AdminRepository,
@@ -27,15 +29,39 @@ class AdminService(val admins: AdminRepository,
 
  //   fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
 
+    /*
     fun hireVet(vet:VetDAO) =
         if (vet.id != 0L)
             throw PreconditionFailedException("Id must be 0 in insertion")
         else vets.save(vet)
 
+     */
+
+
+  /*  fun hireAdmin(admin:AdminDAO) {
+        val aUser = users.findByUsername(admin.username)
+
+         if ( aUser.isPresent ) throw PreconditionFailedException("There is already an user with the specified username")
+
+        else {
+            //vet.password = BCryptPasswordEncoder().encode(user.password)
+            admin.password = admin.password
+            admins.save(admin)
+        }
+    }
+
+   */
+
+
+
     fun hireAdmin(admin:AdminDAO) =
-        if (admin.id != 0L)
-            throw PreconditionFailedException("Id must be 0 in insertion")
-        else admins.save(admin)
+            when {
+                admin.id != 0L -> throw PreconditionFailedException("Id must be 0 in insertion")
+                users.findByUsername(admin.username).isPresent -> throw PreconditionFailedException("There is already an user with the specified username")
+                else -> admins.save(admin)
+            }
+
+
 
     fun findEmployee(id: Long): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
 
@@ -48,9 +74,13 @@ class AdminService(val admins: AdminRepository,
     }
 
     fun fireAdmin(id:Long){
-        val user = findEmployee(id)
-        if (user is AdminDAO)
+        if(id != 1L){
+            val user = findEmployee(id)
+          if (user is AdminDAO)
             users.delete(user)
+        }
+        else
+            throw PreconditionFailedException ("You're not able to remove the default account")
     }
 
    /* fun getVetsAppointments(id:Long): List<AppointmentDAO>{

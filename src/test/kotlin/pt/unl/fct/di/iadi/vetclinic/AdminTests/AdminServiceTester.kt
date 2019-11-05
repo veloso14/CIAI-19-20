@@ -128,7 +128,7 @@ class AdminServiceTester {
     }
 
  */
-
+/*
     @Test
     fun `test on hiring a new vet`() {
         Mockito.`when`(vetsRepo.save(Mockito.any(VetDAO::class.java)))
@@ -156,6 +156,8 @@ class AdminServiceTester {
     fun `test on hiring a new vet (Error)`() {
         admins.hireVet(antonio) // antonio has a non-0 id
     }
+
+    */
 
     @Test
     fun `test on hiring a new admin`() {

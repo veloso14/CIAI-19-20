@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Profile
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.util.*
@@ -18,7 +19,8 @@ class VetClinicApplication {
             pets:PetRepository,
             apts: AppointmentRepository,
             clients: ClientRepository,
-            vets: VetRepository
+            vets: VetRepository,
+            admins: AdminRepository
     ) =
         CommandLineRunner {
            val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
@@ -33,6 +35,9 @@ class VetClinicApplication {
             val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", emptyList(), emptyList())
             val chenel = ClientDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", emptyList(), emptyList())
             clients.saveAll(listOf(veloso,antonio,chenel))
+
+            val defaultAdmin = AdminDAO(1L,"default","","default","1234",987682,"Pio","rosto.jpg",1)
+            admins.save(defaultAdmin)
 
         }
 }

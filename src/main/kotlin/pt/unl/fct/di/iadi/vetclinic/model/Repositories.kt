@@ -21,7 +21,7 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
 
 interface UserRepository : JpaRepository<UserDAO, Long> {
-    fun findByUsername(username: String) : UserDAO
+    fun findByUsername(username: String) : Optional<UserDAO>
 }
 
 interface ClientRepository : JpaRepository<ClientDAO, Long> {
@@ -40,10 +40,12 @@ interface VetRepository : JpaRepository<VetDAO, Long> {
 
     @Query("select c from VetDAO c  where  c.frozen = :id")
     fun findAllByFrozenFalse():List<VetDAO>
+
+    fun findByUsername(username: String) : Optional<VetDAO>
 }
 
 interface AdminRepository : JpaRepository<AdminDAO, Long> {
-
+    fun findByUsername(username: String) : Optional<AdminDAO>
 }
 
 interface ScheduleRepository : JpaRepository<ScheduleDAO, Long>

@@ -6,11 +6,7 @@ import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ScheduleDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
 @Api(value = "VetClinic Management System - Admin API",
@@ -56,6 +52,7 @@ class AdminController(val admins: AdminService) {
     @PostMapping("")
     fun addNewAdmin(@RequestBody admin: AdminDTO): AdminDTO =
             AdminDTO(admins.hireAdmin(AdminDAO(admin)))
+
 
     //TODO admin
     @ApiOperation(value = "Fire a vet", response = Unit::class)

@@ -9,6 +9,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
+import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
@@ -17,7 +18,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
         description = "Management operations of Pets in the IADI 2019 Pet Clinic")
 @RestController
 @RequestMapping("/appointments")
-class AppointmentController(val apts: AppointmentService, val pets: PetService, val vets: VetService) {
+class AppointmentController(val apts: AppointmentService, val pets: PetService, val vets: VetService, val clients: ClientService) {
 
     //TODO admin, vet
     @ApiOperation(value = "View a list of registered appointments", response = List::class)
@@ -38,7 +39,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     ])
     @PostMapping("")
     fun addNewAppointment(@RequestBody apt: AppointmentDTO): AppointmentDTO =
-            AppointmentDTO(apts.addNewAppointment(AppointmentDAO( apt, pets.getOnePet(apt.petID),pets.getOnePet(apt.petID).owner, vets.getOneVet(apt.vetID))))
+            AppointmentDTO(apts.addNewAppointment(AppointmentDAO( apt, pets.getOnePet(apt.petID),clients.getOneClient(apt.clientID), vets.getOneVet(apt.vetID))))
 
     //TODO admin, vet
     @ApiOperation(value = "Get the details of a single appointment by id", response = AppointmentDTO::class)

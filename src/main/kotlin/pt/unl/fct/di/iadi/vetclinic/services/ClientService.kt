@@ -3,11 +3,13 @@ package pt.unl.fct.di.iadi.vetclinic.services
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.util.*
 
 @Service
 class ClientService(val pets: PetRepository,
                     val clients: ClientRepository,
-                    val appointments: AppointmentRepository) {
+                    val appointments: AppointmentRepository,
+                    val users:UserRepository) {
 
 
     fun appointmentsOfClient(id: Long): List<AppointmentDAO> {
@@ -54,6 +56,12 @@ class ClientService(val pets: PetRepository,
 
     fun updatePassword(id: Long, password: String) = getOneClient(id).let { it.changePassword(password); clients.save(it) }
 
+    fun newClient(client:ClientDAO) =
+            when {
+                client.id != 0L -> throw PreconditionFailedException("Id must be 0 in insertion")
+                users.findByUsername(client.username).isPresent -> throw PreconditionFailedException("There is already an user with the specified username")
+                else -> clients.save(client)
+            }
 
     }
 

@@ -7,7 +7,8 @@ import pt.unl.fct.di.iadi.vetclinic.model.*
 class VetService(val vets: VetRepository,
                  val appointments: AppointmentRepository,
                  val pets: PetRepository,
-                 val clients: ClientRepository) {
+                 val clients: ClientRepository,
+                 val users: UserRepository) {
 
     fun getAllVets(): List<VetDAO> = vets.findAll().toList()
 
@@ -51,9 +52,11 @@ class VetService(val vets: VetRepository,
  */
 
     fun hireVet(vet:VetDAO) =
-            if (vet.id != 0L)
-                throw PreconditionFailedException("Id must be 0 in insertion")
-            else vets.save(vet)
+            when {
+                vet.id != 0L -> throw PreconditionFailedException("Id must be 0 in insertion")
+                users.findByUsername(vet.username).isPresent -> throw PreconditionFailedException("There is already an user with the specified username")
+                else -> vets.save(vet)
+            }
 
 
     fun updateUser(id: Long, user: VetDAO) =
