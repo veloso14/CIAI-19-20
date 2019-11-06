@@ -4,6 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
@@ -20,7 +21,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/appointments")
 class AppointmentController(val apts: AppointmentService, val pets: PetService, val vets: VetService, val clients: ClientService) {
 
-    //TODO admin, vet
+    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
     @ApiOperation(value = "View a list of registered appointments", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -30,7 +31,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     @GetMapping("")
     fun getAllAppointments() = apts.getAllAppointments().map { AppointmentDTO(it) }
 
-    //TODO client
+    @PreAuthorize("hasRole({'CLIENT'})")
     @ApiOperation(value = "Add a new appointments", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointments"),
@@ -41,7 +42,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     fun addNewAppointment(@RequestBody apt: AppointmentDTO): AppointmentDTO =
             AppointmentDTO(apts.addNewAppointment(AppointmentDAO( apt, pets.getOnePet(apt.petID),clients.getOneClient(apt.clientID), vets.getOneVet(apt.vetID))))
 
-    //TODO admin, vet
+    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
     @ApiOperation(value = "Get the details of a single appointment by id", response = AppointmentDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved appointment details"),

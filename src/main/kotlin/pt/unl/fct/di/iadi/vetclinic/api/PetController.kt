@@ -4,6 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
@@ -18,7 +19,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/pets")
 class PetController(val pets: PetService, val vets:VetService) {
 
-    //TODO admin, vet
+    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
     @ApiOperation(value = "View a list of registered pets", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -30,7 +31,7 @@ class PetController(val pets: PetService, val vets:VetService) {
             pets.getAllPets().map { PetAptsDTO(PetDTO(it),
                                     it.appointments.map { AppointmentDTO(it) }) }
 
-    //TODO client
+    @PreAuthorize("hasRole({'CLIENT'})")
     @ApiOperation(value = "Add a new pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a pet"),
@@ -41,7 +42,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun addNewPet(@RequestBody pet: PetDTO): PetDTO =
         PetDTO(pets.addNewPet(PetDAO(pet, emptyList(),ClientDAO())))
 
-    //TODO admin, vet
+    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
     @ApiOperation(value = "Get the details of a single pet by id", response = PetDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved pet details"),
@@ -53,7 +54,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun getOnePet(@PathVariable id:Long) : PetAptsDTO =
             handle4xx { pets.getOnePet(id).let { PetAptsDTO(PetDTO(it), it.appointments.map { AppointmentDTO(it) }) } }
 
-    //TODO client
+    @PreAuthorize("hasRole({'CLIENT'})")
     @ApiOperation(value = "Update a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a pet"),
@@ -64,7 +65,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun updatePet(@RequestBody pet: PetDTO, @PathVariable id: Long) =
             handle4xx { pets.updatePet(PetDAO(pet, emptyList(), ClientDAO()), id) }
 
-    //TODO client
+    @PreAuthorize("hasRole({'CLIENT'})")
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully deleted a pet"),
@@ -75,7 +76,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun deletePet(@PathVariable id: Long) =
             handle4xx { pets.deletePet(id) }
 
-    //TODO client
+    @PreAuthorize("hasRole({'CLIENT'})")
     @ApiOperation(value = "List the appointments related to a Pet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
@@ -90,7 +91,7 @@ class PetController(val pets: PetService, val vets:VetService) {
                         .map { AppointmentDTO(it) }
             }
 
-    //TODO isto depois apaga-se
+    //TODO isto depois apaga-se veloso: ok
     @ApiOperation(value = "Add a new appointment to a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
