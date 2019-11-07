@@ -30,37 +30,37 @@ class SecurityService(val admins: AdminRepository,
     //serve para as passwords tb
     fun canGetAllPetsOfClient(principal: UserDetails, clientID:Long):Boolean{
         var client = clients.findById(clientID)
-        return client.get().username == principal.username
+        return client.isPresent  && client.get().username == principal.username
     }
 
     fun canGetAppointmentOfClient(principal: UserDetails, clientID:Long):Boolean{
         var client = clients.findById(clientID)
-        return client.get().username == principal.username
+        return client.isPresent  && client.get().username == principal.username
     }
 
     //serve para as passwords tb
     fun canEditVet(principal: UserDetails, vetID:Long):Boolean{
         var vet = vets.findById(vetID)
-        return vet.get().username == principal.username
+        return vet.isPresent  && vet.get().username == principal.username
     }
 
     //serve para as passwords tb
     fun canEditAdmin(principal: UserDetails, adminID:Long):Boolean{
         var admin = admins.findById(adminID)
-        return admin.get().username == principal.username
+        return admin.isPresent  && admin.get().username == principal.username
     }
 
     //serve para as passwords tb
     fun canEditClient(principal: UserDetails, clientID:Long):Boolean{
         var client = clients.findById(clientID)
-        return client.get().username == principal.username
+        return client.isPresent  && client.get().username == principal.username
     }
 
     //Isto tem que ser testado pk nao sei se funciona
     //mas poupava as 3 funçoes anteriores, ficava so esta
     fun canEdit(principal: UserDetails, id:Long):Boolean{
         var user = users.findById(id)
-        return user.get().username == principal.username
+        return user.isPresent  && user.get().username == principal.username
     }
 
 
