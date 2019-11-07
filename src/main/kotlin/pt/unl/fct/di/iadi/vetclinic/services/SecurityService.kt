@@ -1,6 +1,7 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
 
@@ -15,39 +16,51 @@ class SecurityService(val admins: AdminRepository,
 
 
    //serve para editar pet e delete pet
-    fun canEditPet(user: UserDAO, petID:Long):Boolean {
+    fun canEditPet(principal: UserDetails, petID:Long):Boolean {
         var pet = pets.findById(petID)
-        return (pet.isPresent && user is ClientDAO && pet.get().owner.id == user.id )
+        return (pet.isPresent  && pet.get().owner.username == principal.username )
     }
 
-    fun canCompleteAppointment(user: UserDAO, aptID:Long):Boolean{
+    fun canCompleteAppointment(principal: UserDetails, aptID:Long):Boolean{
         var apt = appointments.findById(aptID)
-        return (apt.isPresent && user is VetDAO && apt.get().vet.id == user.id)
+        return (apt.isPresent  && apt.get().vet.username == principal.username)
 
     }
 
     //serve para as passwords tb
-    fun canGetAllPetsOfClient(user:UserDAO, clientID:Long):Boolean{
-        return (user is ClientDAO && user.id == clientID)
+    fun canGetAllPetsOfClient(principal: UserDetails, clientID:Long):Boolean{
+        var client = clients.findById(clientID)
+        return client.get().username == principal.username
     }
 
-    fun canGetAppointmentOfClient(user:UserDAO, clientID:Long):Boolean{
-        return (user is ClientDAO && user.id == clientID)
-    }
-
-    //serve para as passwords tb
-    fun canEditVet(user:UserDAO, clientID:Long):Boolean{
-        return (user is VetDAO && user.id == clientID)
+    fun canGetAppointmentOfClient(principal: UserDetails, clientID:Long):Boolean{
+        var client = clients.findById(clientID)
+        return client.get().username == principal.username
     }
 
     //serve para as passwords tb
-    fun canEditAdmin(user:UserDAO, clientID:Long):Boolean{
-        return (user is AdminDAO && user.id == clientID)
+    fun canEditVet(principal: UserDetails, vetID:Long):Boolean{
+        var vet = vets.findById(vetID)
+        return vet.get().username == principal.username
     }
 
     //serve para as passwords tb
-    fun canEditClient(user:UserDAO, clientID:Long):Boolean{
-        return (user is ClientDAO && user.id == clientID)
+    fun canEditAdmin(principal: UserDetails, adminID:Long):Boolean{
+        var admin = admins.findById(adminID)
+        return admin.get().username == principal.username
+    }
+
+    //serve para as passwords tb
+    fun canEditClient(principal: UserDetails, clientID:Long):Boolean{
+        var client = clients.findById(clientID)
+        return client.get().username == principal.username
+    }
+
+    //Isto tem que ser testado pk nao sei se funciona
+    //mas poupava as 3 funçoes anteriores, ficava so esta
+    fun canEdit(principal: UserDetails, id:Long):Boolean{
+        var user = users.findById(id)
+        return user.get().username == principal.username
     }
 
 
