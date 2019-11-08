@@ -148,6 +148,10 @@ data class VetDAO(
         this.frozen = frozen
     }
 
+    fun updateSchedules(schedules: List<ScheduleDAO>) {
+        this.schedules = schedules
+    }
+
     //secalhar nao e preciso declarar as funcoes
     override fun update(other: UserDAO) {
         super.update(other)
@@ -204,8 +208,12 @@ data class ScheduleDAO(
         @ManyToOne
         val vet: VetDAO,
         @OneToMany(mappedBy = "schedule")
-        val shifts: List<ShiftDAO>
+        var shifts: List<ShiftDAO>
 ) {
+
+    fun updateShifts(shifts: List<ShiftDAO>) {
+        this.shifts = shifts
+    }
 
     constructor(schedule: ScheduleDTO, vet: VetDAO, shifts:List<ShiftDAO> ) : this(schedule.id, vet, shifts)
     constructor() : this (0, VetDAO(), emptyList<ShiftDAO>())

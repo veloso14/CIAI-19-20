@@ -99,6 +99,16 @@ class AdminController(val admins: AdminService) {
     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
             handle4xx { admins.updatePassword(id, pass) }
 
+    @ApiOperation(value = "Set vet schedule to default one", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully set vets schedule"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/{id}/password")
+    fun setVetSchedule(@PathVariable id: Long) =
+            handle4xx { admins.setSchedule(id) }
+
 
 
 
