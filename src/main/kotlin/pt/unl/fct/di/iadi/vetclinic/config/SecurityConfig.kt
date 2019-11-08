@@ -3,6 +3,7 @@ package pt.unl.fct.di.iadi.vetclinic.config
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -12,6 +13,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
 
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
         val customUserDetails: CustomUserDetailsService,
         val users: SecurityService
@@ -46,25 +48,25 @@ class SecurityConfig(
                 .withUser("USER")
                 .password(BCryptPasswordEncoder().encode("password"))
                 .authorities("USER")
-                .roles("USER","CLIENT")
+                .roles("USER")
                 .and()
                 //Cliente
                 .withUser("CLIENT")
                 .password(BCryptPasswordEncoder().encode("password"))
                 .authorities(emptyList())
-                .roles("USER","CLIENT")
+                .roles("CLIENT")
                 .and()
                 //Veterinario
                 .withUser("VET")
                 .password(BCryptPasswordEncoder().encode("password"))
                 .authorities(emptyList())
-                .roles("USER","VETERINARIO")
+                .roles("VET")
                 .and()
                 //Admin
                 .withUser("ADMIN")
                 .password(BCryptPasswordEncoder().encode("password"))
-                .authorities("USER","ADMIN","VETERINARIO")
-                .roles("USER","ADMIN","VETERINARIO")
+                .authorities(emptyList())
+                .roles("ADMIN")
                 .and()
                 .passwordEncoder(BCryptPasswordEncoder())
                 .and()

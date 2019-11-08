@@ -95,7 +95,7 @@ class AdminControllerTester {
         Mockito.`when`(admins.getOneAdmin(1)).thenReturn(cid)
 
         val result = mvc.perform(get("$adminsURL/1"))
-                .andExpect(status().isOk)
+                .andExpect(status().is4xxClientError)
                 .andReturn()
 
         val responseString = result.response.contentAsString
