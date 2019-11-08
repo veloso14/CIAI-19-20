@@ -63,8 +63,10 @@ class AdminService(val admins: AdminRepository,
 
 
 
-    fun findEmployee(id: Long): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
+    //fun findEmployee(id: Long): UserDAO = users.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
+    fun findAdmin(id:Long):AdminDAO = admins.findById(id).orElseThrow { NotFoundException("There is no user with Id $id") }
 
+    /* apagar
     fun fireVet(id:Long){
         val user = findEmployee(id)
         if (user is VetDAO){
@@ -73,11 +75,11 @@ class AdminService(val admins: AdminRepository,
         }
     }
 
+     */
+
     fun fireAdmin(id:Long){
         if(id != 1L){
-            val user = findEmployee(id)
-          if (user is AdminDAO)
-            users.delete(user)
+            findAdmin(id).let { admins.delete(it) }
         }
         else
             throw PreconditionFailedException ("You're not able to remove the default account")

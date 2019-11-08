@@ -30,7 +30,7 @@ class AdminController(val admins: AdminService) {
             handle4xx { admins.getOneAdmin(id).let { AdminDTO(it) } }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    //Aqui podem todos mesmo nem estando registado
     @ApiOperation(value = "View a list of registered admins", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -42,7 +42,7 @@ class AdminController(val admins: AdminService) {
 
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Hire new admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a admin"),
@@ -54,7 +54,8 @@ class AdminController(val admins: AdminService) {
             AdminDTO(admins.hireAdmin(AdminDAO(admin)))
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    /*
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Fire a vet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully fired a vet"),
@@ -65,7 +66,9 @@ class AdminController(val admins: AdminService) {
     fun fireVet(@PathVariable id: Long) =
             handle4xx { admins.fireVet(id)}
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+     */
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Fire a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully fired a admin"),

@@ -65,5 +65,17 @@ class VetService(val vets: VetRepository,
     fun updatePassword(id: Long, password: String) = getOneVet(id).let { it.changePassword(password); vets.save(it) }
 
 
+    fun fireVet(id: Long) = getOneVet(id).let { it.updateFrozen(true); vets.save(it) }
+    /* fun fireVet(id:Long){
+        val user = getOneVet(id)
+        if (user is VetDAO){
+            user.updateFrozen(true)
+            vets.save(user)
+        }
+    }
+
+     */
+
+
 
 }

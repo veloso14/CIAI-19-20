@@ -207,10 +207,12 @@ class AdminServiceTester {
 
     */
 
-    @Test(expected = NotFoundException::class)
+    /*@Test(expected = NotFoundException::class)
     fun `test on firing a vet (Error)`() {
         admins.fireVet(antonio.id) // antonio has a non-0 id
     }
+
+     */
 
 
 

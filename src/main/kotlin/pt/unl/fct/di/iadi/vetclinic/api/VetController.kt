@@ -100,6 +100,18 @@ class VetController(val vets: VetService) {
             VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())))
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Fire a vet", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully fired a vet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PutMapping("/{id}")
+    fun fireVet(@PathVariable id: Long) =
+            handle4xx { vets.fireVet(id)}
+
+
 
 
 
