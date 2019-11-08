@@ -138,7 +138,7 @@ data class VetDAO(
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var appointments:List<AppointmentDAO>,
-        @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
+        @OneToOne(mappedBy = "vet", cascade = [CascadeType.ALL])
         var schedules:List<ScheduleDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address, photo) {

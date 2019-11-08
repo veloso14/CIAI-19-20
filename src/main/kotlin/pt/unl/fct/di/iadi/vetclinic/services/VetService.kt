@@ -64,6 +64,9 @@ class VetService(val vets: VetRepository,
 
     fun updatePassword(id: Long, password: String) = getOneVet(id).let { it.changePassword(password); vets.save(it) }
 
-
+    fun getSchedule(id: Long): List<ScheduleDAO> {
+        val vet = this.getOneVet(id)
+        return vet.schedules
+    }
 
 }

@@ -105,7 +105,7 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @PutMapping("/{id}/schedule")
+    @PostMapping("/{id}/schedule")
     fun setVetSchedule(@PathVariable id: Long) =
             handle4xx { admins.setSchedule(id) }
 
