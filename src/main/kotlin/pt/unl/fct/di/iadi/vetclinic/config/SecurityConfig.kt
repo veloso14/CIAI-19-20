@@ -43,9 +43,10 @@ class SecurityConfig(
 
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.inMemoryAuthentication()
-                .withUser("user")
+                .withUser("USER")
                 .password(BCryptPasswordEncoder().encode("password"))
-                .authorities(emptyList())
+                .authorities("USER")
+                .roles("USER","CLIENT")
                 .and()
                 //Cliente
                 .withUser("CLIENT")

@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -89,6 +90,7 @@ class AdminControllerTester {
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["USER"])
     fun `Test Get One Admin`() {
         Mockito.`when`(admins.getOneAdmin(1)).thenReturn(cid)
 
@@ -102,6 +104,7 @@ class AdminControllerTester {
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test GET One Admin (Not Found)`() {
         Mockito.`when`(admins.getOneAdmin(2)).thenThrow(NotFoundException("not found"))
 
@@ -156,6 +159,7 @@ class AdminControllerTester {
  */
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test GET all admins`() {
         Mockito.`when`(admins.getAllAdmins()).thenReturn(adminsDAO)
 
@@ -188,6 +192,7 @@ class AdminControllerTester {
     }
     */
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test hire One Admin`() {
         val vinhas = AdminDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao","rosto.jpg", 11)
 
