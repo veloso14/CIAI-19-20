@@ -7,13 +7,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import pt.unl.fct.di.iadi.vetclinic.services.UserService
+import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
+
 
 
 @Configuration
 class SecurityConfig(
         val customUserDetails: CustomUserDetailsService,
-        val users: UserService
+        val users: SecurityService
 ) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.csrf().disable() // for now, we can disable cross site request forgery protection
@@ -26,6 +27,8 @@ class SecurityConfig(
                 .antMatchers("/appointments").hasRole("ADMIN")
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
+                .antMatchers("/v2/*").permitAll()
+                .antMatchers("/v2/**").permitAll()
                 //Permite mais endpoints
                 .antMatchers(HttpMethod.POST, "/users/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/register/**").permitAll()

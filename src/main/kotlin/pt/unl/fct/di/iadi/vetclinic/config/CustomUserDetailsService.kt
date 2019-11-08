@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-
+import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
 
 
 class CustomUserDetails(
@@ -31,13 +31,13 @@ class CustomUserDetails(
 
 @Service
 class CustomUserDetailsService(
-        val users: UserService
+        val security: SecurityService
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String?): UserDetails {
 
         username?.let {
-            val userDAO = users.findUser(it)
+            val userDAO = security.users.findByUsername(username)
             if (userDAO.isPresent) {
                 return CustomUserDetails(userDAO.get().username, userDAO.get().password, mutableListOf())
             } else

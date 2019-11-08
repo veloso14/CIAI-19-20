@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="" />
+    <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/CustomUserDetailsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/CustomUserDetailsService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/JWTFilters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/JWTFilters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/vetclinit.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/META-INF/vetclinit.kotlin_module" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,22 +64,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PetControllerTester">
-    <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="vetclinit" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.AdminTests.AdminControllerTester" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.SecurityTester">
     <configuration name="AdminServiceTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -133,6 +125,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SecurityTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="vetclinit" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.SecurityTests" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.SecurityTester" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="VetClinicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
       <module name="vetclinit" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="pt.unl.fct.di.iadi.vetclinic.VetClinicApplication" />
@@ -142,11 +149,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.SecurityTester" />
         <item itemvalue="JUnit.PetControllerTester" />
         <item itemvalue="JUnit.ClientControllerTester" />
         <item itemvalue="JUnit.AppointmentControllerTester" />
         <item itemvalue="JUnit.AdminServiceTester" />
-        <item itemvalue="JUnit.AdminControllerTester" />
       </list>
     </recent_temporary>
   </component>
@@ -169,6 +176,7 @@
       <workItem from="1572971147857" duration="11089000" />
       <workItem from="1573020411737" duration="1569000" />
       <workItem from="1573135742550" duration="993000" />
+      <workItem from="1573191948243" duration="1637000" />
     </task>
     <servers />
   </component>

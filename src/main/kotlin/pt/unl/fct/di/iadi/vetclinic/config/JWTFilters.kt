@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.filter.GenericFilterBean
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
-import pt.unl.fct.di.iadi.vetclinic.services.UserService
+import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
 import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -43,7 +43,7 @@ private fun addResponseToken(authentication: Authentication, response: HttpServl
     response.addHeader("Authorization", "Bearer $token")
 }
 
-class UserPasswordAuthenticationFilterToJWT(
+class UserPasswordAuthenticationFilterToJWT (
         defaultFilterProcessesUrl: String?,
         private val anAuthenticationManager: AuthenticationManager
 ) : AbstractAuthenticationProcessingFilter(defaultFilterProcessesUrl) {
@@ -74,7 +74,7 @@ class UserPasswordAuthenticationFilterToJWT(
     }
 }
 
-class UserAuthToken(private var login: String) : Authentication {
+class UserAuthToken(private var login:String) : Authentication {
 
     override fun getAuthorities() = null
 
@@ -91,7 +91,7 @@ class UserAuthToken(private var login: String) : Authentication {
     override fun getDetails() = login
 }
 
-class JWTAuthenticationFilter : GenericFilterBean() {
+class JWTAuthenticationFilter: GenericFilterBean() {
 
     // To try it out, go to https://jwt.io to generate custom tokens, in this case we only need a name...
 
@@ -101,13 +101,13 @@ class JWTAuthenticationFilter : GenericFilterBean() {
 
         val authHeader = (request as HttpServletRequest).getHeader("Authorization")
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if( authHeader != null && authHeader.startsWith("Bearer ") ) {
             val token = authHeader.substring(7) // Skip 7 characters for "Bearer "
             val claims = Jwts.parser().setSigningKey(JWTSecret.KEY).parseClaimsJws(token).body
 
             // should check for token validity here (e.g. expiration date, session in db, etc.)
             val exp = (claims["exp"] as Int).toLong()
-            if (exp < System.currentTimeMillis() / 1000) // in seconds
+            if ( exp < System.currentTimeMillis()/1000) // in seconds
 
                 (response as HttpServletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED) // RFC 6750 3.1
 
@@ -125,7 +125,6 @@ class JWTAuthenticationFilter : GenericFilterBean() {
             }
         } else {
             chain!!.doFilter(request, response)
-           (response as HttpServletResponse).sendError(HttpServletResponse.SC_UNAUTHORIZED)
         }
     }
 }
@@ -144,9 +143,9 @@ class JWTAuthenticationFilter : GenericFilterBean() {
  *
  */
 
-class UserPasswordSignUpFilterToJWT(
+class UserPasswordSignUpFilterToJWT (
         defaultFilterProcessesUrl: String?,
-        private val users: UserService
+        private val security: SecurityService
 ) : AbstractAuthenticationProcessingFilter(defaultFilterProcessesUrl) {
 
     override fun attemptAuthentication(request: HttpServletRequest?,
@@ -154,9 +153,9 @@ class UserPasswordSignUpFilterToJWT(
         //getting user from request body
         val user = ObjectMapper().readValue(request!!.inputStream, UserDAO::class.java)
 
-        return users
+        return security
                 .addUser(user)
-                .orElse(null)
+                .orElse( null )
                 .let {
                     val auth = UserAuthToken(user.username)
                     SecurityContextHolder.getContext().authentication = auth
