@@ -69,21 +69,43 @@ class AdminService(val admins: AdminRepository,
         return vetService.appointmentsOfVet(id)
 
     }
-    */
-    // gets one vet, creates default empty schedule and updates vet
-    fun setSchedule(id: Long, month: Month) {
-       val vet = vetService.getOneVet(id)
-       val schedules = vet.schedules
-       schedules.forEach(){
-           if(it.month == month) {
-               throw PreconditionFailedException ("Schedule for that month already set!")
-           }
-       }
 
-       val schedule = createSchedule(ScheduleDAO(vet, month))
-       schedules.add(schedule)
-       vet.updateSchedules(schedules)
+    */
+   fun getMonth(mon: String): Month {
+       print(mon)
+       return when {
+           mon.contains("JAN") -> Month.JANUARY
+           mon.contains("FEB") -> Month.FEBRUARY
+           mon.contains("MAR") -> Month.MARCH
+           mon.contains("APR") -> Month.APRIL
+           mon.contains("JUN") -> Month.JUNE
+           mon.contains("JUL") -> Month.JULY
+           mon.contains("AUG") -> Month.AUGUST
+           mon.contains("SEP") -> Month.SEPTEMBER
+           mon.contains("OCT") -> Month.OCTOBER
+           mon.contains("NOV") -> Month.NOVEMBER
+           mon.contains("DEC") -> Month.DECEMBER
+           else -> throw PreconditionFailedException("Month id not found!")
+       }
    }
+
+    // gets one vet, creates default empty schedule and updates vet
+    fun setSchedule(id: Long, mon: String) {
+        val month = getMonth(mon)
+        val vet = vetService.getOneVet(id)
+        val schedules = vet.schedules
+        print(schedules.size)
+        schedules.forEach() {
+            if (it.month == month) {
+                throw PreconditionFailedException("Schedule for that month already set!")
+            }
+        }
+
+        val schedule = createSchedule(ScheduleDAO(vet, month))
+        schedules.add(schedule)
+        print(schedules.size)
+        vet.updateSchedules(schedules)
+    }
 
     // creates a schedule ( list of 30 or 31 shifts corresponding to each day of the month )
     fun createSchedule(schedules: ScheduleDAO): ScheduleDAO {

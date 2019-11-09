@@ -107,7 +107,7 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PostMapping("/{id}/schedule")
-    fun setVetSchedule(@PathVariable id: Long, month: Month) =
+    fun setVetSchedule(@PathVariable id: Long, @RequestBody month: String) =
             handle4xx { admins.setSchedule(id, month) }
 
 
