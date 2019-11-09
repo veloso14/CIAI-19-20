@@ -2,7 +2,6 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
 
@@ -74,30 +73,37 @@ class AdminService(val admins: AdminRepository,
     // gets one vet, creates default empty schedule and updates vet
     fun setSchedule(id: Long, month: Month) {
        val vet = vetService.getOneVet(id)
-       val schedule = createSchedule(ScheduleDAO(vet, month), month, vet)
        val schedules = vet.schedules
+       schedules.forEach(){
+           if(it.month == month) {
+               throw PreconditionFailedException ("Schedule for that month already set!")
+           }
+       }
+
+       val schedule = createSchedule(ScheduleDAO(vet, month))
        schedules.add(schedule)
        vet.updateSchedules(schedules)
    }
 
     // creates a schedule ( list of 30 or 31 shifts corresponding to each day of the month )
-    fun createSchedule(schedules: ScheduleDAO, month: Month, vet: VetDAO): ScheduleDAO {
-        val schedule = mutableListOf<ShiftDAO>()
+    fun createSchedule(schedules: ScheduleDAO): ScheduleDAO {
+        val shifts = mutableListOf<ShiftDAO>()
         val shift = ShiftDAO(schedules)
-        for (x in 1..month.length(false)) {
-            schedule.add(createShift(shift, schedules))
+        for (x in 1..schedules.month.length(false)) {
+            shifts.add(createShift(shift, schedules, x))
         }
-        return ScheduleDAO(vet, month, schedule)
+        return ScheduleDAO(schedules.vet, schedules.month, shifts)
     }
 
     // creates a shift ( list of 16 slots of 30 min )
-    fun createShift( shifts: ShiftDAO , schedules: ScheduleDAO): ShiftDAO{
-        val shift = mutableListOf<SlotDAO>()
-        for (x in 1..16) {
-            val slot = SlotDAO(LocalDateTime.now(), shifts)
-            shift.add(slot)
+    fun createShift( shifts: ShiftDAO , schedules: ScheduleDAO, day: Int): ShiftDAO {
+        val slots = mutableListOf<SlotDAO>()
+        val baseDateTime = LocalDateTime.of(2019, schedules.month, day, 9, 0)
+        for (x in 0..15) {
+            val slot = SlotDAO(baseDateTime.plusMinutes((x * 30).toLong()), shifts)
+            slots.add(slot)
         }
-        return ShiftDAO(shift, schedules)
+        return ShiftDAO(slots, schedules)
     }
 
 
