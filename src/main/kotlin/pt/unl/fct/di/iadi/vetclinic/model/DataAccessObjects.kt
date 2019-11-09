@@ -16,7 +16,10 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.model
 
+import net.bytebuddy.asm.Advice
 import pt.unl.fct.di.iadi.vetclinic.api.*
+import java.time.LocalDateTime
+import java.time.Month
 import java.util.*
 import javax.persistence.*
 
@@ -139,17 +142,15 @@ data class VetDAO(
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var appointments:List<AppointmentDAO>,
         @OneToOne(mappedBy = "vet", cascade = [CascadeType.ALL])
-        var schedules:List<ScheduleDAO>
+        var schedules: List<ScheduleDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
-    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules: List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
+    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList())
+
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
-    }
-
-    fun updateSchedules(schedules: List<ScheduleDAO>) {
-        this.schedules = schedules
     }
 
     //secalhar nao e preciso declarar as funcoes
@@ -186,36 +187,53 @@ data class AdminDAO( override val id: Long,
     }
 }
 
-@Entity
-data class ShiftDAO(
-        @Id @GeneratedValue val id: Long,
-        var available: Boolean,
-        @ManyToOne  val schedule: ScheduleDAO
+
+@Entity // each schedule has a month and a list of shifts. number of shifts on list depend on month
+data class ScheduleDAO(
+        @Id @GeneratedValue val id : Long,
+        @OneToOne val vet: VetDAO,
+        val month: Month,
+        @OneToMany(mappedBy = "schedule") var shifts: List<ShiftDAO>
+
 ) {
 
+    fun updateSlots(shifts: List<ShiftDAO>) {
+        this.shifts = shifts
+    }
 
-    constructor(shift: ShiftDTO, schedule: ScheduleDAO) : this(shift.id, shift.avaiable, schedule)
-    constructor() : this(0, true, ScheduleDAO())
+    constructor( vet: VetDAO, month: Month, shifts: List<ShiftDAO> ) : this ( 0L, vet, month, shifts )
+    constructor( vet: VetDAO, month: Month ) : this ( 0L, vet, month, emptyList() )
+}
+
+
+@Entity // each shift is list of 16 slots of 30 min
+data class ShiftDAO(
+        @Id @GeneratedValue val id : Long,
+        @OneToMany(mappedBy = "shift") var slots: List<SlotDAO>,
+        @ManyToOne val schedule: ScheduleDAO
+) {
+
+    fun updateSlots(slots: List<SlotDAO>) {
+        this.slots = slots
+    }
+
+    constructor( slots: List<SlotDAO>, schedule: ScheduleDAO) : this ( 0L, slots, schedule )
+    constructor( schedule: ScheduleDAO ) : this ( 0L, emptyList<SlotDAO>(), schedule )
+}
+
+
+@Entity // each slot has start date and available status
+data class SlotDAO(
+        @Id @GeneratedValue val id: Long,
+        var start: LocalDateTime,
+        var available: Boolean,
+        @ManyToOne val shift: ShiftDAO
+) {
+
+    constructor(dateTime: LocalDateTime, shift: ShiftDAO) : this (0L, dateTime, true, shift)
 
     fun setAvailableFalse() {
         this.available = false
     }
+
 }
-
-@Entity
-data class ScheduleDAO(
-        @Id @GeneratedValue val id : Long,
-        @ManyToOne
-        val vet: VetDAO,
-        @OneToMany(mappedBy = "schedule")
-        var shifts: List<ShiftDAO>
-) {
-
-    fun updateShifts(shifts: List<ShiftDAO>) {
-        this.shifts = shifts
-    }
-
-    constructor(schedule: ScheduleDTO, vet: VetDAO, shifts:List<ShiftDAO> ) : this(schedule.id, vet, shifts)
-    constructor() : this (0, VetDAO(), emptyList<ShiftDAO>())
-}
-
