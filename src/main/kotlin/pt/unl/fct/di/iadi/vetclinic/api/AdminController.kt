@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
+import java.time.Month
 
 
 @Api(value = "VetClinic Management System - Admin API",
@@ -106,8 +107,8 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PostMapping("/{id}/schedule")
-    fun setVetSchedule(@PathVariable id: Long) =
-            handle4xx { admins.setSchedule(id) }
+    fun setVetSchedule(@PathVariable id: Long, month: Month) =
+            handle4xx { admins.setSchedule(id, month) }
 
 
 

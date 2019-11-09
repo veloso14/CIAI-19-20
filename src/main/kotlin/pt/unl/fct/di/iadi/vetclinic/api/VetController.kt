@@ -74,7 +74,7 @@ class VetController(val vets: VetService) {
     ])
     @PutMapping("/{id}/info")
     fun updateVet(@RequestBody user: VetDTO, @PathVariable id: Long) =
-            handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())) }
+            handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())) }
 
     //TODO vet
     @ApiOperation(value = "Change the password of a vet", response = Unit::class)
@@ -97,7 +97,7 @@ class VetController(val vets: VetService) {
     ])
     @PostMapping("")
     fun addNewVet(@RequestBody vet: VetDTO): VetDTO =
-            VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())))
+            VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())))
 
 
 

@@ -141,13 +141,17 @@ data class VetDAO(
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var appointments:List<AppointmentDAO>,
-        @OneToOne(mappedBy = "vet", cascade = [CascadeType.ALL])
-        var schedules: List<ScheduleDAO>
+        @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
+        var schedules: MutableList<ScheduleDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
 
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules: List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
-    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList())
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules: MutableList<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
+    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+
+    fun updateSchedules(schedules: MutableList<ScheduleDAO>) {
+        this.schedules = schedules
+    }
 
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
@@ -191,7 +195,7 @@ data class AdminDAO( override val id: Long,
 @Entity // each schedule has a month and a list of shifts. number of shifts on list depend on month
 data class ScheduleDAO(
         @Id @GeneratedValue val id : Long,
-        @OneToOne val vet: VetDAO,
+        @ManyToOne var vet: VetDAO,
         val month: Month,
         @OneToMany(mappedBy = "schedule") var shifts: List<ShiftDAO>
 

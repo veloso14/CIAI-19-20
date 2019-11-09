@@ -2,6 +2,9 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.Month
 
 @Service
 class AdminService(val admins: AdminRepository,
@@ -69,32 +72,34 @@ class AdminService(val admins: AdminRepository,
     }
     */
     // gets one vet, creates default empty schedule and updates vet
-    fun setSchedule(id: Long) {
+    fun setSchedule(id: Long, month: Month) {
        val vet = vetService.getOneVet(id)
-       val schedule = createSchedule(vet)
-       vet.updateSchedules(schedule)
+       val schedule = createSchedule(ScheduleDAO(vet, month), month, vet)
+       val schedules = vet.schedules
+       schedules.add(schedule)
+       vet.updateSchedules(schedules)
    }
 
-    // assuming a month has 30 days. can change later
-    fun createSchedule(vet: VetDAO): List<ScheduleDAO> {
-        val schedule = mutableListOf<ScheduleDAO>()
-        for (x in 1..30) {
-            schedule.add(createDaySchedule(vet))
+    // creates a schedule ( list of 30 or 31 shifts corresponding to each day of the month )
+    fun createSchedule(schedules: ScheduleDAO, month: Month, vet: VetDAO): ScheduleDAO {
+        val schedule = mutableListOf<ShiftDAO>()
+        val shift = ShiftDAO(schedules)
+        for (x in 1..month.length(false)) {
+            schedule.add(createShift(shift, schedules))
         }
-        return schedule
+        return ScheduleDAO(vet, month, schedule)
     }
 
-    // assuming each schedule has 16 30 min shifts making 8h a day
-    fun createDaySchedule(vet: VetDAO): ScheduleDAO {
-        val daySchedule = ScheduleDAO()
-        val shifts = mutableListOf<ShiftDAO>()
+    // creates a shift ( list of 16 slots of 30 min )
+    fun createShift( shifts: ShiftDAO , schedules: ScheduleDAO): ShiftDAO{
+        val shift = mutableListOf<SlotDAO>()
         for (x in 1..16) {
-            val shift = ShiftDAO(0, true, daySchedule)
-            shifts.add(shift)
+            val slot = SlotDAO(LocalDateTime.now(), shifts)
+            shift.add(slot)
         }
-        daySchedule.updateShifts(shifts)
-        return daySchedule
+        return ShiftDAO(shift, schedules)
     }
+
 
     fun updateUser(id: Long, user: AdminDAO) =
             getOneAdmin(id).let { it.update(user); admins.save(it) }
