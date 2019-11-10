@@ -19,7 +19,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/pets")
 class PetController(val pets: PetService, val vets:VetService) {
 
-    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered pets", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -31,7 +31,7 @@ class PetController(val pets: PetService, val vets:VetService) {
             pets.getAllPets().map { PetAptsDTO(PetDTO(it),
                                     it.appointments.map { AppointmentDTO(it) }) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a pet"),
@@ -42,7 +42,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun addNewPet(@RequestBody pet: PetDTO): PetDTO =
         PetDTO(pets.addNewPet(PetDAO(pet, emptyList(),ClientDAO())))
 
-    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET') or ( hasRole( 'ROLE_CLIENT' ) and @securityService.canEditPet(principal, #id) ) ")
     @ApiOperation(value = "Get the details of a single pet by id", response = PetDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved pet details"),
@@ -54,7 +54,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun getOnePet(@PathVariable id:Long) : PetAptsDTO =
             handle4xx { pets.getOnePet(id).let { PetAptsDTO(PetDTO(it), it.appointments.map { AppointmentDTO(it) }) } }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('ROLE_CLIENT')  and @securityService.canEditPet(principal, #id) ")
     @ApiOperation(value = "Update a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a pet"),
@@ -65,7 +65,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun updatePet(@RequestBody pet: PetDTO, @PathVariable id: Long) =
             handle4xx { pets.updatePet(PetDAO(pet, emptyList(), ClientDAO()), id) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('ROLE_CLIENT')  and @securityService.canEditPet(principal, #id) ")
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully deleted a pet"),
@@ -76,7 +76,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     fun deletePet(@PathVariable id: Long) =
             handle4xx { pets.deletePet(id) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('ROLE_CLIENT')  and @securityService.canEditPet(principal, #id) ")
     @ApiOperation(value = "List the appointments related to a Pet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),

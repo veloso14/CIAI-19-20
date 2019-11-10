@@ -95,7 +95,7 @@ class ClientControllerTester {
 
     @Test
     //TODO andas a pensar muito na teresa tu
-    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
+    @WithMockUser(username = "", password = "", roles = ["CLIENT"])
     fun `Test Get One Client`() {
         Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
         Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
