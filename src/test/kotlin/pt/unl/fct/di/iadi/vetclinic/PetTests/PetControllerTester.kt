@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic
+package pt.unl.fct.di.iadi.vetclinic.PetTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule

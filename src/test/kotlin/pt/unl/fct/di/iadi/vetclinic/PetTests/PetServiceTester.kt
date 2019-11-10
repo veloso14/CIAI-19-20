@@ -1,4 +1,4 @@
-package pt.unl.fct.di.iadi.vetclinic
+package pt.unl.fct.di.iadi.vetclinic.PetTests
 
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
@@ -71,7 +71,7 @@ class PetServiceTester {
                     pet
                 }
 
-        pets.addNewPet(PetDAO(0L, pantufas.name, pantufas.species,pantufas.frozen ,pantufas.appointments, pantufas.owner))
+        pets.addNewPet(PetDAO(0L, pantufas.name, pantufas.species, pantufas.frozen , pantufas.appointments, pantufas.owner))
     }
 
     @Test(expected = PreconditionFailedException::class)
