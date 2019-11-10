@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -64,7 +65,7 @@ class ClientControllerTester {
 
 
     @Test
-   // @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test Get One Client`() {
         Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
 
@@ -80,6 +81,7 @@ class ClientControllerTester {
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test GET One Client (Not Found)`() {
         Mockito.`when`(clients.getOneClient(2)).thenThrow(NotFoundException("not found"))
 
@@ -90,6 +92,7 @@ class ClientControllerTester {
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test checking appointments`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
@@ -124,6 +127,7 @@ class ClientControllerTester {
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test booking an appointment`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
 
@@ -167,6 +171,7 @@ class ClientControllerTester {
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test checking pets`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), veloso)
@@ -198,14 +203,13 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
     }
 
+    //TODO Porque é que isto falha ?
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test new pet`() {
 
         val louro = PetDTO(0, "louro", "Papagaio",false, 1)
-
-
         val louroDAO = PetDAO(louro, emptyList(), ClientDAO())
-
         val veloso = ClientDAO(1,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         veloso.pets = listOf(louroDAO)
 
@@ -213,9 +217,7 @@ class ClientControllerTester {
 
         Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
                 .then { assertThat( it.getArgument(0), equalTo(louroDAO)); it.getArgument(0) }
-
         Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
-
         Mockito.`when`(pets.getOnePet(1)).thenReturn(louroDAO)
 
         mvc.perform(post("$clientsURL/1/pets")

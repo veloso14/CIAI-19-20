@@ -21,7 +21,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/appointments")
 class AppointmentController(val apts: AppointmentService, val pets: PetService, val vets: VetService, val clients: ClientService) {
 
-    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered appointments", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -31,7 +31,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     @GetMapping("")
     fun getAllAppointments() = apts.getAllAppointments().map { AppointmentDTO(it) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new appointments", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointments"),
@@ -42,7 +42,7 @@ class AppointmentController(val apts: AppointmentService, val pets: PetService, 
     fun addNewAppointment(@RequestBody apt: AppointmentDTO): AppointmentDTO =
             AppointmentDTO(apts.addNewAppointment(AppointmentDAO( apt, pets.getOnePet(apt.petID),clients.getOneClient(apt.clientID), vets.getOneVet(apt.vetID))))
 
-    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "Get the details of a single appointment by id", response = AppointmentDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved appointment details"),

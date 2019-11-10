@@ -19,7 +19,7 @@ class SecurityService(
                    val vets: VetRepository,
                    val users: UserRepository ) {
 
-    
+
     fun addUser(newUser : UserDAO): Optional<UserDAO> {
             val aUser = users.findByUsername(newUser.username)
 

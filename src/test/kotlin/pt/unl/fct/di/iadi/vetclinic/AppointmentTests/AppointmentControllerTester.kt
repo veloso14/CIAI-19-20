@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -69,9 +70,25 @@ class AppointmentControllerTester {
         val aptsURL = "/appointments"
     }
 
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
+    fun `Test GET all appointments (Vet Role)`() {
+        Mockito.`when`(apts.getAllAppointments()).thenReturn(aptsDAO)
+
+        val result = mvc.perform(get(aptsURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize<Any>(aptsDTO.size)))
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
+        assertThat(responseDTO, equalTo(aptsDTO))
+    }
+
 
     @Test
-    fun `Test GET all appointments`() {
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    fun `Test GET all appointments (Admin Role)`() {
         Mockito.`when`(apts.getAllAppointments()).thenReturn(aptsDAO)
 
         val result = mvc.perform(get(aptsURL))
@@ -105,6 +122,7 @@ class AppointmentControllerTester {
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     //@Transactional
     fun `Test POST One appointment`() {
 

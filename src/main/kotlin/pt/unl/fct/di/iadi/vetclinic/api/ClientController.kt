@@ -22,7 +22,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 class ClientController(val clients: ClientService, val pets:PetService, val vets: VetService) {
 
 
-    @PreAuthorize("hasRole({'USER'})")
+    @PreAuthorize("hasAnyRole('CLIENT' , 'USER')")
     @ApiOperation(value = "Get the details of a single client by id", response = ClientDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved client details"),
@@ -34,7 +34,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun getOneClient(@PathVariable id: Long): ClientDTO =
             handle4xx { clients.getOneClient(id).let { ClientDTO(it) } }
 
-    @PreAuthorize("hasRole({'ADMIN','VETERINARIO'})")
+    @PreAuthorize("hasAnyRole('ADMIN','VETERINARIO')")
     @ApiOperation(value = "View a list of registered clients", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -44,7 +44,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     @GetMapping("")
     fun getAllClients() = clients.getAllClients().map { ClientDTO(it) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('CLIENT')")
      @ApiOperation(value = "List the appointments related to a Client", response = List::class)
      @ApiResponses(value = [
      ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
@@ -70,7 +70,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
 
 
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('CLIENT')")
     @ApiOperation(value = "Book an appointment", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
@@ -85,7 +85,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id), vets.getOneVet(apt.vetID))))
             }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "List the pets related to a client", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of pets"),
@@ -100,7 +100,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                         .map { PetDTO(it) }
             }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('CLIENT')")
     @ApiOperation(value = "Add a new pet to a client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a pet to a client"),
@@ -116,7 +116,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                 PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('CLIENT')")
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully deleted a pet"),
@@ -127,7 +127,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun deletePet( @PathVariable id: Long) =
             handle4xx { clients.deletePet(id) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('CLIENT')")
     @ApiOperation(value = "Update contact info of a client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
@@ -138,7 +138,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun updateClient(@RequestBody user: ClientDTO, @PathVariable id: Long) =
             handle4xx { clients.updateUser(id, ClientDAO(user, emptyList(), emptyList())) }
 
-    @PreAuthorize("hasRole({'CLIENT'})")
+    @PreAuthorize("hasRole('CLIENT')")
      @ApiOperation(value = "Change the password of a client", response = Unit::class)
      @ApiResponses(value = [
          ApiResponse(code = 200, message = "Successfully changed the password"),
