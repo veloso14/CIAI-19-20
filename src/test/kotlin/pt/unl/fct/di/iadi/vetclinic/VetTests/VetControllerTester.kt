@@ -8,12 +8,14 @@ import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -38,13 +40,12 @@ class VetControllerTester {
     @MockBean
     lateinit var vets: VetService
 
+    @MockBean
+    lateinit var vetRepo: VetRepository
+
 
     companion object {
-        // To avoid all annotations JsonProperties in data classes
-        // see: https://github.com/FasterXML/jackson-module-kotlin
-        // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
-
         val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
         val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
         val vetsDAO = mutableListOf(antonio, chenel);
@@ -80,7 +81,26 @@ class VetControllerTester {
     }
 
     @Test
-    fun `Test Get One vet`() {
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
+    fun `Test Get One vet (Vet Role)`() {
+        Mockito.`when`(vets.getOneVet(1)).thenReturn(antonio)
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","aUser","aPassword",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+
+        Mockito.`when`( vetRepo.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(vet ))
+
+        val result = mvc.perform(get("$vetsURL/1"))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<VetDTO>(responseString)
+        assertThat(responseDTO, equalTo(vetsDTO[0]))
+    }
+
+
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    fun `Test Get One vet (Admin Role)`() {
         Mockito.`when`(vets.getOneVet(1)).thenReturn(antonio)
 
         val result = mvc.perform(get("$vetsURL/1"))
@@ -93,11 +113,11 @@ class VetControllerTester {
     }
 
     @Test
-    fun `Test GET One Vet (Not Found)`() {
+    fun `Test GET One Vet (Not Found and No role)`() {
         Mockito.`when`(vets.getOneVet(2)).thenThrow(NotFoundException("not found"))
 
         mvc.perform(get("$vetsURL/2"))
-                .andExpect(status().is4xxClientError)
+                .andExpect(status().isForbidden)
     }
 
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
@@ -146,8 +166,31 @@ class VetControllerTester {
     }
 
  */
+@Test
+fun `Test checking appointments (No Login)`() {
+    val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+    val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+
+    val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), veloso, vet)
+
+    veloso.appointments = listOf(apt)
+
+    val aptDAO = ArrayList(listOf(apt))
+    val aptDTO = aptDAO.map{AppointmentDTO(it.id,it.date,it.desc, it.pet.id, it.client.id, it.vet.id)}
+
+
+    Mockito.`when`(vets.appointmentsOfVet(1)).thenReturn(listOf(apt))
+
+    mvc.perform(get("$vetsURL/1/appointments"))
+            .andExpect(status().isForbidden)
+            .andReturn()
+
+
+}
+
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
     fun `Test checking appointments`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
@@ -161,6 +204,9 @@ class VetControllerTester {
 
 
         Mockito.`when`(vets.appointmentsOfVet(1)).thenReturn(listOf(apt))
+        val vetUser = VetDAO(1L,"Guilherme","vel@gmail.com","aUser","aPassword",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+
+        Mockito.`when`( vetRepo.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(vetUser ))
 
 
         val result = mvc.perform(get("$vetsURL/1/appointments"))
@@ -173,12 +219,12 @@ class VetControllerTester {
     }
 
     @Test
-    fun `Test checking appointments of non vet`() {
+    fun `Test checking appointments of non vet  (No role)`() {
         Mockito.`when`(vets.appointmentsOfVet(1))
                 .thenThrow(NotFoundException("not found"))
 
         mvc.perform(get("$vetsURL/1/appointments"))
-                .andExpect(status().is4xxClientError)
+                .andExpect(status().isForbidden)
     }
 
 
