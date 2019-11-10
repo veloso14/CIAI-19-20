@@ -65,6 +65,31 @@ class ClientControllerTester {
 
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
+    fun `Test Get One Client (Bad ROLE)`() {
+        Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
+
+        mvc.perform(get("$clientsURL/2"))
+                .andExpect(status().isForbidden)
+                .andReturn()
+
+
+    }
+
+
+    @Test
+    fun `Test Get One Client (No ROLE)`() {
+        Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
+
+       mvc.perform(get("$clientsURL/2"))
+                .andExpect(status().isForbidden)
+                .andReturn()
+
+
+    }
+
+
+    @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test Get One Client`() {
         Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
@@ -81,7 +106,7 @@ class ClientControllerTester {
     }
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
     fun `Test GET One Client (Not Found)`() {
         Mockito.`when`(clients.getOneClient(2)).thenThrow(NotFoundException("not found"))
 

@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AppointmentController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AppointmentController.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AppointmentTests/AppointmentControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AppointmentTests/AppointmentControllerTester.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -181,7 +177,7 @@
       <workItem from="1573191948243" duration="3527000" />
       <workItem from="1573211580269" duration="2058000" />
       <workItem from="1573220959742" duration="561000" />
-      <workItem from="1573316998666" duration="3885000" />
+      <workItem from="1573316998666" duration="4147000" />
     </task>
     <servers />
   </component>
@@ -208,11 +204,6 @@
           <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt</url>
           <line>69</line>
           <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt</url>
-          <line>224</line>
-          <option name="timeStamp" value="15" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
