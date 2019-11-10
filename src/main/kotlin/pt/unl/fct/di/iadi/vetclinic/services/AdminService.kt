@@ -11,8 +11,7 @@ class AdminService(val admins: AdminRepository,
                  val pets: PetRepository,
                  val clients: ClientRepository,
                  val vets: VetRepository,
-                 val users: UserRepository,
-                 val vetService: VetService  ) {
+                 val users: UserRepository ) {
 
     fun getOneAdmin(id: Long): AdminDAO =
             admins.findById(id)
@@ -64,70 +63,6 @@ class AdminService(val admins: AdminRepository,
         else
             throw PreconditionFailedException ("You're not able to remove the default account")
     }
-
-   /* fun getVetsAppointments(id:Long): List<AppointmentDAO>{
-        return vetService.appointmentsOfVet(id)
-
-    }
-
-    */
-   fun getMonth(mon: String): Month {
-       print(mon)
-       return when {
-           mon.contains("JAN") -> Month.JANUARY
-           mon.contains("FEB") -> Month.FEBRUARY
-           mon.contains("MAR") -> Month.MARCH
-           mon.contains("APR") -> Month.APRIL
-           mon.contains("JUN") -> Month.JUNE
-           mon.contains("JUL") -> Month.JULY
-           mon.contains("AUG") -> Month.AUGUST
-           mon.contains("SEP") -> Month.SEPTEMBER
-           mon.contains("OCT") -> Month.OCTOBER
-           mon.contains("NOV") -> Month.NOVEMBER
-           mon.contains("DEC") -> Month.DECEMBER
-           else -> throw PreconditionFailedException("Month id not found!")
-       }
-   }
-
-    // gets one vet, creates default empty schedule and updates vet
-    fun setSchedule(id: Long, mon: String) {
-        val month = getMonth(mon)
-        val vet = vetService.getOneVet(id)
-        val schedules = vet.schedules
-        print(schedules.size)
-        schedules.forEach() {
-            if (it.month == month) {
-                throw PreconditionFailedException("Schedule for that month already set!")
-            }
-        }
-
-        val schedule = createSchedule(ScheduleDAO(vet, month))
-        schedules.add(schedule)
-        print(schedules.size)
-        vet.updateSchedules(schedules)
-    }
-
-    // creates a schedule ( list of 30 or 31 shifts corresponding to each day of the month )
-    fun createSchedule(schedules: ScheduleDAO): ScheduleDAO {
-        val shifts = mutableListOf<ShiftDAO>()
-        val shift = ShiftDAO(schedules)
-        for (x in 1..schedules.month.length(false)) {
-            shifts.add(createShift(shift, schedules, x))
-        }
-        return ScheduleDAO(schedules.vet, schedules.month, shifts)
-    }
-
-    // creates a shift ( list of 16 slots of 30 min )
-    fun createShift( shifts: ShiftDAO , schedules: ScheduleDAO, day: Int): ShiftDAO {
-        val slots = mutableListOf<SlotDAO>()
-        val baseDateTime = LocalDateTime.of(2019, schedules.month, day, 9, 0)
-        for (x in 0..15) {
-            val slot = SlotDAO(baseDateTime.plusMinutes((x * 30).toLong()), shifts)
-            slots.add(slot)
-        }
-        return ShiftDAO(slots, schedules)
-    }
-
 
     fun updateUser(id: Long, user: AdminDAO) =
             getOneAdmin(id).let { it.update(user); admins.save(it) }

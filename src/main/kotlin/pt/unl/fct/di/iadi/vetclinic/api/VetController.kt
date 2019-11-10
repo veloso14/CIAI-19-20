@@ -109,8 +109,18 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/schedule")
-    fun getSchedule(@PathVariable id: Long): List<ScheduleDAO> =
-            handle4xx { vets.getSchedule(id) }
+    fun getSchedule(@PathVariable id: Long, @RequestBody month: String): ScheduleDAO =
+            handle4xx { vets.getSchedule(id, month) }
 
+
+    @ApiOperation(value = "Set vet schedule to default one", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully set vets schedule"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PostMapping("/{id}/schedule")
+    fun setVetSchedule(@PathVariable id: Long, @RequestBody month: String) =
+            handle4xx { vets.setSchedule(id, month) }
 
 }

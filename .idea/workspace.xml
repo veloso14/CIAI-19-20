@@ -4,7 +4,10 @@
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AdminController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/Repositories.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/Repositories.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/AdminService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/AdminService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/VetService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/VetService.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -56,6 +59,11 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="SpringBootApplicationConfigurationType" />
+      </set>
+    </option>
     <option name="ruleStates">
       <list>
         <RuleState>
@@ -166,12 +174,17 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@f137d1d3" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2beead71" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@f137d1d3" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@eadca8c5" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2beead71" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@ac160792" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+            </path>
+            <path>
+              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@2beead71" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@b7e08b06" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
           </expand>
           <select />
@@ -196,6 +209,7 @@
       <workItem from="1572872755764" duration="3869000" />
       <workItem from="1572882686085" duration="790000" />
       <workItem from="1572971147857" duration="11089000" />
+      <workItem from="1573406803744" duration="1667000" />
     </task>
     <servers />
   </component>
