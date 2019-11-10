@@ -7,6 +7,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -42,6 +43,9 @@ class ClientControllerTester {
     lateinit var clients:ClientService
 
     @MockBean
+    lateinit var clientRepo: ClientRepository
+
+    @MockBean
     lateinit var pets: PetService
 
     companion object {
@@ -65,7 +69,7 @@ class ClientControllerTester {
 
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test Get One Client (Bad ROLE)`() {
         Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
 
@@ -90,9 +94,11 @@ class ClientControllerTester {
 
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    //TODO andas a pensar muito na teresa tu
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
     fun `Test Get One Client`() {
-        Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
 
         val result = mvc.perform(get("$clientsURL/2"))
                 .andExpect(status().isOk)
@@ -117,7 +123,7 @@ class ClientControllerTester {
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
     fun `Test checking appointments`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
@@ -131,6 +137,8 @@ class ClientControllerTester {
 
 
         Mockito.`when`(clients.appointmentsOfClient(1)).thenReturn(listOf(apt))
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
 
 
         val result = mvc.perform(get("$clientsURL/1/appointments"))
@@ -152,7 +160,7 @@ class ClientControllerTester {
     }
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
     fun `Test booking an appointment`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
 
@@ -167,6 +175,8 @@ class ClientControllerTester {
                 .then { assertThat( it.getArgument(0), equalTo(aptDAO)); it.getArgument(0) }
 
         Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
 
         mvc.perform(get("$clientsURL/1/appointments"))
                 .andExpect(status().isOk)
@@ -196,7 +206,7 @@ class ClientControllerTester {
     }
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
     fun `Test checking pets`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
         val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), veloso)
@@ -208,6 +218,8 @@ class ClientControllerTester {
 
 
         Mockito.`when`(clients.petsOfClient(1)).thenReturn(listOf(louro))
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
 
 
         val result = mvc.perform(get("$clientsURL/1/pets"))
