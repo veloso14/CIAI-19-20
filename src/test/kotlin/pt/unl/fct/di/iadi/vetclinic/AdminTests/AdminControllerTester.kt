@@ -8,6 +8,8 @@ import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -38,6 +40,10 @@ class AdminControllerTester {
 
     @MockBean
     lateinit var admins: AdminService
+
+    @MockBean
+    lateinit var adminsRepo: AdminRepository
+
 
 
     companion object {
@@ -90,17 +96,39 @@ class AdminControllerTester {
     }
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["USER"])
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test Get One Admin`() {
-        Mockito.`when`(admins.getOneAdmin(1)).thenReturn(cid)
+
+        val cid = AdminDAO(1L,"Antonio","antonio@gmail.com","aUser","aPassword",1234, "Rua Romao","rosto.jpg", 11)
+
+        Mockito.`when`(adminsRepo.findById(anyLong())).thenReturn(Optional.of(cid))
+        Mockito.`when`(admins.getOneAdmin(anyLong())).thenReturn(cid)
 
         val result = mvc.perform(get("$adminsURL/1"))
-                .andExpect(status().is4xxClientError)
+                .andExpect(status().is2xxSuccessful)
                 .andReturn()
 
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<AdminDTO>(responseString)
-        assertThat(responseDTO, equalTo(adminsDTO[0]))
+
+        val adminCid = mutableListOf(cid);
+
+        val CidDTO =
+                adminCid.map { AdminDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.photo,it.employeeID) }
+
+
+        assertThat(responseDTO, equalTo(CidDTO[0]))
+    }
+
+
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["USER"])
+    fun `Test Get One Admin (Bad Role)`() {
+        Mockito.`when`(admins.getOneAdmin(1)).thenReturn(cid)
+
+         mvc.perform(get("$adminsURL/1"))
+                .andExpect(status().is4xxClientError)
+                .andReturn()
     }
 
     @Test

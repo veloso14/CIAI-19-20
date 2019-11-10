@@ -1,6 +1,7 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -9,14 +10,16 @@ import java.util.*
 
 
 @Service
-class SecurityService(val admins: AdminRepository,
+class SecurityService(
+
+                   var admins: AdminRepository,
                    val appointments: AppointmentRepository,
                    val pets: PetRepository,
                    val clients: ClientRepository,
                    val vets: VetRepository,
                    val users: UserRepository ) {
 
-
+    
     fun addUser(newUser : UserDAO): Optional<UserDAO> {
             val aUser = users.findByUsername(newUser.username)
 
