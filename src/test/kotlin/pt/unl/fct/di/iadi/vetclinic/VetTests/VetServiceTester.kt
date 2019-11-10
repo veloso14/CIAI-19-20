@@ -15,6 +15,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
+import java.time.Month
 import java.util.*
 
 @RunWith(SpringRunner::class)
@@ -35,6 +36,10 @@ class VetServiceTester {
 
     @MockBean
     lateinit var aptRepo:AppointmentRepository
+
+    @MockBean
+    lateinit var schedulesRepository: ScheduleRepository
+
 
     companion object Constants {
         val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
@@ -114,6 +119,19 @@ class VetServiceTester {
         assertThat(vets.appointmentsOfVet(antonio.id), equalTo(antonio.appointments))
     }
 
+    @Test
+    fun `test on retrieving schedules`() {
+        val schedule1 = vets.createSchedule( ScheduleDAO(antonio, Month.JANUARY) )
+        val schedule2 = vets.createSchedule( ScheduleDAO(antonio, Month.MARCH) )
+        antonio.schedules = listOf(schedule1, schedule2).toMutableList()
+
+        vets.setSchedule(antonio.id, "JAN")
+
+        Mockito.`when`(schedulesRepository.findByVetAndMonth(antonio, Month.JANUARY)).thenReturn(Optional.of(schedule1))
+
+
+        assertThat(vets.getSchedule(antonio.id, "JAN"), equalTo(schedule1))
+    }
 
 
 }

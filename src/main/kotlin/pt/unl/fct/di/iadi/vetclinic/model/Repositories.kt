@@ -50,6 +50,7 @@ interface AdminRepository : JpaRepository<AdminDAO, Long> {
 }
 
 interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
+    @Query("select s from ScheduleDAO s  where s.vet = :vetDAO and s.month = :month ")
     fun findByVetAndMonth( vetDAO: VetDAO, month: Month) : Optional<ScheduleDAO>
 
 }
