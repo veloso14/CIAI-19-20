@@ -70,6 +70,27 @@ class PetControllerTester {
         val petsURL = "/pets"
     }
 
+
+    @Test
+    fun `Test GET all pets (No Role)`() {
+        Mockito.`when`(pets.getAllPets()).thenReturn(petsDAO)
+
+        mvc.perform(get(petsURL))
+                .andExpect(status().isForbidden())
+
+    }
+
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["USER"])
+    fun `Test GET all pets (Bad Role)`() {
+        Mockito.`when`(pets.getAllPets()).thenReturn(petsDAO)
+
+        mvc.perform(get(petsURL))
+                .andExpect(status().isForbidden())
+
+
+    }
+
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
     fun `Test GET all pets`() {

@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/PetTests/PetControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/PetTests/PetControllerTester.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -66,7 +64,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.PetControllerTester.Test POST One Pet">
+  <component name="RunManager" selected="JUnit.PetControllerTester">
     <configuration name="PetControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -155,8 +153,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.PetControllerTester.Test POST One Pet" />
         <item itemvalue="JUnit.PetControllerTester" />
+        <item itemvalue="JUnit.PetControllerTester.Test POST One Pet" />
         <item itemvalue="JUnit.PetControllerTester.Test checking appointments" />
         <item itemvalue="JUnit.PetControllerTester.Test adding an appointment to a pet" />
         <item itemvalue="JUnit.PetControllerTester.Test Get One Pet" />
@@ -185,7 +183,7 @@
       <workItem from="1573191948243" duration="3527000" />
       <workItem from="1573211580269" duration="2058000" />
       <workItem from="1573220959742" duration="561000" />
-      <workItem from="1573316998666" duration="7835000" />
+      <workItem from="1573316998666" duration="8087000" />
     </task>
     <servers />
   </component>
