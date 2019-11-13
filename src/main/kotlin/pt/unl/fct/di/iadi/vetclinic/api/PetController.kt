@@ -1,5 +1,7 @@
 package pt.unl.fct.di.iadi.vetclinic.api
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
@@ -19,7 +21,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/pets")
 class PetController(val pets: PetService, val vets:VetService) {
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
+    //TODO REACT  @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered pets", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -27,9 +29,18 @@ class PetController(val pets: PetService, val vets:VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @GetMapping("")
-    fun getAllPets() : List<PetAptsDTO> =
-            pets.getAllPets().map { PetAptsDTO(PetDTO(it),
-                                    it.appointments.map { AppointmentDTO(it) }) }
+    fun getAllPets() : List<PetAptsDTO> {
+
+    val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+    val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
+    val petsDAO = ArrayList(listOf(pantufas, bigodes))
+
+    val petsAptsDTO =
+            petsDAO.map { PetAptsDTO(PetDTO(it.id, it.name, it.species,it.frozen,0),
+                    it.appointments.map { AppointmentDTO(it) }) }
+    return petsAptsDTO}
+           // pets.getAllPets().map { PetAptsDTO(PetDTO(it),
+           //                         it.appointments.map { AppointmentDTO(it) }) }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new pet", response = Unit::class)

@@ -29,6 +29,8 @@ class SecurityConfig(
                 .antMatchers("/appointments").hasRole("ADMIN")
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
+                //TODO TESTE DO REACT
+                .antMatchers("/pets").permitAll()
 
                 //Permite mais endpoints
                 .antMatchers(HttpMethod.POST, "/users/login").permitAll()
