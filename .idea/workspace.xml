@@ -3,8 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetControllerTester.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,7 +41,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/aula7" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/OpenAPI" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -65,7 +65,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.VetControllerTester">
+  <component name="RunManager" selected="Spring Boot.VetClinicApplication">
     <configuration name="PetControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -184,6 +184,8 @@
       <workItem from="1573211580269" duration="2058000" />
       <workItem from="1573220959742" duration="561000" />
       <workItem from="1573316998666" duration="8873000" />
+      <workItem from="1573576608375" duration="5704000" />
+      <workItem from="1573624314765" duration="227000" />
     </task>
     <servers />
   </component>
