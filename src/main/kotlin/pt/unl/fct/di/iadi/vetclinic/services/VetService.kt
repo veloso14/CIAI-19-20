@@ -13,7 +13,7 @@ class VetService(val vets: VetRepository,
                  val users: UserRepository,
                  val schedulesRep: ScheduleRepository) {
 
-    fun getAllVets(): List<VetDAO> = vets.findAll().toList()
+    fun getAllVets(): List<VetDAO> = vets.findAllByFrozenFalse().toList()
 
     fun getOneVet(id: Long): VetDAO =
             vets.findById(id)

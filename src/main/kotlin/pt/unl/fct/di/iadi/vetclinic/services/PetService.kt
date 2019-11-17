@@ -14,7 +14,7 @@ class PetService(
 
     val logger = LoggerFactory.getLogger(PetService::class.java)
 
-    fun getAllPets(): List<PetDAO> = pets.findAll().toList()
+    fun getAllPets(): List<PetDAO> = pets.findAllByFrozenFalse().toList()
 
     fun addNewPet(pet: PetDAO) =
         // defensive programming
