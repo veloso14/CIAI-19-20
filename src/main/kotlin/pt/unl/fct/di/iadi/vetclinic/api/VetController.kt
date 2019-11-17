@@ -100,7 +100,7 @@ class VetController(val vets: VetService) {
             VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())))
 
 
-
+//TODO vet
     @ApiOperation(value = "Get Schedule related to a Vet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the schedule"),
@@ -112,7 +112,7 @@ class VetController(val vets: VetService) {
     fun getSchedule(@PathVariable id: Long, @RequestBody month: String): ScheduleDAO =
             handle4xx { vets.getSchedule(id, month) }
 
-
+//TODO admin
     @ApiOperation(value = "Set vet schedule to default one", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully set vets schedule"),
