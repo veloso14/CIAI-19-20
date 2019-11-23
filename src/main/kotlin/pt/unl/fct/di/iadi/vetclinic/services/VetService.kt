@@ -1,5 +1,6 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
 
@@ -55,14 +56,14 @@ class VetService(val vets: VetRepository,
             when {
                 vet.id != 0L -> throw PreconditionFailedException("Id must be 0 in insertion")
                 users.findByUsername(vet.username).isPresent -> throw PreconditionFailedException("There is already an user with the specified username")
-                else -> vets.save(vet)
+                else -> {vet.password = BCryptPasswordEncoder().encode(vet.password);vets.save(vet)}
             }
 
 
     fun updateUser(id: Long, user: VetDAO) =
             getOneVet(id).let { it.update(user); vets.save(it) }
 
-    fun updatePassword(id: Long, password: String) = getOneVet(id).let { it.changePassword(password); vets.save(it) }
+    fun updatePassword(id: Long, password: String) = getOneVet(id).let { it.changePassword(BCryptPasswordEncoder().encode(password)); vets.save(it) }
 
 
     fun fireVet(id: Long) = getOneVet(id).let { it.updateFrozen(true); vets.save(it) }
