@@ -57,7 +57,6 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
          handle4xx { clients.appointmentsOfClient(id).map { AppointmentDTO(it) } }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENT' , 'ROLE_VET' )")
     @ApiOperation(value = "New client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a client"),

@@ -74,7 +74,7 @@ class PetControllerTester {
         val petsDAO = ArrayList(listOf(pantufas, bigodes))
 
         val petsAptsDTO =
-            petsDAO.map { PetAptsDTO(PetDTO(it.id, it.name, it.species,it.frozen,0),
+            petsDAO.map { PetAptsDTO(PetDTO(it.id, it.name, it.species,0),
                                             it.appointments.map { AppointmentDTO(it) }) }
 
 
@@ -149,8 +149,8 @@ class PetControllerTester {
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test POST One Pet`() {
-        val louro = PetDTO(0, "louro", "Papagaio",false,0)
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species, louro.frozen, emptyList(),  ClientDAO())
+        val louro = PetDTO(0, "louro", "Papagaio",0)
+        val louroDAO = PetDAO(louro.id, louro.name, louro.species, false, emptyList<AppointmentDAO>(),  ClientDAO())
 
         val louroJSON = mapper.writeValueAsString(louro)
 

@@ -65,14 +65,14 @@ class AdminControllerTester {
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
-                vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address, it.photo,it.employeeID, it.frozen) }
+                vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address, it.photo,it.employeeID) }
 
         val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
         val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
         val petsDTO =
-                petsDAO.map {PetDTO(it.id, it.name, it.species,it.frozen, it.owner.id) }
+                petsDAO.map {PetDTO(it.id, it.name, it.species, it.owner.id) }
 
 
         val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
@@ -276,6 +276,22 @@ class AdminControllerTester {
 
      */
 
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    fun `Test POST One Admin`() {
+        val curroDTO = AdminDTO(0, "Romero","vel@gmail.com","vela","1234",987682,"Pio","",1)
+        val curroDAO = AdminDAO(curroDTO)
+
+        val curroJSON = mapper.writeValueAsString(curroDTO)
+
+        Mockito.`when`(admins.hireAdmin(nonNullAny(AdminDAO::class.java)))
+                .then { assertThat(it.getArgument(0), equalTo(curroDAO)); it.getArgument(0) }
+
+        mvc.perform(post(adminsURL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(curroJSON))
+                .andExpect(status().isOk)
+    }
 
 
 

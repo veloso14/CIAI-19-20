@@ -51,14 +51,14 @@ class VetControllerTester {
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
-                vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.photo,it.employeeID, it.frozen) }
+                vetsDAO.map { VetDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone, it.address,it.photo,it.employeeID) }
 
         val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
         val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
         val petsDTO =
-                petsDAO.map {PetDTO(it.id, it.name, it.species,it.frozen, 0) }
+                petsDAO.map {PetDTO(it.id, it.name, it.species, 0) }
 
 
         val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
@@ -225,6 +225,23 @@ fun `Test checking appointments (No Login)`() {
 
         mvc.perform(get("$vetsURL/1/appointments"))
                 .andExpect(status().isForbidden)
+    }
+
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    fun `Test POST One vet`() {
+        val curroDTO = VetDTO(0, "Romero","vel@gmail.com","vela","1234",987682,"Pio","",1)
+        val curroDAO = VetDAO(curroDTO, emptyList(), emptyList())
+
+        val curroJSON = mapper.writeValueAsString(curroDTO)
+
+        Mockito.`when`(vets.hireVet(nonNullAny(VetDAO::class.java)))
+                .then { assertThat(it.getArgument(0), equalTo(curroDAO)); it.getArgument(0) }
+
+        mvc.perform(post(vetsURL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(curroJSON))
+                .andExpect(status().isOk)
     }
 
 

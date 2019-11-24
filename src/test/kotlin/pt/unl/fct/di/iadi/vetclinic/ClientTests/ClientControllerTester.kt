@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import pt.unl.fct.di.iadi.vetclinic.PetTests.PetControllerTester
 import pt.unl.fct.di.iadi.vetclinic.api.*
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
@@ -213,7 +214,7 @@ class ClientControllerTester {
         veloso.pets = listOf(louro)
 
         val louroDAO = ArrayList(listOf(louro))
-        val louroDTO = louroDAO.map{PetDTO(it.id, it.name, it.species,it.frozen, it.owner.id)}
+        val louroDTO = louroDAO.map{PetDTO(it.id, it.name, it.species,it.owner.id)}
 
 
         Mockito.`when`(clients.petsOfClient(1)).thenReturn(listOf(louro))
@@ -243,7 +244,7 @@ class ClientControllerTester {
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test new pet`() {
 
-        val louro = PetDTO(0, "louro", "Papagaio",false, 1)
+        val louro = PetDTO(0, "louro", "Papagaio", 1)
         val louroDAO = PetDAO(louro, emptyList(), ClientDAO())
         val veloso = ClientDAO(1,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         veloso.pets = listOf(louroDAO)
@@ -279,6 +280,24 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
 
     }
+
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    fun `Test POST One Client`() {
+        val curroDTO = ClientDTO(0, "Romero","vel@gmail.com","vela","1234",987682,"Pio")
+        val curroDAO = ClientDAO(0,"Romero","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+
+        val curroJSON = PetControllerTester.mapper.writeValueAsString(curroDTO)
+
+        Mockito.`when`(clients.newClient(nonNullAny(ClientDAO::class.java)))
+                .then { assertThat(it.getArgument(0), equalTo(curroDAO)); it.getArgument(0) }
+
+        mvc.perform(post(clientsURL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(curroJSON))
+                .andExpect(status().isOk)
+    }
+
 
 
 

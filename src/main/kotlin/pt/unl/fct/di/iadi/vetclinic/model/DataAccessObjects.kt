@@ -32,7 +32,7 @@ data class PetDAO(
 ) {
     constructor() : this(0,"","",false, emptyList(), ClientDAO())
 
-    constructor(pet: PetDTO, apts:List<AppointmentDAO>, owner: ClientDAO) : this(pet.id,pet.name,pet.species,pet.frozen, apts, owner)
+    constructor(pet: PetDTO, apts:List<AppointmentDAO>, owner: ClientDAO) : this(pet.id,pet.name,pet.species,false, apts, owner)
 
     fun update(other:PetDAO) {
         this.name = other.name
@@ -145,7 +145,7 @@ data class VetDAO(
         var schedules:List<ScheduleDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address, photo, role) {
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo,"VET" ,vet.employeeID, vet.frozen, apts, schedules)
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo,"VET" ,vet.employeeID, false, apts, schedules)
     constructor() : this(0,"","","","",0,"","","VET",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
     constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, photo:String, employeeID: Long,frozen: Boolean, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(id, name, email, username, password, cellphone, address,photo,"VET",employeeID,frozen, apts, schedules)
     fun updateFrozen(frozen: Boolean) {

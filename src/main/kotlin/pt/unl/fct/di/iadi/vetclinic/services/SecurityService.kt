@@ -20,17 +20,6 @@ class SecurityService(
                    val users: UserRepository ) {
 
 
-    fun addUser(newUser : UserDAO): Optional<UserDAO> {
-            val aUser = users.findByUsername(newUser.username)
-
-            return if ( aUser.isPresent )
-                Optional.empty()
-            else {
-                newUser.password = BCryptPasswordEncoder().encode(newUser.password)
-                Optional.of(users.save(newUser))
-            }
-        }
-
 
    //serve para editar pet e delete pet
     fun canEditPet(principal: UserDetails, petID:Long):Boolean {
