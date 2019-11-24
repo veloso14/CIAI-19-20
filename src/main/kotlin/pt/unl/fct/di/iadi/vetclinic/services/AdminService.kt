@@ -13,8 +13,8 @@ class AdminService(val admins: AdminRepository,
                  val clients: ClientRepository,
                  val vets: VetRepository,
                  val users: UserRepository,
-                 val vetService: VetService  ) {
-
+                 val vetService: VetService
+                   ) {
 
 
     fun getOneAdmin(id: Long): AdminDAO =

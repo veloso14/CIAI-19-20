@@ -31,6 +31,18 @@ import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
 import kotlin.collections.ArrayList
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.test.context.TestSecurityContextHolder.setAuthentication
+import org.apache.coyote.http11.Constants.a
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.test.context.TestSecurityContextHolder.setAuthentication
+import org.apache.coyote.http11.Constants.a
+import org.springframework.security.test.context.TestSecurityContextHolder.setAuthentication
+import org.apache.coyote.http11.Constants.a
+
+
+
+
 
 
 @RunWith(SpringRunner::class)
@@ -138,11 +150,10 @@ class PetControllerTester {
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test POST One Pet`() {
         val louro = PetDTO(0, "louro", "Papagaio",false,0)
-        val louroDAO = PetDAO(louro.id, louro.name, louro.species, louro.frozen, emptyList(),  ClientDAO(2L,"aUser","chenel@gmail.com","aUser","1234",1234, "Rua Romao", emptyList(), emptyList()))
+        val louroDAO = PetDAO(louro.id, louro.name, louro.species, louro.frozen, emptyList(),  ClientDAO())
 
         val louroJSON = mapper.writeValueAsString(louro)
 
-        //TODO falha aqui porque?
         Mockito.`when`(pets.addNewPet(nonNullAny(PetDAO::class.java)))
                 .then { assertThat(it.getArgument(0), equalTo(louroDAO)); it.getArgument(0) }
 
@@ -184,9 +195,18 @@ class PetControllerTester {
     }
 
     @Test
-    //TODO is dava 404 antes
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    @WithMockUser(username = "juli", password = "1234", roles = ["CLIENT"])
     fun `Test adding an appointment to a pet`() {
+        /*val ctx = SecurityContextHolder.createEmptyContext()
+        ctx.authentication = UsernamePasswordAuthenticationToken("juli", "1234")
+        SecurityContextHolder.setContext(ctx)
+
+         */
+        /*val auth = UsernamePasswordAuthenticationToken("juli", "1234")
+        val securityContext = SecurityContextHolder.getContext()
+        securityContext.authentication = auth
+
+         */
 
         val juli = ClientDAO(1,"Julian","julian@gmail.com","juli","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         val lopez = VetDAO(1,"Lopez","lopez@gmail.com","chavez","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())

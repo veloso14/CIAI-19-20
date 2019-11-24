@@ -1,5 +1,5 @@
 /**
-Copyright 2019 João Costa Seco
+Copyright 2019 João Veloso, Luís Grilo, Bernardo Amaral
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -72,11 +72,12 @@ abstract class UserDAO( @Id @GeneratedValue open val id: Long,
                         open var password: String,
                         open var cellphone: Long,
                         open var address: String,
-                        open var photo: String
+                        open var photo: String,
+                        open var role: String
 ) {
 
 
-    constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address, user.photo)
+    constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address, user.photo, "")
     open fun update(other:UserDAO) {
 
         this.email = other.email
@@ -105,11 +106,12 @@ data class ClientDAO(override val id: Long,
                      override  var cellphone: Long,
                      override  var address: String,
                      override  var photo:String,
+                     override  var role:String,
                      @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
                 var pets:List<PetDAO>,
                      @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL])
                 var appointments:List<AppointmentDAO>
-) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
+) : UserDAO(id,name, email, username, password,cellphone,address, photo, role) {
 
     override fun update(other: UserDAO) {
         super.update(other)
@@ -119,9 +121,9 @@ data class ClientDAO(override val id: Long,
         super.changePassword(password)
     }
 
-    constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address,client.photo, pets, apts)
-    constructor() : this(0,"","","","",0,"","", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
-    constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(id, name, email, username, password, cellphone, address,"", pets, apts)
+    constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address,client.photo,"CLIENT", pets, apts)
+    constructor() : this(0,"","","","",0,"","","CLIENT", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
+    constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(id, name, email, username, password, cellphone, address,"","CLIENT", pets, apts)
 }
 
 @Entity
@@ -134,6 +136,7 @@ data class VetDAO(
         override  var cellphone: Long,
         override  var address: String,
         override var photo:String,
+        override var role:String,
         var employeeID: Long,
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
@@ -141,9 +144,10 @@ data class VetDAO(
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var schedules:List<ScheduleDAO>
 
-) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
-    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+) : UserDAO(id,name, email, username, password,cellphone,address, photo, role) {
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo,"VET" ,vet.employeeID, vet.frozen, apts, schedules)
+    constructor() : this(0,"","","","",0,"","","VET",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+    constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, photo:String, employeeID: Long,frozen: Boolean, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(id, name, email, username, password, cellphone, address,photo,"VET",employeeID,frozen, apts, schedules)
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }
@@ -169,10 +173,11 @@ data class AdminDAO( override val id: Long,
                     override  var cellphone: Long,
                     override  var address: String,
                      override var photo:String,
-                    var employeeID: Long) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
-    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, admin.employeeID)
-    constructor() : this(0,"","","","",0,"","",0)
-
+                     override var role:String,
+                    var employeeID: Long) : UserDAO(id,name, email, username, password,cellphone,address, photo, role) {
+    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, "ADMIN",admin.employeeID)
+    constructor() : this(0,"","","","",0,"","","ADMIN",0)
+    constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, photo:String, employeeID: Long) : this(id, name, email, username, password, cellphone, address,photo,"ADMIN",employeeID)
     override fun update(other: UserDAO) {
         super.update(other)
     }

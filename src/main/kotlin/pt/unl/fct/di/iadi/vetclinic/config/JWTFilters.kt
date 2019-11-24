@@ -9,7 +9,11 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.filter.GenericFilterBean
+import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
+import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
+import pt.unl.fct.di.iadi.vetclinic.services.AdminService
+import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
 import java.util.*
 import javax.servlet.FilterChain
@@ -132,7 +136,7 @@ class JWTAuthenticationFilter: GenericFilterBean() {
 /**
  * Instructions:
  *
- * http POST :8080/login username=user password=password
+ * AuthenticationManagerBuilder
  *
  * Observe in the response:
  *
@@ -145,17 +149,17 @@ class JWTAuthenticationFilter: GenericFilterBean() {
 
 class UserPasswordSignUpFilterToJWT (
         defaultFilterProcessesUrl: String?,
-        private val security: SecurityService
+        private val clients: ClientService
 ) : AbstractAuthenticationProcessingFilter(defaultFilterProcessesUrl) {
 
     override fun attemptAuthentication(request: HttpServletRequest?,
                                        response: HttpServletResponse?): Authentication? {
         //getting user from request body
-        val user = ObjectMapper().readValue(request!!.inputStream, UserDAO::class.java)
+        val user = ObjectMapper().readValue(request!!.inputStream, ClientDAO::class.java)
 
-        return security
-                .addUser(user)
-                .orElse( null )
+        return clients
+                .newClient(user)
+                //.orElse( null )
                 .let {
                     val auth = UserAuthToken(user.username)
                     SecurityContextHolder.getContext().authentication = auth

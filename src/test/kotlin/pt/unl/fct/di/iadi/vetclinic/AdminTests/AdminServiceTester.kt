@@ -9,6 +9,7 @@ import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.test.context.junit4.SpringRunner
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
@@ -168,7 +169,7 @@ class AdminServiceTester {
                     assertThat(admin.name, equalTo(cid.name))
                     assertThat(admin.email, equalTo(cid.email))
                     assertThat(admin.username, equalTo(cid.username))
-                    assertThat(admin.password, equalTo(cid.password))
+                   // assertThat(admin.password, equalTo(cid.password))
                     assertThat(admin.cellphone, equalTo(cid.cellphone))
                     assertThat(admin.address, equalTo(cid.address))
                     assertThat(admin.photo, equalTo(cid.photo))

@@ -1,11 +1,15 @@
 package pt.unl.fct.di.iadi.vetclinic.config
 
+import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
+import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
+import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 class CustomUserDetails(
@@ -31,15 +35,16 @@ class CustomUserDetails(
 
 @Service
 class CustomUserDetailsService(
-        val security: SecurityService
+       // val security: SecurityService
+        val users: UserRepository
 ) : UserDetailsService {
 
     override fun loadUserByUsername(username: String?): UserDetails {
 
         username?.let {
-            val userDAO = security.users.findByUsername(username)
+            val userDAO = users.findByUsername(username)
             if (userDAO.isPresent) {
-                return CustomUserDetails(userDAO.get().username, userDAO.get().password, mutableListOf())
+                return CustomUserDetails(userDAO.get().username, userDAO.get().password, mutableListOf(GrantedAuthority { userDAO.get().role }))
             } else
                 throw UsernameNotFoundException(username)
         }

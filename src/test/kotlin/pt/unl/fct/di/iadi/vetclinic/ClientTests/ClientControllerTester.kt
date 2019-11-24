@@ -94,8 +94,7 @@ class ClientControllerTester {
 
 
     @Test
-    //TODO andas a pensar muito na teresa tu
-    @WithMockUser(username = "", password = "", roles = ["CLIENT"])
+    @WithMockUser(username = "", password = "", roles = ["VET"])
     fun `Test Get One Client`() {
         Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
         Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
@@ -240,7 +239,6 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
     }
 
-    //TODO Porque é que isto falha ?
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test new pet`() {

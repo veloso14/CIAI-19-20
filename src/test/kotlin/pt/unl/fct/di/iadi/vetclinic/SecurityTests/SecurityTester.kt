@@ -40,11 +40,12 @@ class SecurityTester {
 
     companion object {
         val petsURL = "/pets"
+        val adminsURL = "/admins"
     }
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["USER"])
-    fun `Test GET all pets (a user)`() {
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
+    fun `Test GET all pets (a vet)`() {
         Mockito.`when`(pets.getAllPets()).thenReturn(emptyList())
 
         mvc.perform(MockMvcRequestBuilders.get(petsURL))
@@ -55,11 +56,12 @@ class SecurityTester {
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test Acesso Admins (Com Role certo)`() {
 
-        Mockito.`when`(admins.getOneAdmin(1)).thenReturn(AdminControllerTester.cid)
+        //Mockito.`when`(admins.getOneAdmin(1)).thenReturn(AdminControllerTester.cid)
+        Mockito.`when`(admins.getAllAdmins()).thenReturn(emptyList())
 
-        val result = mvc.perform(MockMvcRequestBuilders.get("${AdminControllerTester.adminsURL}/1"))
+         mvc.perform(MockMvcRequestBuilders.get("adminsURL"))
                 .andExpect(status().isOk)
-                .andReturn()
+                //.andReturn()
     }
 
     @Test
