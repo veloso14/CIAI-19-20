@@ -2,8 +2,10 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Month
+import java.util.*
 
 @Service
 class VetService(val vets: VetRepository,
@@ -73,7 +75,7 @@ class VetService(val vets: VetRepository,
     //
 
     fun getSchedule(id: Long, mon: String): ScheduleDAO {
-        val vet = this.getOneVet(id)
+        val vet = getOneVet(id)
         val month = getMonth(mon)
         return schedulesRep.findByVetAndMonth(vet, month).get()
     }
@@ -96,7 +98,7 @@ class VetService(val vets: VetRepository,
     }
 
     // gets one vet, creates default empty schedule and updates vet
-    fun setSchedule(id: Long, mon: String) {
+    fun setSchedule(id: Long, mon: String): ScheduleDAO {
         val month = getMonth(mon)
         val vet = getOneVet(id)
         val schedules = vet.schedules
@@ -111,6 +113,7 @@ class VetService(val vets: VetRepository,
         schedules.add(schedule)
         vet.updateSchedules(schedules)
         schedulesRep.save(schedule)
+        return schedule
     }
 
     // creates a schedule ( list of 30 or 31 shifts corresponding to each day of the month )
@@ -126,12 +129,26 @@ class VetService(val vets: VetRepository,
     // creates a shift ( list of 16 slots of 30 min )
     fun createShift(shifts: ShiftDAO, schedules: ScheduleDAO, day: Int): ShiftDAO {
         val slots = mutableListOf<SlotDAO>()
-        val baseDateTime = LocalDateTime.of(2019, schedules.month, day, 9, 0)
-        for (x in 0..15) {
-            val slot = SlotDAO(baseDateTime.plusMinutes((x * 30).toLong()), shifts)
+        //val baseDateTime = LocalDateTime.of(2019, schedules.month, day, 9, 0).
+
+        val year = 2019
+        val month = schedules.month.value
+        val date = Date(year, month-1, day, 9, 0)
+
+        //val calendar: Calendar = Calendar.getInstance()
+        //calendar.time = date
+
+        for (x in 0..16) {
+            //calendar.add(Calendar.MINUTE, x*30)
+            val newDate = addMinutes(date, x*30)
+            val slot = SlotDAO(newDate, shifts)
             slots.add(slot)
         }
         return ShiftDAO(slots, schedules)
+    }
+
+    fun addMinutes(date: Date, minutes: Int): Date {
+        return Date(date.time + minutes * 60000)
     }
 
 }

@@ -1,5 +1,6 @@
 package pt.unl.fct.di.iadi.vetclinic.VetTests
 
+import jdk.nashorn.internal.objects.NativeArray.forEach
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -133,5 +134,39 @@ class VetServiceTester {
         assertThat(vets.getSchedule(antonio.id, "JAN"), equalTo(schedule1))
     }
 
+    @Test
+    fun `test on create schedule`() {
 
+        val schedule = vets.createSchedule( ScheduleDAO(antonio, Month.APRIL) )
+
+        Mockito.`when`(schedulesRepository.save(Mockito.any(ScheduleDAO::class.java)))
+                .then {
+                    val sch: ScheduleDAO = it.getArgument(0)
+                    assertThat(sch.id, equalTo(0L))
+                    assertThat(sch.vet, equalTo(schedule.vet))
+                    assertThat(sch.month, equalTo(schedule.month))
+                    assertThat(sch.shifts, equalTo(schedule.shifts))
+                    sch
+                }
+
+        vets.setSchedule(1, "APR")
+
+    }
+
+    @Test
+    fun `test schedules`() {
+
+        val vet1 = VetDAO(0L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val vet2 = VetDAO(0L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+
+        vets.hireVet(vet1)
+        vets.hireVet(vet2)
+
+        val schedule1 = vets.setSchedule(1, "JAN")
+        val schedule2 = vets.setSchedule(2, "JUN")
+
+        println("schedule 1: " + schedule1.vet.toString())
+        println("schedule 2: " + schedule2.vet.toString())
+
+    }
 }

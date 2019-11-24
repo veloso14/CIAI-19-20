@@ -15,7 +15,7 @@ class AdminService(val admins: AdminRepository,
 
     fun getOneAdmin(id: Long): AdminDAO =
             admins.findById(id)
-                    .orElseThrow { NotFoundException("There is no vet with Id $id") }
+                    .orElseThrow { NotFoundException("There is no admin with Id $id") }
 
     fun getAllAdmins(): List<AdminDAO> = admins.findAll().toList()
 

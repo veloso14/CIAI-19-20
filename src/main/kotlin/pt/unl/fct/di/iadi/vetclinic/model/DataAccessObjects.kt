@@ -205,6 +205,10 @@ data class ScheduleDAO(
         this.shifts = shifts
     }
 
+    fun getShiftsList(): List<ShiftDAO> {
+        return shifts
+    }
+
     constructor( vet: VetDAO, month: Month, shifts: List<ShiftDAO> ) : this ( 0L, vet, month, shifts )
     constructor( vet: VetDAO, month: Month ) : this ( 0L, vet, month, emptyList() )
 }
@@ -221,6 +225,20 @@ data class ShiftDAO(
         this.slots = slots
     }
 
+    fun getSlotsList(): List<SlotDAO> {
+        return slots
+    }
+
+    fun getFreeSlots(): List<SlotDAO> {
+        val freeSlots : MutableList<SlotDAO> = mutableListOf()
+        for (slot in slots) {
+            if (slot.available) {
+                freeSlots.add(slot)
+            }
+        }
+        return slots
+    }
+
     constructor( slots: List<SlotDAO>, schedule: ScheduleDAO) : this ( 0L, slots, schedule )
     constructor( schedule: ScheduleDAO ) : this ( 0L, emptyList<SlotDAO>(), schedule )
 }
@@ -229,12 +247,12 @@ data class ShiftDAO(
 @Entity // each slot has start date and available status
 data class SlotDAO(
         @Id @GeneratedValue val id: Long,
-        var start: LocalDateTime,
+        var start: Date,
         var available: Boolean,
         @ManyToOne val shift: ShiftDAO
 ) {
 
-    constructor(dateTime: LocalDateTime, shift: ShiftDAO) : this (0L, dateTime, true, shift)
+    constructor(dateTime: Date, shift: ShiftDAO) : this (0L, dateTime, true, shift)
 
     fun setAvailableFalse() {
         this.available = false

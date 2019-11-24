@@ -31,6 +31,9 @@ class AppointmentServiceTester {
         val consulta = AppointmentDAO(1L, Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
         val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
 
+        val data = Date(2019,1,1,9,0)
+        val consulta_marcada = AppointmentDAO(1L, data, "consulta",PetDAO(), ClientDAO(), VetDAO())
+
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
     }
@@ -76,7 +79,6 @@ class AppointmentServiceTester {
     fun `test on adding a new pet (Error)`() {
         apts.addNewAppointment(consulta) // pantufas has a non-0 id
     }
-
 
 
 }
