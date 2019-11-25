@@ -24,7 +24,6 @@ import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
-import java.time.LocalDateTime
 import java.util.*
 import kotlin.collections.ArrayList
 

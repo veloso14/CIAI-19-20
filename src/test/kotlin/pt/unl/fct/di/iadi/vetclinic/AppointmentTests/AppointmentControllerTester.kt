@@ -21,13 +21,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetAptsDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
-import java.time.LocalDateTime
 import java.util.*
-import javax.transaction.Transactional
 import kotlin.collections.ArrayList
 
 

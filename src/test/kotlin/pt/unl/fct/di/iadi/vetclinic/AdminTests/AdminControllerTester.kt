@@ -24,7 +24,6 @@ import pt.unl.fct.di.iadi.vetclinic.api.*
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @RunWith(SpringRunner::class)

@@ -1,11 +1,9 @@
 package pt.unl.fct.di.iadi.vetclinic
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Profile
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.util.*

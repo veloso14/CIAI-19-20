@@ -16,9 +16,7 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.model
 
-import net.bytebuddy.asm.Advice
 import pt.unl.fct.di.iadi.vetclinic.api.*
-import java.time.LocalDateTime
 import java.time.Month
 import java.util.*
 import javax.persistence.*
@@ -130,26 +128,26 @@ data class ClientDAO(override val id: Long,
 @Entity
 data class VetDAO(
         override val id: Long,
-        override  val name: String,
-        override  var email: String,
-        override  var username: String,
-        override  var password: String,
-        override  var cellphone: Long,
-        override  var address: String,
+        override val name: String,
+        override var email: String,
+        override var username: String,
+        override var password: String,
+        override var cellphone: Long,
+        override var address: String,
         override var photo:String,
         var employeeID: Long,
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var appointments:List<AppointmentDAO>,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
-        var schedules: MutableList<ScheduleDAO>
+        var schedules: List<ScheduleDAO>
 
 ) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
 
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules: MutableList<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
-    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules: List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
+    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
 
-    fun updateSchedules(schedules: MutableList<ScheduleDAO>) {
+    fun updateSchedules(schedules: List<ScheduleDAO>) {
         this.schedules = schedules
     }
 
@@ -195,9 +193,9 @@ data class AdminDAO( override val id: Long,
 @Entity // each schedule has a month and a list of shifts. number of shifts on list depend on month
 data class ScheduleDAO(
         @Id @GeneratedValue val id : Long,
-        @ManyToOne var vet: VetDAO,
+        @ManyToOne(cascade = [CascadeType.ALL]) var vet: VetDAO,
         val month: Month,
-        @OneToMany(mappedBy = "schedule") var shifts: List<ShiftDAO>
+        @OneToMany(mappedBy = "schedule", cascade = [CascadeType.ALL]) var shifts: List<ShiftDAO>
 
 ) {
 
@@ -211,19 +209,16 @@ data class ScheduleDAO(
 
     constructor( vet: VetDAO, month: Month, shifts: List<ShiftDAO> ) : this ( 0L, vet, month, shifts )
     constructor( vet: VetDAO, month: Month ) : this ( 0L, vet, month, emptyList() )
+    constructor(month: Month) : this ( 0L, VetDAO(), month, emptyList() )
 }
 
 
 @Entity // each shift is list of 16 slots of 30 min
 data class ShiftDAO(
         @Id @GeneratedValue val id : Long,
-        @OneToMany(mappedBy = "shift") var slots: List<SlotDAO>,
-        @ManyToOne val schedule: ScheduleDAO
+        @OneToMany(mappedBy = "shift", cascade = [CascadeType.ALL]) var slots: List<SlotDAO>,
+        @ManyToOne(cascade = [CascadeType.ALL]) val schedule: ScheduleDAO
 ) {
-
-    fun updateSlots(slots: List<SlotDAO>) {
-        this.slots = slots
-    }
 
     fun getSlotsList(): List<SlotDAO> {
         return slots
@@ -241,6 +236,7 @@ data class ShiftDAO(
 
     constructor( slots: List<SlotDAO>, schedule: ScheduleDAO) : this ( 0L, slots, schedule )
     constructor( schedule: ScheduleDAO ) : this ( 0L, emptyList<SlotDAO>(), schedule )
+
 }
 
 
@@ -249,10 +245,10 @@ data class SlotDAO(
         @Id @GeneratedValue val id: Long,
         var start: Date,
         var available: Boolean,
-        @ManyToOne val shift: ShiftDAO
+        @ManyToOne(cascade = [CascadeType.ALL]) val shift: ShiftDAO
 ) {
 
-    constructor(dateTime: Date, shift: ShiftDAO) : this (0L, dateTime, true, shift)
+    constructor(date: Date, shift: ShiftDAO) : this (0L, date, true, shift)
 
     fun setAvailableFalse() {
         this.available = false

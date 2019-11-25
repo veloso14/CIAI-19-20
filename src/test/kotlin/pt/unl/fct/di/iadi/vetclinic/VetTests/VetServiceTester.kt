@@ -1,6 +1,5 @@
 package pt.unl.fct.di.iadi.vetclinic.VetTests
 
-import jdk.nashorn.internal.objects.NativeArray.forEach
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -13,8 +12,6 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
-import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
 import java.time.Month
 import java.util.*
@@ -27,32 +24,32 @@ class VetServiceTester {
     lateinit var vets: VetService
 
     @MockBean
-    lateinit var repo:VetRepository
+    lateinit var repo: VetRepository
 
     @MockBean
-    lateinit var clientsRepo:ClientRepository
+    lateinit var clientsRepo: ClientRepository
 
     @MockBean
-    lateinit var petsRepo:PetRepository
+    lateinit var petsRepo: PetRepository
 
     @MockBean
-    lateinit var aptRepo:AppointmentRepository
+    lateinit var aptRepo: AppointmentRepository
 
     @MockBean
     lateinit var schedulesRepository: ScheduleRepository
 
 
     companion object Constants {
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony", "1234", 1234, "Rua Romao", "rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val chenel = VetDAO(2L, "Chenel", "chenel@gmail.com", "chenel", "1234", 1234, "Rua Romao", "rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
         val vetsDAO = mutableListOf(antonio, chenel);
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog", false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
-        val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
-        val campuzano = ClientDAO(2L,"Tomas","camp@gmail.com","camp","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val manzanares = ClientDAO(1L, "JoseMari", "man@gmail.com", "manza", "1234", 1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val campuzano = ClientDAO(2L, "Tomas", "camp@gmail.com", "camp", "1234", 1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         val clientsDAO = mutableListOf(manzanares, campuzano);
 
         val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
@@ -76,30 +73,31 @@ class VetServiceTester {
 
         vets.getOneVet(0L)
     }
-/*
-    @Test
-    fun `basic test on getAllPets`() {
-        Mockito.`when`(petsRepo.findAll()).thenReturn(petsDAO);
 
-        assertThat(vets.getAllPets(), equalTo(petsDAO as List<PetDAO>))
-    }
+    /*
+        @Test
+        fun `basic test on getAllPets`() {
+            Mockito.`when`(petsRepo.findAll()).thenReturn(petsDAO);
 
-    @Test
-    fun `basic test on getAllClients`() {
-        Mockito.`when`(clientsRepo.findAll()).thenReturn(clientsDAO);
+            assertThat(vets.getAllPets(), equalTo(petsDAO as List<PetDAO>))
+        }
 
-        assertThat(vets.getAllClients(), equalTo(clientsDAO as List<ClientDAO>))
-    }
+        @Test
+        fun `basic test on getAllClients`() {
+            Mockito.`when`(clientsRepo.findAll()).thenReturn(clientsDAO);
 
-    @Test
-    fun `basic test on getAllApts`() {
-        Mockito.`when`(aptRepo.findAll()).thenReturn(consultasDAO);
+            assertThat(vets.getAllClients(), equalTo(clientsDAO as List<ClientDAO>))
+        }
 
-        assertThat(vets.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
-    }
+        @Test
+        fun `basic test on getAllApts`() {
+            Mockito.`when`(aptRepo.findAll()).thenReturn(consultasDAO);
+
+            assertThat(vets.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
+        }
 
 
- */
+     */
     @Test
     fun `test on retrieving appointments 1`() {
         val consulta1 = AppointmentDAO(1, Date(), "consulta1", PetDAO(), ClientDAO(), antonio)
@@ -122,8 +120,8 @@ class VetServiceTester {
 
     @Test
     fun `test on retrieving schedules`() {
-        val schedule1 = vets.createSchedule( ScheduleDAO(antonio, Month.JANUARY) )
-        val schedule2 = vets.createSchedule( ScheduleDAO(antonio, Month.MARCH) )
+        val schedule1 = vets.createSchedule(ScheduleDAO(antonio, Month.JANUARY))
+        val schedule2 = vets.createSchedule(ScheduleDAO(antonio, Month.MARCH))
         antonio.schedules = listOf(schedule1, schedule2).toMutableList()
 
         vets.setSchedule(antonio.id, "JAN")
@@ -137,30 +135,23 @@ class VetServiceTester {
     @Test
     fun `test on create schedule`() {
 
-        val schedule = vets.createSchedule( ScheduleDAO(antonio, Month.APRIL) )
+        val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony",
+                "1234", 1234, "Rua Romao", "rosto.jpg", 11,
+                true, emptyList(), emptyList())
+        val schedule = vets.createSchedule(ScheduleDAO(antonio, Month.APRIL))
 
-        Mockito.`when`(schedulesRepository.save(Mockito.any(ScheduleDAO::class.java)))
-                .then {
-                    val sch: ScheduleDAO = it.getArgument(0)
-                    assertThat(sch.id, equalTo(0L))
-                    assertThat(sch.vet, equalTo(schedule.vet))
-                    assertThat(sch.month, equalTo(schedule.month))
-                    assertThat(sch.shifts, equalTo(schedule.shifts))
-                    sch
-                }
+        antonio.schedules = listOf(schedule)
 
-        vets.setSchedule(1, "APR")
+        Mockito.`when`(vets.setSchedule(antonio.id, "APR")).thenReturn(schedule)
 
     }
 
     @Test
     fun `test schedules`() {
 
-        val vet1 = VetDAO(0L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
-        val vet2 = VetDAO(0L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val vet1 = VetDAO(0L, "Antonio", "antonio@gmail.com", "tony", "1234", 1234, "Rua Romao", "rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val vet2 = VetDAO(0L, "Chenel", "chenel@gmail.com", "chenel", "1234", 1234, "Rua Romao", "rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
 
-        vets.hireVet(vet1)
-        vets.hireVet(vet2)
 
         val schedule1 = vets.setSchedule(1, "JAN")
         val schedule2 = vets.setSchedule(2, "JUN")

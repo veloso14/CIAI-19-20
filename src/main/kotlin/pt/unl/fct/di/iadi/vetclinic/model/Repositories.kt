@@ -3,6 +3,8 @@ package pt.unl.fct.di.iadi.vetclinic.model
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
+import org.springframework.stereotype.Repository
 import java.time.Month
 import java.util.*
 
@@ -50,9 +52,14 @@ interface AdminRepository : JpaRepository<AdminDAO, Long> {
     fun findByUsername(username: String) : Optional<AdminDAO>
 }
 
+@Repository
 interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
-    @Query("select s from ScheduleDAO s  where s.vet = :vetDAO and s.month = :month ")
-    fun findByVetAndMonth( vetDAO: VetDAO, month: Month) : Optional<ScheduleDAO>
+
+    @Query("SELECT s FROM ScheduleDAO s  where s.vet = :vet and s.month = :month ")
+    fun findByVetAndMonth( @Param("vet") vet: VetDAO,  @Param("month") month: Month) : Optional<ScheduleDAO>
+
+    @Query("SELECT s FROM ScheduleDAO s  where s.vet = :vet")
+    fun findByVet(@Param("vet") vet: VetDAO) : List<ScheduleDAO>
 
 }
 

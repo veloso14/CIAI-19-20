@@ -77,7 +77,12 @@ class VetService(val vets: VetRepository,
     fun getSchedule(id: Long, mon: String): ScheduleDAO {
         val vet = getOneVet(id)
         val month = getMonth(mon)
-        return schedulesRep.findByVetAndMonth(vet, month).get()
+        val list = schedulesRep.findByVet(vet)
+        for (sch in list) {
+            if (sch.month == month)
+                return sch
+        }
+        throw PreconditionFailedException("No schedule for that vet and month")
     }
 
     fun getMonth(mon: String): Month {
@@ -110,8 +115,10 @@ class VetService(val vets: VetRepository,
         }
 
         val schedule = createSchedule(ScheduleDAO(vet, month))
-        schedules.add(schedule)
-        vet.updateSchedules(schedules)
+        val sch = mutableListOf<ScheduleDAO>()
+        sch.addAll(schedules)
+        sch.add(schedule)
+        vet.updateSchedules(sch.toList())
         schedulesRep.save(schedule)
         return schedule
     }
@@ -120,6 +127,7 @@ class VetService(val vets: VetRepository,
     fun createSchedule(schedules: ScheduleDAO): ScheduleDAO {
         val shifts = mutableListOf<ShiftDAO>()
         val shift = ShiftDAO(schedules)
+
         for (x in 1..schedules.month.length(false)) {
             shifts.add(createShift(shift, schedules, x))
         }
@@ -129,17 +137,12 @@ class VetService(val vets: VetRepository,
     // creates a shift ( list of 16 slots of 30 min )
     fun createShift(shifts: ShiftDAO, schedules: ScheduleDAO, day: Int): ShiftDAO {
         val slots = mutableListOf<SlotDAO>()
-        //val baseDateTime = LocalDateTime.of(2019, schedules.month, day, 9, 0).
 
         val year = 2019
         val month = schedules.month.value
         val date = Date(year, month-1, day, 9, 0)
 
-        //val calendar: Calendar = Calendar.getInstance()
-        //calendar.time = date
-
         for (x in 0..16) {
-            //calendar.add(Calendar.MINUTE, x*30)
             val newDate = addMinutes(date, x*30)
             val slot = SlotDAO(newDate, shifts)
             slots.add(slot)
