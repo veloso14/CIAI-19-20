@@ -3,14 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/VetClinicApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/VetClinicApplication.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/DataAccessObjects.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/DataAccessObjects.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/DataTransferObjects.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/DataTransferObjects.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/Repositories.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/Repositories.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/VetService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/VetService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AdminTests/AdminControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AdminTests/AdminControllerTester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AppointmentTests/AppointmentControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AppointmentTests/AppointmentControllerTester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AppointmentTests/AppointmentServiceTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AppointmentTests/AppointmentServiceTester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetControllerTester.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetServiceTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetServiceTester.kt" afterDir="false" />
     </list>
@@ -81,7 +77,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.VetClinicApplication (1)">
+  <component name="RunManager" selected="JUnit.VetServiceTester.test schedules">
     <configuration name="AppointmentServiceTester.test 1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
       <extension name="coverage">
@@ -98,7 +94,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VetServiceTester.test on create schedule" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="VetControllerTester.Test Get One vet" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
       <extension name="coverage">
         <pattern>
@@ -107,14 +103,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetServiceTester" />
-      <option name="METHOD_NAME" value="test on create schedule" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetControllerTester" />
+      <option name="METHOD_NAME" value="Test Get One vet" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VetServiceTester.test on retrieving appointments 1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="VetControllerTester.Test POST One schedule" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="demo" />
       <extension name="coverage">
         <pattern>
@@ -123,8 +119,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetServiceTester" />
-      <option name="METHOD_NAME" value="test on retrieving appointments 1" />
+      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetControllerTester" />
+      <option name="METHOD_NAME" value="Test POST One schedule" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -168,11 +164,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.VetClinicApplication (1)" />
-        <item itemvalue="JUnit.AppointmentServiceTester.test 1" />
-        <item itemvalue="JUnit.VetServiceTester.test on create schedule" />
         <item itemvalue="JUnit.VetServiceTester.test schedules" />
-        <item itemvalue="JUnit.VetServiceTester.test on retrieving appointments 1" />
+        <item itemvalue="Spring Boot.VetClinicApplication (1)" />
+        <item itemvalue="JUnit.VetControllerTester.Test POST One schedule" />
+        <item itemvalue="JUnit.VetControllerTester.Test Get One vet" />
+        <item itemvalue="JUnit.AppointmentServiceTester.test 1" />
       </list>
     </recent_temporary>
   </component>
@@ -183,12 +179,12 @@
           <expand>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@c272ae25" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@d9deace5" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
             <path>
               <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@c272ae25" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@601112f7" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@d9deace5" type="7427dc5b:ServiceModel$ServiceGroupNode" />
+              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@7cc8459" type="7427dc5b:ServiceModel$ServiceGroupNode" />
             </path>
           </expand>
           <select />
@@ -215,7 +211,8 @@
       <workItem from="1572971147857" duration="11089000" />
       <workItem from="1573406803744" duration="3693000" />
       <workItem from="1574626717280" duration="1403000" />
-      <workItem from="1574628198439" duration="13025000" />
+      <workItem from="1574628198439" duration="13271000" />
+      <workItem from="1574708389242" duration="3501000" />
     </task>
     <servers />
   </component>

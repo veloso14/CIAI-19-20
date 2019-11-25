@@ -22,6 +22,9 @@ import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import pt.unl.fct.di.iadi.vetclinic.AppointmentTests.AppointmentControllerTester.Companion.vet
 
 
 @RunWith(SpringRunner::class)
@@ -42,8 +45,8 @@ class VetControllerTester {
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList(), emptyList())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList(), emptyList())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
@@ -180,6 +183,21 @@ class VetControllerTester {
     }
 
 
+    @Test
+    fun `Test POST One schedule`() {
+        val scheduleDTO = ScheduleDTO(0, Month.JANUARY, antonio.id)
+        var scheduleDAO = ScheduleDAO(antonio, scheduleDTO.month)
+        scheduleDAO = vets.createSchedule(scheduleDAO)
+        val scheduleJSON = mapper.writeValueAsString(scheduleDTO)
+
+        Mockito.`when`(vets.setSchedule(vet.id, "JAN"))
+                .then { assertThat(it.getArgument(0), equalTo(scheduleDAO)); it.getArgument(0) }
+
+        mvc.perform(post("$vetsURL/1/schedule")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(scheduleJSON))
+                .andExpect(status().isOk)
+    }
 
 
 }

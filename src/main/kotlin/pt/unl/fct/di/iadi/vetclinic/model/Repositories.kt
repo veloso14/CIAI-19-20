@@ -61,6 +61,9 @@ interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
     @Query("SELECT s FROM ScheduleDAO s  where s.vet = :vet")
     fun findByVet(@Param("vet") vet: VetDAO) : List<ScheduleDAO>
 
+    @Query("SELECT s FROM ScheduleDAO s  where s.month = :month")
+    fun findByMonth(@Param("month") month: Month) : List<ScheduleDAO>
+
 }
 
 interface  ShiftRepository : JpaRepository<ShiftDAO, Long>

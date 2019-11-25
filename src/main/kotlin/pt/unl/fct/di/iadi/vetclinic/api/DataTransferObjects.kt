@@ -68,15 +68,15 @@ data class AdminDTO(override val id: Long, override val name: String, override v
     constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address,admin.photo, admin.employeeID)
 }
 
-data class ScheduleDTO(val id: Long, val vet: VetDAO, val month: Month, val vetID: Long) {
-    constructor(schedule: ScheduleDAO) : this(schedule.id, schedule.vet, schedule.month, schedule.vet.id)
+data class ScheduleDTO(val id: Long, val month: Month, val vetID: Long) {
+    constructor(schedule: ScheduleDAO) : this(schedule.id, schedule.month, schedule.vet.id)
 }
 
 data class ShiftDTO(val id: Long, var slots: List<SlotDAO>, val scheduleID: Long) {
     constructor(shift: ShiftDAO) : this(shift.id, shift.slots, shift.schedule.id)
 }
 
-data class SlotDTO(val id: Long, var available: Boolean, val shiftID: Long) {
-    constructor(slot: SlotDAO) : this(slot.id, slot.available, slot.shift.id)
+data class SlotDTO(val id: Long, val start: Date, val available: Boolean, val shiftID: Long) {
+    constructor(slot: SlotDAO) : this(slot.id, slot.start, slot.available, slot.shift.id)
 }
 

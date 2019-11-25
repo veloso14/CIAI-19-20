@@ -74,6 +74,21 @@ class VetService(val vets: VetRepository,
     // Get Schedule e Set schedule
     //
 
+    // returns list of free slots in a month for all vet schedules
+    fun getFreeSlots(month: String) : List <SlotDAO> {
+        val mon = getMonth(month)
+        val monthFreeSlots = mutableListOf<SlotDAO>()
+        val schedulesByMonth = schedulesRep.findByMonth(mon)
+        schedulesByMonth.forEach { schedule ->
+            val shifts = schedule.getShiftsList()
+            shifts.forEach { shift ->
+                val freeSlots = shift.getFreeSlots()
+                monthFreeSlots.addAll(freeSlots)
+            }
+        }
+        return monthFreeSlots.toList()
+    }
+
     fun getSchedule(id: Long, mon: String): ScheduleDAO {
         val vet = getOneVet(id)
         val month = getMonth(mon)

@@ -11,10 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
+import java.text.SimpleDateFormat
 import java.time.Month
 import java.util.*
+
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -22,6 +25,9 @@ class VetServiceTester {
 
     @Autowired
     lateinit var vets: VetService
+
+    @Autowired
+    lateinit var apts: AppointmentService
 
     @MockBean
     lateinit var repo: VetRepository
@@ -52,7 +58,7 @@ class VetServiceTester {
         val campuzano = ClientDAO(2L, "Tomas", "camp@gmail.com", "camp", "1234", 1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         val clientsDAO = mutableListOf(manzanares, campuzano);
 
-        val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
+        val consulta1 = AppointmentDAO(1L, Date(2019,1,1,9,0), "consulta1", PetDAO(), ClientDAO(), VetDAO())
         val consulta2 = AppointmentDAO(2L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
         val consultasDAO = mutableListOf(consulta1, consulta2);
 
@@ -119,42 +125,20 @@ class VetServiceTester {
     }
 
     @Test
-    fun `test on retrieving schedules`() {
-        val schedule1 = vets.createSchedule(ScheduleDAO(antonio, Month.JANUARY))
-        val schedule2 = vets.createSchedule(ScheduleDAO(antonio, Month.MARCH))
-        antonio.schedules = listOf(schedule1, schedule2).toMutableList()
-
-        vets.setSchedule(antonio.id, "JAN")
-
-        Mockito.`when`(schedulesRepository.findByVetAndMonth(antonio, Month.JANUARY)).thenReturn(Optional.of(schedule1))
-
-
-        assertThat(vets.getSchedule(antonio.id, "JAN"), equalTo(schedule1))
-    }
-
-    @Test
-    fun `test on create schedule`() {
-
-        val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony",
-                "1234", 1234, "Rua Romao", "rosto.jpg", 11,
-                true, emptyList(), emptyList())
-        val schedule = vets.createSchedule(ScheduleDAO(antonio, Month.APRIL))
-
-        antonio.schedules = listOf(schedule)
-
-        Mockito.`when`(vets.setSchedule(antonio.id, "APR")).thenReturn(schedule)
-
-    }
-
-    @Test
     fun `test schedules`() {
 
-        val vet1 = VetDAO(0L, "Antonio", "antonio@gmail.com", "tony", "1234", 1234, "Rua Romao", "rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
-        val vet2 = VetDAO(0L, "Chenel", "chenel@gmail.com", "chenel", "1234", 1234, "Rua Romao", "rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val schedule1 = vets.createSchedule(ScheduleDAO(Month.JANUARY))
+        val schedule2 = vets.createSchedule(ScheduleDAO(Month.FEBRUARY))
+
+        schedule1.shifts[0].slots[0].setAvailableFalse()
+        schedule1.shifts[0].slots.map {
+            println("time: " + it.available)
+        }
+
+        schedule1.shifts[0].slots[0].setAvailableFalse()
 
 
-        val schedule1 = vets.setSchedule(1, "JAN")
-        val schedule2 = vets.setSchedule(2, "JUN")
+        apts.checkAvailable(consulta1)
 
         println("schedule 1: " + schedule1.vet.toString())
         println("schedule 2: " + schedule2.vet.toString())
