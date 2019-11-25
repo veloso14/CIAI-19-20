@@ -11,14 +11,14 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
-
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
         val customUserDetails: CustomUserDetailsService,
-        val users: ClientService
+        val users: UserService
 ) : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.csrf().disable() // for now, we can disable cross site request forgery protection
@@ -28,10 +28,8 @@ class SecurityConfig(
                 .antMatchers("/swagger-ui.html").permitAll()
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
-                //TODO TESTE DO REACT
-                //.antMatchers("/pets").permitAll()
-                //.antMatchers("/admins").permitAll()
-                //Permite mais endpoints
+                .antMatchers("/admins").permitAll()
+                .antMatchers("/vets").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()
@@ -45,6 +43,7 @@ class SecurityConfig(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
+        //apagar
         auth.inMemoryAuthentication()
                 .withUser("default")
                 .password(BCryptPasswordEncoder().encode("1234"))

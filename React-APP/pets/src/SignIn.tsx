@@ -16,7 +16,6 @@
 
 import React, {ChangeEvent, FormEvent, useState} from "react";
 
-// This is sample code, to be used in the context of IADI 2019/2020.
 
 async function performLogin(username:string, password:string, signIn:(b:boolean)=>void) {
     const myHeaders = new Headers();

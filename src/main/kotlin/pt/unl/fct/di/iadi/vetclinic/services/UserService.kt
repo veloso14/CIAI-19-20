@@ -5,6 +5,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.util.*
+import java.util.ArrayList
+import java.util.stream.Collectors
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.GrantedAuthority
+import jdk.nashorn.internal.objects.NativeArray.forEach
+
+
+
+
+
+
 
 
 @Service
@@ -13,7 +24,32 @@ class UserService(
 
 ) {
 
-    fun getUserRole(id: Long): String = getOneUser(id).role
+    fun getUserRoles(name: String): List<String> {
+        val u : UserDAO = getOneUserByName(name)
+        if(u.role.isNotEmpty()){
+           return  u.role.split(",")
+        }else return emptyList()
+
+    }
+
+
+    fun getAuthorities(name: String) : MutableList<GrantedAuthority> {
+        var authorities : MutableList<GrantedAuthority>  = mutableListOf()
+
+        getUserRoles(name).forEach { p ->
+            val authority = SimpleGrantedAuthority(p)
+            authorities.add(authority)
+        }
+
+        return authorities
+
+    }
+
+
+    fun getOneUserByName(name: String): UserDAO =
+            users.findByUsername(name)
+                    .orElseThrow { NotFoundException("There is no user with username $name") }
+
 
     fun getOneUser(id: Long): UserDAO =
             users.findById(id)
@@ -25,6 +61,17 @@ class UserService(
 
     fun updatePassword(id: Long, password: String) = getOneUser(id).let { it.changePassword(BCryptPasswordEncoder().encode(password)); users.save(it) }
 
+
+    fun addUser(user: UserDAO) : Optional<UserDAO> {
+        val aUser = users.findByUsername(user.username)
+
+        return if ( aUser.isPresent )
+            Optional.empty()
+        else {
+            user.password = BCryptPasswordEncoder().encode(user.password)
+            Optional.of(users.save(user))
+        }
+    }
 
 
 }

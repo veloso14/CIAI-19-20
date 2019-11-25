@@ -3,14 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/DataTransferObjects.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/DataTransferObjects.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/DataAccessObjects.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/model/DataAccessObjects.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AdminTests/AdminControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/AdminTests/AdminControllerTester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/ClientTests/ClientControllerTester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/PetTests/PetControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/PetTests/PetControllerTester.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetControllerTester.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/pt/unl/fct/di/iadi/vetclinic/VetTests/VetControllerTester.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/SignIn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/VetClinicApplication.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/VetClinicApplication.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/CustomUserDetailsService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/CustomUserDetailsService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/JWTFilters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/JWTFilters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/UserService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/UserService.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -86,7 +84,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.AdminControllerTester">
+  <component name="RunManager" selected="Spring Boot.VetClinicApplication">
     <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -205,7 +203,9 @@
       <workItem from="1573576608375" duration="5704000" />
       <workItem from="1573624314765" duration="227000" />
       <workItem from="1574528218378" duration="24730000" />
-      <workItem from="1574558613456" duration="1370000" />
+      <workItem from="1574558613456" duration="1671000" />
+      <workItem from="1574701237975" duration="4152000" />
+      <workItem from="1574713604749" duration="4535000" />
     </task>
     <servers />
   </component>

@@ -35,7 +35,6 @@ class CustomUserDetails(
 
 @Service
 class CustomUserDetailsService(
-       // val security: SecurityService
         val users: UserRepository
 ) : UserDetailsService {
 
@@ -44,7 +43,7 @@ class CustomUserDetailsService(
         username?.let {
             val userDAO = users.findByUsername(username)
             if (userDAO.isPresent) {
-                return CustomUserDetails(userDAO.get().username, userDAO.get().password, mutableListOf(GrantedAuthority { userDAO.get().role }))
+                return CustomUserDetails(userDAO.get().username, userDAO.get().password, mutableListOf())
             } else
                 throw UsernameNotFoundException(username)
         }

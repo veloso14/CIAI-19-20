@@ -15,6 +15,7 @@ import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
+import pt.unl.fct.di.iadi.vetclinic.services.UserService
 import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.ServletRequest
@@ -22,6 +23,10 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.security.core.GrantedAuthority
+
 
 object JWTSecret {
     private const val passphrase = "este é um grande segredo que tem que ser mantido escondido"
@@ -34,6 +39,8 @@ private fun addResponseToken(authentication: Authentication, response: HttpServl
 
     val claims = HashMap<String, Any?>()
     claims["username"] = authentication.name
+    claims["roles"]= authentication.authorities
+    //???
 
     val token = Jwts
             .builder()
@@ -58,7 +65,7 @@ class UserPasswordAuthenticationFilterToJWT (
         val user = ObjectMapper().readValue(request!!.inputStream, UserDAO::class.java)
 
         // perform the "normal" authentication
-        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
+        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password, mutableListOf()))
 
         return if (auth.isAuthenticated) {
             // Proceed with an authenticated user
@@ -78,8 +85,9 @@ class UserPasswordAuthenticationFilterToJWT (
     }
 }
 
-class UserAuthToken(private var login:String) : Authentication {
+class UserAuthToken(private var login:String/*, private var authorities:MutableCollection<out GrantedAuthority> */) : Authentication {
 
+    //override fun getAuthorities() = authorities
     override fun getAuthorities() = null
 
     override fun setAuthenticated(isAuthenticated: Boolean) {}
@@ -95,9 +103,10 @@ class UserAuthToken(private var login:String) : Authentication {
     override fun getDetails() = login
 }
 
-class JWTAuthenticationFilter: GenericFilterBean() {
+class JWTAuthenticationFilter(): GenericFilterBean() {
 
     // To try it out, go to https://jwt.io to generate custom tokens, in this case we only need a name...
+
 
     override fun doFilter(request: ServletRequest?,
                           response: ServletResponse?,
@@ -117,7 +126,13 @@ class JWTAuthenticationFilter: GenericFilterBean() {
 
             else {
 
-                val authentication = UserAuthToken(claims["username"] as String)
+                //val userDetails :UserDetails = customUserDetailsService.loadUserById(userId)
+                //var authentication: UsernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                //authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+
+                val authentication = UserAuthToken(claims["username"] as String/*, claims["roles"] as MutableCollection<GrantedAuthority>*/)
+
                 // Can go to the database to get the actual user information (e.g. authorities)
 
                 SecurityContextHolder.getContext().authentication = authentication
@@ -136,6 +151,8 @@ class JWTAuthenticationFilter: GenericFilterBean() {
 /**
  * Instructions:
  *
+ * http POST :8080/login username=user password=password
+ *
  * AuthenticationManagerBuilder
  *
  * Observe in the response:
@@ -149,7 +166,7 @@ class JWTAuthenticationFilter: GenericFilterBean() {
 
 class UserPasswordSignUpFilterToJWT (
         defaultFilterProcessesUrl: String?,
-        private val clients: ClientService
+        private val users: UserService
 ) : AbstractAuthenticationProcessingFilter(defaultFilterProcessesUrl) {
 
     override fun attemptAuthentication(request: HttpServletRequest?,
@@ -157,9 +174,9 @@ class UserPasswordSignUpFilterToJWT (
         //getting user from request body
         val user = ObjectMapper().readValue(request!!.inputStream, ClientDAO::class.java)
 
-        return clients
-                .newClient(user)
-                //.orElse( null )
+        return users
+                .addUser(user)
+                .orElse( null )
                 .let {
                     val auth = UserAuthToken(user.username)
                     SecurityContextHolder.getContext().authentication = auth
