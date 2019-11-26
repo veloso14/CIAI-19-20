@@ -2,8 +2,6 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.Month
 import java.util.*
 
@@ -21,7 +19,7 @@ class VetService(val vets: VetRepository,
             vets.findById(id)
                     .orElseThrow { NotFoundException("There is no vet with Id $id") }
 
-    fun completeAppointment(id:Long, desc:String){
+    fun completeAppointment(id: Long, desc: String) {
 
         val apt = appointments.findById(id)
                 .orElseThrow { NotFoundException("There is no Appointment with Id $id") }
@@ -29,7 +27,6 @@ class VetService(val vets: VetRepository,
         apt.complete(desc)
         appointments.save(apt)
     }
-
 
 
     /*
@@ -57,7 +54,7 @@ class VetService(val vets: VetRepository,
 
  */
 
-    fun hireVet(vet:VetDAO) =
+    fun hireVet(vet: VetDAO) =
             when {
                 vet.id != 0L -> throw PreconditionFailedException("Id must be 0 in insertion")
                 users.findByUsername(vet.username).isPresent -> throw PreconditionFailedException("There is already an user with the specified username")
@@ -75,12 +72,12 @@ class VetService(val vets: VetRepository,
     //
 
     // returns list of free slots in a month for all vet schedules
-    fun getFreeSlots(month: String) : List <SlotDAO> {
+    fun getFreeSlots(month: String): List<SlotDAO> {
         val mon = getMonth(month)
         val monthFreeSlots = mutableListOf<SlotDAO>()
         val schedulesByMonth = schedulesRep.findByMonth(mon)
         schedulesByMonth.forEach { schedule ->
-            val shifts = schedule.getShiftsList()
+            val shifts = schedule.shifts
             shifts.forEach { shift ->
                 val freeSlots = shift.getFreeSlots()
                 monthFreeSlots.addAll(freeSlots)
@@ -89,13 +86,29 @@ class VetService(val vets: VetRepository,
         return monthFreeSlots.toList()
     }
 
-    fun getSchedule(id: Long, mon: String): ScheduleDAO {
+    /*fun getSchedule1(id: Long, mon: String): ScheduleDAO {
         val vet = getOneVet(id)
         val month = getMonth(mon)
         val list = schedulesRep.findByVet(vet)
         for (sch in list) {
-            if (sch.month == month)
+            if (sch.month == month) {
+                println("contagem: ${sch.shifts.count()}")
+                println("schedule maluco slots count: ${sch.shifts.count()}")
                 return sch
+            }
+        }
+        throw PreconditionFailedException("No schedule for that vet and month")
+    }*/
+
+
+    fun getSchedule(id: Long, mon: String): ScheduleDAO {
+        val vet = getOneVet(id)
+        val month = getMonth(mon)
+        val list = vet.schedules
+        for (sch in list) {
+            if (sch.month == month) {
+                return sch
+            }
         }
         throw PreconditionFailedException("No schedule for that vet and month")
     }
@@ -118,35 +131,47 @@ class VetService(val vets: VetRepository,
     }
 
     // gets one vet, creates default empty schedule and updates vet
-    fun setSchedule(id: Long, mon: String): ScheduleDAO {
+    fun setSchedule(id: Long, mon: String) {
         val month = getMonth(mon)
         val vet = getOneVet(id)
-        val schedules = vet.schedules
+        val schedules: List<ScheduleDAO> = vet.schedules
 
+        // check for a vet if he already has schedule set for that month
         schedules.forEach() {
             if (it.month == month) {
                 throw PreconditionFailedException("Schedule for that month already set!")
             }
         }
 
-        val schedule = createSchedule(ScheduleDAO(vet, month))
-        val sch = mutableListOf<ScheduleDAO>()
-        sch.addAll(schedules)
-        sch.add(schedule)
-        vet.updateSchedules(sch.toList())
-        schedulesRep.save(schedule)
-        return schedule
+        /* TODO when creating new schedule is possible it's saving with the default constructor and
+                not updating with the constructed shift list */
+        // create new schedule for said vet and month
+        val newSchedule = createSchedule(vet, month)
+
+        // update vet.schedules with newly created schedule
+        println("before updating schedule number: ${vet.schedules.size}") // 0
+        vet.addSchedule(newSchedule)
+        println("after updating schedule number: ${vet.schedules.size}") // 1
+
+        /* TODO bug here: before saving schedulesRep size = 0 and after saving only 1 object
+                schedulesRep size = 2 ??? */
+        // add newly created schedule to all schedules rep
+        println("before saving schedule: ${schedulesRep.count()}") // 0
+        schedulesRep.save(newSchedule)
+        println("after saving schedule: ${schedulesRep.count()}") // 2
     }
 
     // creates a schedule ( list of 30 or 31 shifts corresponding to each day of the month )
-    fun createSchedule(schedules: ScheduleDAO): ScheduleDAO {
+    fun createSchedule(vet: VetDAO, month: Month): ScheduleDAO {
         val shifts = mutableListOf<ShiftDAO>()
-        val shift = ShiftDAO(schedules)
+        val scheduleDAO = ScheduleDAO(vet, month)
 
-        for (x in 1..schedules.month.length(false)) {
-            shifts.add(createShift(shift, schedules, x))
+        for (x in 1..month.length(false)) {
+            val shift = ShiftDAO(scheduleDAO)
+            shifts.add(createShift(shift, scheduleDAO, x))
         }
-        return ScheduleDAO(schedules.vet, schedules.month, shifts)
+        scheduleDAO.updateShifts(shifts)
+        return scheduleDAO
     }
 
     // creates a shift ( list of 16 slots of 30 min )
@@ -155,16 +180,20 @@ class VetService(val vets: VetRepository,
 
         val year = 2019
         val month = schedules.month.value
-        val date = Date(year, month-1, day, 9, 0)
+        val date = Date(year, month - 1, day, 9, 0)
 
         for (x in 0..16) {
-            val newDate = addMinutes(date, x*30)
+            val newDate = addMinutes(date, x * 30)
             val slot = SlotDAO(newDate, shifts)
             slots.add(slot)
         }
-        return ShiftDAO(slots, schedules)
+        //return ShiftDAO(slots.toList(), schedules)
+        shifts.updateSlots(slots)
+        return shifts
     }
 
+    // uses date object to create date object with +30 minutes
+    // used for slot creation
     fun addMinutes(date: Date, minutes: Int): Date {
         return Date(date.time + minutes * 60000)
     }

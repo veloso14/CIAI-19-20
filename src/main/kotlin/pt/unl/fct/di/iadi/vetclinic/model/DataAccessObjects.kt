@@ -16,6 +16,7 @@ limitations under the License.
 
 package pt.unl.fct.di.iadi.vetclinic.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.unl.fct.di.iadi.vetclinic.api.*
 import java.time.Month
 import java.util.*
@@ -23,19 +24,20 @@ import javax.persistence.*
 
 @Entity
 data class PetDAO(
-        @Id @GeneratedValue val id:Long,
-                            var name: String,
-                            var species: String,
-                            var frozen: Boolean,
+        @Id @GeneratedValue val id: Long,
+        var name: String,
+        var species: String,
+        var frozen: Boolean,
         @OneToMany(mappedBy = "pet", cascade = [CascadeType.ALL])
-                            var appointments:List<AppointmentDAO>,
-        @ManyToOne          var owner: ClientDAO
+        var appointments: List<AppointmentDAO>,
+        @ManyToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+        var owner: ClientDAO
 ) {
-    constructor() : this(0,"","",false, emptyList(), ClientDAO())
+    constructor() : this(0, "", "", false, emptyList(), ClientDAO())
 
-    constructor(pet: PetDTO, apts:List<AppointmentDAO>, owner: ClientDAO) : this(pet.id,pet.name,pet.species,pet.frozen, apts, owner)
+    constructor(pet: PetDTO, apts: List<AppointmentDAO>, owner: ClientDAO) : this(pet.id, pet.name, pet.species, pet.frozen, apts, owner)
 
-    fun update(other:PetDAO) {
+    fun update(other: PetDAO) {
         this.name = other.name
         this.species = other.species
         this.appointments = other.appointments
@@ -48,37 +50,38 @@ data class PetDAO(
 
 @Entity
 data class AppointmentDAO(
-        @Id @GeneratedValue val id:Long,
-                            var date: Date,
-                            var desc:String,
-        @ManyToOne          var pet:PetDAO,
-        @ManyToOne          var client: ClientDAO,
-        @ManyToOne          var vet: VetDAO
+        @Id @GeneratedValue val id: Long,
+        var date: Date,
+        var desc: String,
+        @ManyToOne var pet: PetDAO,
+        @ManyToOne var client: ClientDAO,
+        @ManyToOne var vet: VetDAO
 ) {
-    constructor() : this(0, Date(),"", PetDAO(), ClientDAO(), VetDAO())
-    constructor(apt: AppointmentDTO, pet:PetDAO, client: ClientDAO, vet: VetDAO) : this(apt.id, apt.date, apt.desc, pet, client, vet)
+    constructor() : this(0, Date(), "", PetDAO(), ClientDAO(), VetDAO())
+    constructor(apt: AppointmentDTO, pet: PetDAO, client: ClientDAO, vet: VetDAO) : this(apt.id, apt.date, apt.desc, pet, client, vet)
 
     // se desc for diferente de "" entao o appointment esta completo
-    fun complete(desc: String){
+    fun complete(desc: String) {
         this.desc = desc
     }
 }
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-abstract class UserDAO( @Id @GeneratedValue open val id: Long,
-                        open val name: String,
-                        open  var email: String,
-                        open var username: String,
-                        open var password: String,
-                        open var cellphone: Long,
-                        open var address: String,
-                        open var photo: String
+abstract class UserDAO(@Id @GeneratedValue open val id: Long,
+                       open val name: String,
+                       open var email: String,
+                       open var username: String,
+                       open var password: String,
+                       open var cellphone: Long,
+                       open var address: String,
+                       open var photo: String
 ) {
 
 
     constructor(user: UserDTO) : this(user.id, user.name, user.email, user.username, user.password, user.cellphone, user.address, user.photo)
-    open fun update(other:UserDAO) {
+
+    open fun update(other: UserDAO) {
 
         this.email = other.email
         this.cellphone = other.cellphone
@@ -88,11 +91,9 @@ abstract class UserDAO( @Id @GeneratedValue open val id: Long,
     }
 
 
-
     open fun changePassword(password: String) {
         this.password = password
     }
-
 
 
 }
@@ -100,17 +101,17 @@ abstract class UserDAO( @Id @GeneratedValue open val id: Long,
 @Entity
 data class ClientDAO(override val id: Long,
                      override val name: String,
-                     override  var email: String,
-                     override  var username: String,
-                     override  var password: String,
-                     override  var cellphone: Long,
-                     override  var address: String,
-                     override  var photo:String,
+                     override var email: String,
+                     override var username: String,
+                     override var password: String,
+                     override var cellphone: Long,
+                     override var address: String,
+                     override var photo: String,
                      @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
-                var pets:List<PetDAO>,
+                     var pets: List<PetDAO>,
                      @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL])
-                var appointments:List<AppointmentDAO>
-) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
+                     var appointments: List<AppointmentDAO>
+) : UserDAO(id, name, email, username, password, cellphone, address, photo) {
 
     override fun update(other: UserDAO) {
         super.update(other)
@@ -120,9 +121,9 @@ data class ClientDAO(override val id: Long,
         super.changePassword(password)
     }
 
-    constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address,client.photo, pets, apts)
-    constructor() : this(0,"","","","",0,"","", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
-    constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(id, name, email, username, password, cellphone, address,"", pets, apts)
+    constructor(client: ClientDTO, pets: List<PetDAO>, apts: List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address, client.photo, pets, apts)
+    constructor() : this(0, "", "", "", "", 0, "", "", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+    constructor(id: Long, name: String, email: String, username: String, password: String, cellphone: Long, address: String, pets: List<PetDAO>, apts: List<AppointmentDAO>) : this(id, name, email, username, password, cellphone, address, "", pets, apts)
 }
 
 @Entity
@@ -134,21 +135,28 @@ data class VetDAO(
         override var password: String,
         override var cellphone: Long,
         override var address: String,
-        override var photo:String,
+        override var photo: String,
         var employeeID: Long,
         var frozen: Boolean,
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
-        var appointments:List<AppointmentDAO>,
+        var appointments: List<AppointmentDAO>,
+        @JsonIgnore
         @OneToMany(mappedBy = "vet", cascade = [CascadeType.ALL])
         var schedules: List<ScheduleDAO>
 
-) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
+) : UserDAO(id, name, email, username, password, cellphone, address, photo) {
 
-    constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules: List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo ,vet.employeeID, vet.frozen, apts, schedules)
-    constructor() : this(0,"","","","",0,"","",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+    constructor(vet: VetDTO, apts: List<AppointmentDAO>, schedules: List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address, vet.photo, vet.employeeID, vet.frozen, apts, schedules)
+    constructor() : this(0, "", "", "", "", 0, "", "", 0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
 
     fun updateSchedules(schedules: List<ScheduleDAO>) {
         this.schedules = schedules
+    }
+
+    fun addSchedule(schedule: ScheduleDAO) {
+        val tempSchedules = this.schedules.toMutableList()
+        tempSchedules.add(schedule)
+        this.schedules = tempSchedules.toList()
     }
 
     fun updateFrozen(frozen: Boolean) {
@@ -168,17 +176,17 @@ data class VetDAO(
 }
 
 @Entity
-data class AdminDAO( override val id: Long,
-                    override  val name: String,
-                    override  var email: String,
-                    override  var username: String,
-                    override  var password: String,
-                    override  var cellphone: Long,
-                    override  var address: String,
-                     override var photo:String,
-                    var employeeID: Long) : UserDAO(id,name, email, username, password,cellphone,address, photo) {
-    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, admin.employeeID)
-    constructor() : this(0,"","","","",0,"","",0)
+data class AdminDAO(override val id: Long,
+                    override val name: String,
+                    override var email: String,
+                    override var username: String,
+                    override var password: String,
+                    override var cellphone: Long,
+                    override var address: String,
+                    override var photo: String,
+                    var employeeID: Long) : UserDAO(id, name, email, username, password, cellphone, address, photo) {
+    constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address, admin.photo, admin.employeeID)
+    constructor() : this(0, "", "", "", "", 0, "", "", 0)
 
     override fun update(other: UserDAO) {
         super.update(other)
@@ -192,40 +200,35 @@ data class AdminDAO( override val id: Long,
 
 @Entity // each schedule has a month and a list of shifts. number of shifts on list depend on month
 data class ScheduleDAO(
-        @Id @GeneratedValue val id : Long,
+        @Id @GeneratedValue val id: Long,
+
         @ManyToOne(cascade = [CascadeType.ALL]) var vet: VetDAO,
         val month: Month,
         @OneToMany(mappedBy = "schedule", cascade = [CascadeType.ALL]) var shifts: List<ShiftDAO>
 
 ) {
 
-    fun updateSlots(shifts: List<ShiftDAO>) {
+    fun updateShifts(shifts: List<ShiftDAO>) {
         this.shifts = shifts
     }
 
-    fun getShiftsList(): List<ShiftDAO> {
-        return shifts
-    }
-
-    constructor( vet: VetDAO, month: Month, shifts: List<ShiftDAO> ) : this ( 0L, vet, month, shifts )
-    constructor( vet: VetDAO, month: Month ) : this ( 0L, vet, month, emptyList() )
-    constructor(month: Month) : this ( 0L, VetDAO(), month, emptyList() )
+    constructor(vet: VetDAO, month: Month, shifts: List<ShiftDAO>) : this(0L, vet, month, shifts)
+    constructor(vet: VetDAO, month: Month) : this(0L, vet, month, emptyList())
+    constructor(month: Month) : this(0L, VetDAO(), month, emptyList())
 }
 
 
 @Entity // each shift is list of 16 slots of 30 min
 data class ShiftDAO(
-        @Id @GeneratedValue val id : Long,
+        @Id @GeneratedValue val id: Long,
         @OneToMany(mappedBy = "shift", cascade = [CascadeType.ALL]) var slots: List<SlotDAO>,
+        @JsonIgnore
         @ManyToOne(cascade = [CascadeType.ALL]) val schedule: ScheduleDAO
 ) {
 
-    fun getSlotsList(): List<SlotDAO> {
-        return slots
-    }
 
     fun getFreeSlots(): List<SlotDAO> {
-        val freeSlots : MutableList<SlotDAO> = mutableListOf()
+        val freeSlots: MutableList<SlotDAO> = mutableListOf()
         for (slot in slots) {
             if (slot.available) {
                 freeSlots.add(slot)
@@ -234,21 +237,26 @@ data class ShiftDAO(
         return slots
     }
 
-    constructor( slots: List<SlotDAO>, schedule: ScheduleDAO) : this ( 0L, slots, schedule )
-    constructor( schedule: ScheduleDAO ) : this ( 0L, emptyList<SlotDAO>(), schedule )
+    fun updateSlots(slots: List<SlotDAO>) {
+        this.slots = slots
+    }
+
+    constructor(slots: List<SlotDAO>, schedule: ScheduleDAO) : this(0L, slots, schedule)
+    constructor(schedule: ScheduleDAO) : this(0L, emptyList<SlotDAO>(), schedule)
 
 }
 
 
-@Entity // each slot has start date and available status
+@Entity// each slot has start date and available status
 data class SlotDAO(
         @Id @GeneratedValue val id: Long,
         var start: Date,
         var available: Boolean,
+        @JsonIgnore
         @ManyToOne(cascade = [CascadeType.ALL]) val shift: ShiftDAO
 ) {
 
-    constructor(date: Date, shift: ShiftDAO) : this (0L, date, true, shift)
+    constructor(date: Date, shift: ShiftDAO) : this(0L, date, true, shift)
 
     fun setAvailableFalse() {
         this.available = false

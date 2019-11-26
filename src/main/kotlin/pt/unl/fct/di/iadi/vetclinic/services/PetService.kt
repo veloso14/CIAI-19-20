@@ -16,6 +16,7 @@ class PetService(
 
     fun getAllPets(): List<PetDAO> = pets.findAllByFrozenFalse().toList()
 
+    // falta verificar se pet já existe
     fun addNewPet(pet: PetDAO) =
         // defensive programming
         if (pet.id != 0L)

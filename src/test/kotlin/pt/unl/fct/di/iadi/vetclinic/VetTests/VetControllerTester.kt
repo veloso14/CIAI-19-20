@@ -187,7 +187,7 @@ class VetControllerTester {
     fun `Test POST One schedule`() {
         val scheduleDTO = ScheduleDTO(0, Month.JANUARY, antonio.id)
         var scheduleDAO = ScheduleDAO(antonio, scheduleDTO.month)
-        scheduleDAO = vets.createSchedule(scheduleDAO)
+        scheduleDAO = vets.createSchedule(vet, Month.JANUARY)
         val scheduleJSON = mapper.writeValueAsString(scheduleDTO)
 
         Mockito.`when`(vets.setSchedule(vet.id, "JAN"))

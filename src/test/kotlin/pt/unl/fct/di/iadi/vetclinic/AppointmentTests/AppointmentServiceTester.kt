@@ -89,8 +89,8 @@ class AppointmentServiceTester {
         val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony",
                 "1234", 1234, "Rua Romao", "rosto.jpg", 11,
                 true, emptyList(), emptyList())
-        val schedule = vets.createSchedule(ScheduleDAO(antonio, Month.APRIL))
-        schedule.getShiftsList()[1].getSlotsList()[0].setAvailableFalse()
+        val schedule = vets.createSchedule(antonio, Month.APRIL)
+        schedule.shifts[1].slots[0].setAvailableFalse()
         println("consulta marcada: " +  apts.checkAvailable(consulta_marcada))
 
     }

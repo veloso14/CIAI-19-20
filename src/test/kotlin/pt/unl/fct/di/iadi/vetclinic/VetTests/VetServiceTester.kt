@@ -124,24 +124,4 @@ class VetServiceTester {
         assertThat(vets.appointmentsOfVet(antonio.id), equalTo(antonio.appointments))
     }
 
-    @Test
-    fun `test schedules`() {
-
-        val schedule1 = vets.createSchedule(ScheduleDAO(Month.JANUARY))
-        val schedule2 = vets.createSchedule(ScheduleDAO(Month.FEBRUARY))
-
-        schedule1.shifts[0].slots[0].setAvailableFalse()
-        schedule1.shifts[0].slots.map {
-            println("time: " + it.available)
-        }
-
-        schedule1.shifts[0].slots[0].setAvailableFalse()
-
-
-        apts.checkAvailable(consulta1)
-
-        println("schedule 1: " + schedule1.vet.toString())
-        println("schedule 2: " + schedule2.vet.toString())
-
-    }
 }

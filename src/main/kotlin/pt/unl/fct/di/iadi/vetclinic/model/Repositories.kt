@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import java.time.Month
 import java.util.*
+import javax.swing.text.html.Option
 
 interface PetRepository : JpaRepository<PetDAO, Long> {
 
@@ -52,7 +53,6 @@ interface AdminRepository : JpaRepository<AdminDAO, Long> {
     fun findByUsername(username: String) : Optional<AdminDAO>
 }
 
-@Repository
 interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
 
     @Query("SELECT s FROM ScheduleDAO s  where s.vet = :vet and s.month = :month ")
