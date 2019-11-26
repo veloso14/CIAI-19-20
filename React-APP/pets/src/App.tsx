@@ -5,7 +5,7 @@ import SignInForm, { getData } from "./SignIn";
 interface Pet { id:number, name:string }
 
 function loadPets(setPets:(pets:Pet[]) => void, filter:string) {
-  getData(`/pets?search=${encodeURI(filter)}`, [])
+  getData(`/pets`, [])
       .then(data => { data && setPets(data.map( (p:{pet:Pet}) => p.pet )) })
   // notice that there is an extra "pet" in the path above which is produced
   // in this particular implementation of the service. {pet: Pet, appointments:List<AppointmentDTO>}

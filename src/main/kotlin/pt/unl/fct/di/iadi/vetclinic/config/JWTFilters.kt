@@ -26,6 +26,7 @@ import kotlin.collections.HashMap
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
+import pt.unl.fct.di.iadi.vetclinic.model.UserSecurityDAO
 
 
 object JWTSecret {
@@ -62,10 +63,10 @@ class UserPasswordAuthenticationFilterToJWT (
     override fun attemptAuthentication(request: HttpServletRequest?,
                                        response: HttpServletResponse?): Authentication? {
         //getting user from request body
-        val user = ObjectMapper().readValue(request!!.inputStream, UserDAO::class.java)
+        val user = ObjectMapper().readValue(request!!.inputStream, UserSecurityDAO::class.java)
 
         // perform the "normal" authentication
-        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password, mutableListOf()))
+        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
 
         return if (auth.isAuthenticated) {
             // Proceed with an authenticated user
@@ -116,6 +117,7 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
 
         if( authHeader != null && authHeader.startsWith("Bearer ") ) {
             val token = authHeader.substring(7) // Skip 7 characters for "Bearer "
+            System.out.println(token)
             val claims = Jwts.parser().setSigningKey(JWTSecret.KEY).parseClaimsJws(token).body
 
             // should check for token validity here (e.g. expiration date, session in db, etc.)

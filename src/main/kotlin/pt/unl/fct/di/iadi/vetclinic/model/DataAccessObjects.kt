@@ -216,3 +216,14 @@ data class ScheduleDAO(
     constructor() : this (0, VetDAO(), emptyList<ShiftDAO>())
 }
 
+
+@Entity
+data class UserSecurityDAO(
+        @Id
+        val username: String = "",
+        var password: String = "")
+{
+    constructor(user:UserPasswordDTO) : this(user.username, user.password)
+}
+
+

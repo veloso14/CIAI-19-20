@@ -30,14 +30,14 @@ class VetClinicApplication {
             users: UserRepository
     ) =
         CommandLineRunner {
-           /* val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony",BCryptPasswordEncoder().encode("1234"),1234, "Rua Romao", emptyList(), emptyList())
+            val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony",BCryptPasswordEncoder().encode("1234"),1234, "Rua Romao", emptyList(), emptyList())
             clients.save(antonio)
 
             val pantufas = PetDAO(2L, "pantufas", "dog",false, emptyList<AppointmentDAO>(), antonio)
             val bigodes = PetDAO(3L, "bigode", "cat",false, emptyList<AppointmentDAO>(), antonio)
             pets.saveAll(listOf(pantufas,bigodes))
 
-            */
+
          /*  val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela",BCryptPasswordEncoder().encode("1234"),987682,"Pio","rosto.jpg","VET",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
             vets.save(vet)
             val pantufas = PetDAO(2L, "pantufas", "dog",false, emptyList<AppointmentDAO>(), ClientDAO())
