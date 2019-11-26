@@ -117,7 +117,6 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
 
         if( authHeader != null && authHeader.startsWith("Bearer ") ) {
             val token = authHeader.substring(7) // Skip 7 characters for "Bearer "
-            System.out.println(token)
             val claims = Jwts.parser().setSigningKey(JWTSecret.KEY).parseClaimsJws(token).body
 
             // should check for token validity here (e.g. expiration date, session in db, etc.)
