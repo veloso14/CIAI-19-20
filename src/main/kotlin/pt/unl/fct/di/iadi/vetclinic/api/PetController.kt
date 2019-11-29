@@ -21,7 +21,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 @RequestMapping("/pets")
 class PetController(val pets: PetService, val vets:VetService) {
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered pets", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),

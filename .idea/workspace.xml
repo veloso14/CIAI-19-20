@@ -3,7 +3,13 @@
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/JWTFilters.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/JWTFilters.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/App.test.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/PetList" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -55,7 +61,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/OpenAPI" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/server" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
@@ -79,7 +85,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.VetClinicApplication">
+  <component name="RunManager" selected="Spring Boot.VetClinicApplication (1)">
     <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -140,17 +146,15 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="VetServiceTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="vetclinit" />
+    <configuration name="VetClinicApplication (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <module name="demo" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.VetTests.*" />
+          <option name="PATTERN" value="pt.unl.fct.di.iadi.vetclinic.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests" />
-      <option name="MAIN_CLASS_NAME" value="pt.unl.fct.di.iadi.vetclinic.VetTests.VetServiceTester" />
-      <option name="TEST_OBJECT" value="class" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="pt.unl.fct.di.iadi.vetclinic.VetClinicApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -164,13 +168,23 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Spring Boot.VetClinicApplication (1)" />
         <item itemvalue="JUnit.AdminControllerTester" />
         <item itemvalue="JUnit.VetControllerTester" />
         <item itemvalue="JUnit.ClientControllerTester" />
         <item itemvalue="JUnit.ClientServiceTester" />
-        <item itemvalue="JUnit.VetServiceTester" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand />
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -203,6 +217,7 @@
       <workItem from="1574713604749" duration="5135000" />
       <workItem from="1574785698746" duration="5029000" />
       <workItem from="1574791798641" duration="870000" />
+      <workItem from="1575037251734" duration="1430000" />
     </task>
     <servers />
   </component>
@@ -227,27 +242,17 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt</url>
-          <line>58</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt</url>
-          <line>64</line>
-          <option name="timeStamp" value="16" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt</url>
-          <line>40</line>
+          <line>53</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt</url>
-          <line>46</line>
+          <line>60</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/services/SecurityService.kt</url>
-          <line>52</line>
+          <line>74</line>
           <option name="timeStamp" value="20" />
         </line-breakpoint>
       </breakpoints>

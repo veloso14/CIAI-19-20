@@ -1,43 +1,33 @@
-import React, {ChangeEvent, useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
-import SignInForm, { getData } from "./SignIn";
+import {PetState, Pet} from './components/PetList'
+import {PetList} from './components/PetList'
+import {connect, Provider} from "react-redux";
+import {applyMiddleware, createStore} from "redux";
+import reducer from "./reducers";
+import thunk from 'redux-thunk';
 
-interface Pet { id:number, name:string }
-
-function loadPets(setPets:(pets:Pet[]) => void, filter:string) {
-  getData(`/pets`, [])
-      .then(data => { data && setPets(data.map( (p:{pet:Pet}) => p.pet )) })
-  // notice that there is an extra "pet" in the path above which is produced
-  // in this particular implementation of the service. {pet: Pet, appointments:List<AppointmentDTO>}
+export interface GlobalState {
+    pets: PetState,
 }
 
-const PetList = (props:{pets:Pet[]}) =>
-    <ul>
-      { props.pets.map((pet:Pet) => <li key={pet.id}>{pet.name}</li>)}
-    </ul>;
+const Content = () => {
+    return (<>
+        <PetList/>
+    </>);
 
-const App = () => {
-  const [ pets, setPets ] = useState([] as Pet[]);
-  const [ filter, setFilter ] = useState("");
-  const [ isSignedIn, signIn ] = useState(false);
-  useEffect(() => loadPets(setPets, filter), [filter]);
-  // filter in the deps repeats the search on the server side
-  // If the list is empty, the effect is only triggered on component mount
-
-
-  let handle = (e:ChangeEvent<HTMLInputElement>) => setFilter(e.target.value);
-  let filteredList = pets; // pets.filter(p => p.name.includes(filter) ); // << filter on client with this code.
-
-  return (<>
-    <SignInForm isSignedIn={isSignedIn} signIn={signIn}/>
-    { isSignedIn &&
-    <> <PetList pets={filteredList}/>
-      <input onChange={handle} value={filter}/>
-    </>}
-  </>);
 };
 
+const mapStateToProps = (state: GlobalState) => ({});
+const Page = connect(mapStateToProps)(Content);
 
+let store = createStore(reducer, applyMiddleware(thunk));
 
-
+const App = () => {
+    return (
+        <Provider store={store}>
+            <Page/>
+        </Provider>
+    );
+};
 export default App;
