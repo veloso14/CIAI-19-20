@@ -1,14 +1,20 @@
 import React from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
-import { deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
+import {deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
 import {GlobalState} from "../App";
+import {Link} from "react-router-dom"
+
+/*
+* #TODO: pagina individual para um pet
+*        browserRouter com switch e Links
+*        updatePet reducer/action/button
+* */
 
 export interface Pet {
     id: number,
     name: string,
-    species: string,
-    ownerID: number
+    species: string
 }
 
 export interface PetState {
@@ -27,7 +33,7 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({petName, petSpecies}) => {
         console.log(petName, petSpecies);
-        props.postPet({name: petName, species: petSpecies, id: 0, ownerID: 2});
+        props.postPet({name: petName, species: petSpecies, id: 0});
         setUpdate(true)
         setValue("petName", "");
         setValue("petSpecies", "");
@@ -40,13 +46,15 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
         return () => {
             setUpdate(false)
         }
-    }, [update] );
+    }, [update]);
 
-    let list = props.pets.map((pet: Pet) => <li key={pet.id}>{pet.name}
+
+    let list = props.pets.map((pet: Pet) => <li key={pet.id}><Link to={`/pet/${pet.id}`}>{pet.name}</Link>
         <div className='deleteMe' onClick={() => {
             props.deletePet(pet.id);
             setUpdate(true)
-        }}>X</div>
+        }}>X
+        </div>
     </li>);
 
     return (

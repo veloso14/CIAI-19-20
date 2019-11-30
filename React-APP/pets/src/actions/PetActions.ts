@@ -2,16 +2,20 @@ import {getData} from "../Utils/NetworkUtils";
 import {Action} from "redux";
 import {Pet} from "../components/PetList";
 
-export const ADD_PET = 'ADD_PET';
-export const DELETE_PET = 'DELETE_PET';
-export const UPDATE_PET = 'UPDATE_PET';
-export const REQUEST_PETS = 'REQUEST_PETS';
-export const RECEIVE_PETS = 'RECEIVE_PETS';
+
+export enum PetActionsTypes {
+    ADD_PET = 'ADD_PET',
+    UPDATE_PET = 'UPDATE_PET',
+    DELETE_PET = 'DELETE_PET',
+    REQUEST_PETS = 'REQUEST_PETS',
+    RECEIVE_PETS = 'RECEIVE_PETS',
+    REQUEST_PET = 'REQUEST_PET',
+    RECEIVE_PET = 'RECEIVE_PET',
+}
 
 export interface AddPetAction extends Action {
     name: string,
-    species: string,
-    ownerID: number
+    species: string
 }
 
 export interface ReceivePetAction extends Action {
@@ -22,11 +26,25 @@ export interface DeletePetAction extends Action {
     id: number
 }
 
-export const addPet = (pet: Pet) => ({type: ADD_PET, data: pet});
-export const deletePet = (id: number) => ({type: DELETE_PET, data: id});
-export const updatePet = (id: number, pet: Pet) => ({type: UPDATE_PET, data: {id: id, pet: pet}});
-export const requestPets = () => ({type: REQUEST_PETS});
-export const receivePets = (data: Pet[]) => ({type: RECEIVE_PETS, data: data});
+export const addPet = (pet: Pet) => ({type: PetActionsTypes.ADD_PET, data: pet});
+export const deletePet = (id: number) => ({type: PetActionsTypes.DELETE_PET, data: id});
+export const updatePet = (id: number, pet: Pet) => ({type: PetActionsTypes.UPDATE_PET, data: {id: id, pet: pet}});
+export const requestPets = () => ({type: PetActionsTypes.REQUEST_PETS});
+export const receivePets = (data: Pet[]) => ({type: PetActionsTypes.RECEIVE_PETS, data: data});
+export const requestPet = () => ({type: PetActionsTypes.REQUEST_PETS});
+export const receivePet = (data: {}) => ({type: PetActionsTypes.RECEIVE_PETS, data: data});
+
+export function fetchPet(id: string) {
+    return (dispatch: any) => {
+        //dispatch(requestPets());
+        return getData(`/pets/${+id}`, {})
+            .then(data => {
+                data && dispatch(receivePet(data))
+            })
+        // notice that there is an extra "pet" in the path above which is produced
+        // in this particular implementation of the service. {pet: Pet, appointments:List<AppointmentDTO>}
+    }
+}
 
 export function fetchPets() {
     return (dispatch: any) => {
@@ -97,7 +115,7 @@ export function updatePetRequest(id: number, pet: Pet) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name: pet.name, species: pet.species, id: pet.id, ownerID: pet.ownerID})
+            body: JSON.stringify({name: pet.name, species: pet.species, id: pet.id, ownerID: 2})
         })
             .then(response => {
                 if (response.ok) {
