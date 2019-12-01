@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {PetState, Pet} from './components/PetList'
-import {PetList} from './components/PetList'
+
 import {connect, Provider} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
 import reducer from "./reducers";
@@ -12,10 +12,17 @@ import {
     Route,
     Link
 } from "react-router-dom";
+import PetList from "./components/PetList";
 import PetDetails from "./components/PetDetails";
 import NavigationBar from "./components/NavigationBar";
+import AppointmentDetails from "./components/AppointmentDetails";
+import AddAppointmentForm from "./components/AddAppointmentForm";
 export interface GlobalState {
     pets: PetState,
+    currentUser: {
+        id:string,
+        name:string,
+    }
 }
 
 const Content = () => {
@@ -35,8 +42,10 @@ const App = () => {
         <Provider store={store}>
             <NavigationBar/>
             <Router>
-                <Route path="/pet" exact component={PetList} />
+                <Route path="/pet/" exact component={PetList} />
                 <Route path="/pet/:id" component={PetDetails} />
+                <Route path="/appointment/:id" component={AppointmentDetails} />
+                <Route path="/appointment/" exact component={AddAppointmentForm} />
             </Router>
         </Provider>
     );

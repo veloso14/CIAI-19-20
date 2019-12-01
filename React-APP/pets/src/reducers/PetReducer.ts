@@ -14,6 +14,7 @@ const initialState = {
         name: "",
         species: "",
     },
+    appointments: [],
     isFetching: false,
 };
 
@@ -43,7 +44,12 @@ function petReducer(state: PetState = initialState, action: Action): PetState {
         case PetActionsTypes.REQUEST_PET:
             return {...state, isFetching: true};
         case PetActionsTypes.RECEIVE_PET:
-            return {...state, isFetching: false, pet: (action as ReceivePetAction).data};
+            return {
+                ...state,
+                isFetching: false,
+                pet: (action as ReceivePetAction).data.pet,
+                appointments: (action as ReceivePetAction).data.appointments
+            };
 
 
         case PetActionsTypes.DELETE_PET:

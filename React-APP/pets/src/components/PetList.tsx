@@ -7,14 +7,6 @@ import {Link} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Col from "react-bootstrap/Col";
-
-/*
-* #TODO: pagina individual para um pet
-*        browserRouter com switch e Links
-*        updatePet reducer/action/button
-* */
 
 export interface Pet {
     id: number,
@@ -22,9 +14,16 @@ export interface Pet {
     species: string
 }
 
+export interface Appointment {
+    id: number,
+    date: number,
+    desc: string,
+}
+
 export interface PetState {
     pets: Pet[],
     pet: Pet,
+    appointments: Appointment[],
     isFetching: boolean
 }
 
@@ -34,8 +33,7 @@ type FormData = {
 }
 
 const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () => void, postPet: (pet: Pet) => void, deletePet: (id: number) => void }) => {
-    const [update, setUpdate] = React.useState(false)
-    // eslint-disable-next-line
+    const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({petName, petSpecies}) => {
         console.log(petName, petSpecies);
@@ -72,7 +70,7 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
             <h1 className="text-center">My Pets</h1>
             <br/>
 
-            <ListGroup>{list}</ListGroup>
+            {props.isFetching ? <p>Loading...</p> : <ListGroup>{list}</ListGroup>}
 
             <br/>
             <h1 className="text-center">Add new pet</h1>
@@ -97,12 +95,11 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
     );
 };
 
-const mapStateToProps = (state: GlobalState) => {
-    return {
-        pets: state.pets.pets,
-        isFetching: state.pets.isFetching
-    }
-};
+const mapStateToProps = (state: GlobalState) => ({
+    pets: state.pets.pets,
+    isFetching: state.pets.isFetching
+});
+
 const mapDispatchToProps = (dispatch: any) => {
     return {
         loadPets: () => {
@@ -116,4 +113,4 @@ const mapDispatchToProps = (dispatch: any) => {
         }
     }
 };
-export const PetList = connect(mapStateToProps, mapDispatchToProps)(ProtoPetList);
+export default connect(mapStateToProps, mapDispatchToProps)(ProtoPetList);

@@ -1,15 +1,15 @@
 import React from 'react';
-import {Pet} from "./PetList";
+import {Appointment, Pet} from "./PetList";
 import {GlobalState} from "../App";
 import {updatePetRequest, fetchPet} from "../actions/PetActions";
 import {connect} from "react-redux";
-import {useParams} from "react-router-dom"
+import {Link, useParams} from "react-router-dom"
 import useForm from "react-hook-form";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image"
-import Figure from "react-bootstrap/Figure";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import AppointmentList from "./AppointmentList";
 
 type FormData = {
     newName: string;
@@ -20,7 +20,7 @@ type FormData = {
 * #TODO: Update pet request não funciona (erro 500)
 * */
 
-const PetDetails = (props: { pet: Pet, loadPet: (id: string) => void, updatePet: (id: string, pet: Pet) => void }) => {
+const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id: string) => void, updatePet: (id: string, pet: Pet) => void }) => {
     let {id} = useParams();
 
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
@@ -43,6 +43,9 @@ const PetDetails = (props: { pet: Pet, loadPet: (id: string) => void, updatePet:
                     <h5>Pet species: {props.pet.species}</h5><br/>
                 </Col>
             </Row>
+            <br/>
+            {props.appointments.length > 0 && <AppointmentList/>}
+            <br/>
             <h1 className="text-center">Edit Pet</h1>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
@@ -60,6 +63,7 @@ const PetDetails = (props: { pet: Pet, loadPet: (id: string) => void, updatePet:
                 </div>
                 <input className="btn btn-primary float-right" type="submit" value="Edit Pet"/>
             </form>
+
         </Container>
     );
 };
@@ -68,6 +72,7 @@ const PetDetails = (props: { pet: Pet, loadPet: (id: string) => void, updatePet:
 const mapStateToProps = (state: GlobalState) => {
     return {
         pet: state.pets.pet,
+        appointments: state.pets.appointments,
         isFetching: state.pets.isFetching
     }
 };
