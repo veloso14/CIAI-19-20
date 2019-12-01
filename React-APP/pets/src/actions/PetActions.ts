@@ -18,9 +18,20 @@ export interface AddPetAction extends Action {
     species: string
 }
 
-export interface ReceivePetAction extends Action {
+export interface ReceivePetsAction extends Action {
     data: Pet[]
 }
+export interface ReceivePetAction extends Action {
+    data: Pet
+}
+
+export interface UpdatePetAction extends Action {
+    data: {
+        id: string
+        pet: Pet,
+    }
+}
+
 
 export interface DeletePetAction extends Action {
     id: number
@@ -28,18 +39,20 @@ export interface DeletePetAction extends Action {
 
 export const addPet = (pet: Pet) => ({type: PetActionsTypes.ADD_PET, data: pet});
 export const deletePet = (id: number) => ({type: PetActionsTypes.DELETE_PET, data: id});
-export const updatePet = (id: number, pet: Pet) => ({type: PetActionsTypes.UPDATE_PET, data: {id: id, pet: pet}});
+export const updatePet = (id: string, pet: Pet) => ({type: PetActionsTypes.UPDATE_PET, data: {id: id, pet: pet}});
 export const requestPets = () => ({type: PetActionsTypes.REQUEST_PETS});
 export const receivePets = (data: Pet[]) => ({type: PetActionsTypes.RECEIVE_PETS, data: data});
-export const requestPet = () => ({type: PetActionsTypes.REQUEST_PETS});
-export const receivePet = (data: {}) => ({type: PetActionsTypes.RECEIVE_PETS, data: data});
+export const requestPet = () => ({type: PetActionsTypes.REQUEST_PET});
+export const receivePet = (data: {}) => ({type: PetActionsTypes.RECEIVE_PET, data: data});
 
 export function fetchPet(id: string) {
     return (dispatch: any) => {
-        //dispatch(requestPets());
-        return getData(`/pets/${+id}`, {})
+        dispatch(requestPet());
+        return getData(`/pets/${+id}`, {pet:{}, appointments: []})
             .then(data => {
-                data && dispatch(receivePet(data))
+                console.log("log: " + JSON.stringify(data))
+
+                data && dispatch(receivePet(data.pet))
             })
         // notice that there is an extra "pet" in the path above which is produced
         // in this particular implementation of the service. {pet: Pet, appointments:List<AppointmentDTO>}
@@ -60,7 +73,7 @@ export function fetchPets() {
 
 export function postPet(pet: Pet) {
     return (dispatch: any) => {
-        //dispatch(addPet(pet));
+        dispatch(addPet(pet));
         return fetch('/pets', {
             method: "POST",
             headers: {
@@ -107,10 +120,10 @@ export function deletePetRequest(id: number) {
     }
 }
 
-export function updatePetRequest(id: number, pet: Pet) {
+export function updatePetRequest(id: string, pet: Pet) {
     return (dispatch: any) => {
 
-        return fetch(`/pets/${id}`, {
+        return fetch(`/pets/${+id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

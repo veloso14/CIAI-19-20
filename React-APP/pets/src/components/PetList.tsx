@@ -4,6 +4,11 @@ import {connect} from "react-redux";
 import {deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
 import {GlobalState} from "../App";
 import {Link} from "react-router-dom"
+import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import Col from "react-bootstrap/Col";
 
 /*
 * #TODO: pagina individual para um pet
@@ -19,6 +24,7 @@ export interface Pet {
 
 export interface PetState {
     pets: Pet[],
+    pet: Pet,
     isFetching: boolean
 }
 
@@ -34,7 +40,7 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
     const onSubmit = handleSubmit(({petName, petSpecies}) => {
         console.log(petName, petSpecies);
         props.postPet({name: petName, species: petSpecies, id: 0});
-        setUpdate(true)
+        setUpdate(true);
         setValue("petName", "");
         setValue("petSpecies", "");
     });
@@ -42,33 +48,52 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
     // eslint-disable-next-line
     React.useEffect(() => {
         console.log("run effect");
-        props.loadPets()
+        props.loadPets();
         return () => {
             setUpdate(false)
         }
     }, [update]);
 
-
-    let list = props.pets.map((pet: Pet) => <li key={pet.id}><Link to={`/pet/${pet.id}`}>{pet.name}</Link>
-        <div className='deleteMe' onClick={() => {
-            props.deletePet(pet.id);
-            setUpdate(true)
-        }}>X
-        </div>
-    </li>);
+    let list = props.pets.map((pet: Pet) => {
+        return (
+            <ListGroup.Item key={pet.id}>
+                <Link to={`/pet/${pet.id}`}>{pet.name}</Link>
+                <Button className="float-right" variant="primary" size="sm" onClick={() => {
+                    props.deletePet(pet.id);
+                    setUpdate(true)
+                }}>Delete</Button>
+            </ListGroup.Item>
+        )
+    });
 
     return (
-        <>
-            <h1>Pet List Component</h1>
-            <ul>{list}</ul>
+        <Container>
+            <br/>
+            <h1 className="text-center">My Pets</h1>
+            <br/>
+
+            <ListGroup>{list}</ListGroup>
+
+            <br/>
+            <h1 className="text-center">Add new pet</h1>
+
             <form onSubmit={onSubmit}>
-                <label>Pet Name</label>
-                <input name="petName" ref={register}/>
-                <label>Pet Species</label>
-                <input name="petSpecies" ref={register}/>
-                <input type="submit"/>
+                <div className="form-group">
+                    <label>Pet Name</label>
+                    <input className="form-control" id="petName" name="petName" ref={register({required: true})}/>
+                    {errors.petName && 'Pet name is required'}
+                </div>
+                <div className="form-group">
+                    <label>Pet Species</label>
+                    <select className="form-control" id="petSpecies" name="petSpecies" ref={register}>
+                        <option value="cat">Cat</option>
+                        <option value="dog">Dog</option>
+                        <option value="bird">Bird</option>
+                    </select>
+                </div>
+                <input className="btn btn-primary float-right" type="submit" value="Add Pet"/>
             </form>
-        </>
+        </Container>
     );
 };
 

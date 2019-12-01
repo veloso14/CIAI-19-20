@@ -3,12 +3,17 @@ import {
     PetActionsTypes,
     AddPetAction,
     DeletePetAction,
-    ReceivePetAction,
+    ReceivePetsAction, ReceivePetAction, UpdatePetAction,
 } from '../actions/PetActions';
-import {PetState} from "../components/PetList";
+import {Pet, PetState} from "../components/PetList";
 
 const initialState = {
     pets: [],
+    pet: {
+        id: -1,
+        name: "",
+        species: "",
+    },
     isFetching: false,
 };
 
@@ -21,17 +26,26 @@ function petReducer(state: PetState = initialState, action: Action): PetState {
                     id: 0,
                     name: (action as AddPetAction).name,
                     species: (action as AddPetAction).species,
-
                 }]
             };
+        case PetActionsTypes.UPDATE_PET:
+            return {
+                ...state,
+                pet: (action as UpdatePetAction).data.pet
+            };
+
         case PetActionsTypes.REQUEST_PETS:
             return {...state, isFetching: true};
         case PetActionsTypes.RECEIVE_PETS:
-            return {...state, isFetching: false, pets: (action as ReceivePetAction).data};
+            return {...state, isFetching: false, pets: (action as ReceivePetsAction).data};
+
+
         case PetActionsTypes.REQUEST_PET:
             return {...state, isFetching: true};
         case PetActionsTypes.RECEIVE_PET:
-            return {...state, isFetching: false, pets: (action as ReceivePetAction).data};
+            return {...state, isFetching: false, pet: (action as ReceivePetAction).data};
+
+
         case PetActionsTypes.DELETE_PET:
             return {...state, pets: state.pets.filter(pet => pet.id !== (action as DeletePetAction).id)};
         default:

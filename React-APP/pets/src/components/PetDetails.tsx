@@ -1,63 +1,82 @@
 import React from 'react';
 import {Pet} from "./PetList";
 import {GlobalState} from "../App";
-import {updatePetRequest} from "../actions/PetActions";
+import {updatePetRequest, fetchPet} from "../actions/PetActions";
 import {connect} from "react-redux";
 import {useParams} from "react-router-dom"
+import useForm from "react-hook-form";
+import Container from "react-bootstrap/Container";
+import Image from "react-bootstrap/Image"
+import Figure from "react-bootstrap/Figure";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
-function fetchPet(id: string) {
-
-    return fetch(`/pets/${id}`, {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                console.log(`Error: ${response.status}: ${response.statusText}`);
-                console.error(response)
-            }
-        })
-        .catch(reason => {
-            console.log(reason);
-        });
+type FormData = {
+    newName: string;
+    newSpecies: string;
 }
 
-const PetDetails = (props: { loadPet: (id: string) => void }) => {
-    let {id} = useParams();
-    // @ts-ignore
+/*
+* #TODO: Update pet request não funciona (erro 500)
+* */
 
+const PetDetails = (props: { pet: Pet, loadPet: (id: string) => void, updatePet: (id: string, pet: Pet) => void }) => {
+    let {id} = useParams();
+
+    const {register, setValue, handleSubmit, errors} = useForm<FormData>();
+    const onSubmit = handleSubmit(({newName, newSpecies}) => {
+        console.log(newName, newSpecies);
+        props.updatePet(id as string, {name: newName, species: newSpecies, id: props.pet.id})
+    });
 
     React.useEffect(() => {
-        console.log("run effect ");
-        // @ts-ignore
-        //props.loadPet(id)
-        const {pet} = fetchPet(id.toString())
-        console.log(JSON.stringify(pet))
+        console.log("run effect details");
+        props.loadPet(id as string);
     }, []);
     return (
-        <div>
-            <h1>Details</h1>
-        </div>
+        <Container>
+            <h1 className="text-center">Details</h1>
+            <Row>
+                <Image width={200} height={200} fluid src={require('../images/dog.jpg')} roundedCircle/>
+                <Col>
+                    <h5>Pet name: {props.pet.name}</h5><br/>
+                    <h5>Pet species: {props.pet.species}</h5><br/>
+                </Col>
+            </Row>
+            <h1 className="text-center">Edit Pet</h1>
+            <form onSubmit={onSubmit}>
+                <div className="form-group">
+                    <label>Enter new pet name</label>
+                    <input className="form-control" id="newName" name="newName" ref={register({required: true})}/>
+                    {errors.newName && 'New pet name is required'}
+                </div>
+                <div className="form-group">
+                    <label>Enter new species</label>
+                    <select className="form-control" id="newSpecies" name="newSpecies" ref={register}>
+                        <option value="cat">Cat</option>
+                        <option value="dog">Dog</option>
+                        <option value="bird">Bird</option>
+                    </select>
+                </div>
+                <input className="btn btn-primary float-right" type="submit" value="Edit Pet"/>
+            </form>
+        </Container>
     );
 };
 
 
 const mapStateToProps = (state: GlobalState) => {
     return {
-        pets: state.pets.pets,
+        pet: state.pets.pet,
         isFetching: state.pets.isFetching
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        /*loadPet: (id: string) => {
+        loadPet: (id: string) => {
             dispatch(fetchPet(id))
-        },*/
-        updatePet: (id: number, newPet: Pet) => {
+        },
+        updatePet: (id: string, newPet: Pet) => {
             dispatch(updatePetRequest(id, newPet))
         },
     }

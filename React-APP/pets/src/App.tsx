@@ -13,7 +13,7 @@ import {
     Link
 } from "react-router-dom";
 import PetDetails from "./components/PetDetails";
-
+import NavigationBar from "./components/NavigationBar";
 export interface GlobalState {
     pets: PetState,
 }
@@ -33,8 +33,9 @@ let store = createStore(reducer, applyMiddleware(thunk));
 const App = () => {
     return (
         <Provider store={store}>
+            <NavigationBar/>
             <Router>
-                <Route path="/pet" exact component={Page} />
+                <Route path="/pet" exact component={PetList} />
                 <Route path="/pet/:id" component={PetDetails} />
             </Router>
         </Provider>
