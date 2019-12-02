@@ -3,13 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="7cc9d5a5-01d6-40e2-8c3e-edc349b40168" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/React-APP/pets/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/React-APP/pets/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/App.test.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/React-APP/pets/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/PetList" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/logo.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/components/AddAppointmentForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/components/AddAppointmentForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/components/NavigationBar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/components/NavigationBar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/components/SignIn.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/components/SignIn.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/React-APP/pets/src/reducers/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/React-APP/pets/src/reducers/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AdminController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AdminController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AppointmentController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/AppointmentController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/ClientController.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/PetController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/api/VetController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/pt/unl/fct/di/iadi/vetclinic/config/SecurityConfig.kt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,6 +68,7 @@
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop/server" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+    <property name="ts.external.directory.path" value="D:\GitHub\CIAI-19-20\React-APP\pets\node_modules\typescript\lib" />
   </component>
   <component name="RecentsManager">
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
@@ -85,7 +90,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.VetClinicApplication (1)">
+  <component name="RunManager" selected="Spring Boot.VetClinicApplication">
     <configuration name="AdminControllerTester" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="vetclinit" />
       <extension name="coverage">
@@ -218,6 +223,9 @@
       <workItem from="1574785698746" duration="5029000" />
       <workItem from="1574791798641" duration="870000" />
       <workItem from="1575037251734" duration="1430000" />
+      <workItem from="1575126452060" duration="593000" />
+      <workItem from="1575152516212" duration="1157000" />
+      <workItem from="1575308348953" duration="5114000" />
     </task>
     <servers />
   </component>

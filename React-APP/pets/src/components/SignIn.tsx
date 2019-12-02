@@ -21,7 +21,7 @@ async function performLogin(username:string, password:string, signIn:(b:boolean)
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
-    fetch("login",
+    fetch("/login",
         {method:'POST',
             headers: myHeaders,
             body: JSON.stringify({username:username, password:password})})

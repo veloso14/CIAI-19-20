@@ -167,7 +167,7 @@ const AddAppointmentForm = () => {
                     </select>
                 </div>
 
-                <input className="btn btn-primary float-right" type="submit" value="Add Pet"/>
+                <input className="btn btn-primary float-right" type="submit" value="Create appointment"/>
             </form>
         </Container>
     );

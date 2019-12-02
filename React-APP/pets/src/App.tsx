@@ -17,8 +17,10 @@ import PetDetails from "./components/PetDetails";
 import NavigationBar from "./components/NavigationBar";
 import AppointmentDetails from "./components/AppointmentDetails";
 import AddAppointmentForm from "./components/AddAppointmentForm";
+import AdminList, {AdminState} from "./components/AdminList";
 export interface GlobalState {
     pets: PetState,
+    admins:AdminState,
     currentUser: {
         id:string,
         name:string,
@@ -46,6 +48,7 @@ const App = () => {
                 <Route path="/pet/:id" component={PetDetails} />
                 <Route path="/appointment/:id" component={AppointmentDetails} />
                 <Route path="/appointment/" exact component={AddAppointmentForm} />
+                <Route path="/admin/" exact component={AdminList} />
             </Router>
         </Provider>
     );
