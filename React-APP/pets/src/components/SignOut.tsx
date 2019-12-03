@@ -14,28 +14,6 @@ const ProtoSignOutForm = (
     }) => {
 
     props.performSignOut()
-    const [ username, setUsername ] = useState("");
-    const [ password, setPassword ] = useState("");
-
-    let submitHandler = (e:FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        props.performSignIn(username, password);
-        setUsername("");
-        setPassword("")
-    };
-
-    let usernameChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setUsername(e.target.value) };
-
-    let passwordChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setPassword(e.target.value) };
-
-    let SignOutForm =
-        (<form onSubmit={submitHandler}>
-            <div><label>Username: <input type="text" value={username} onChange={usernameChangeHandler}/></label></div>
-    <div><label>Password: <input type="password" value={password} onChange={passwordChangeHandler}/></label></div>
-    <button>Sign In</button>
-    </form>);
-
-    
 
 
     return (<Redirect to = {'/'} />);
