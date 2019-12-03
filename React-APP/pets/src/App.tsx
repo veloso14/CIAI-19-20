@@ -8,12 +8,14 @@ import reducer from "./reducers";
 import thunk from 'redux-thunk';
 import {AdminState} from "./components/AdminList";
 import SignInForm, {SignInState} from "./components/SignIn";
+import {VetState} from "./components/VetList";
 
 
 export interface GlobalState {
     pets: PetState,
     signIn: SignInState,
     admins:AdminState,
+    vets:VetState,
     currentUser: {
         id:string,
         name:string,

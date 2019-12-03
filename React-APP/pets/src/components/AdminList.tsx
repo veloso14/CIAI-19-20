@@ -56,7 +56,12 @@ const AdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: ()
             name: adminName, cellphone: adminCellphone, email: adminEmail });
         setUpdate(true);
         setValue("adminName", "");
-        setValue("adminSpecies", "");
+        setValue("adminCellphone", -1);
+        setValue("adminEmail", "");
+        setValue("adminAddress", "");
+        setValue("adminPhoto", "");
+        setValue("adminUsername", "");
+        setValue("adminPassword", "");
     });
 
     // eslint-disable-next-line
