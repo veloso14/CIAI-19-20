@@ -11,7 +11,8 @@ import Button from "react-bootstrap/Button";
 export interface Pet {
     id: number,
     name: string,
-    species: string
+    species: string,
+    ownerID: number
 }
 
 export interface Appointment {
@@ -32,12 +33,15 @@ type FormData = {
     petSpecies: string;
 }
 
+
+const clientID = 568
+
 const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () => void, postPet: (pet: Pet) => void, deletePet: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({petName, petSpecies}) => {
         console.log(petName, petSpecies);
-        props.postPet({name: petName, species: petSpecies, id: 0});
+        props.postPet({name: petName, species: petSpecies, id: 0, ownerID: clientID});
         setUpdate(true);
         setValue("petName", "");
         setValue("petSpecies", "");
@@ -64,13 +68,18 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
         )
     });
 
+    let emptyList = (<p className="text-center">You currently don't have any pets registered!</p>)
+
+    let petList = ( (props.pets.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+
+
     return (
         <Container>
             <br/>
             <h1 className="text-center">My Pets</h1>
             <br/>
 
-            {props.isFetching ? <p>Loading...</p> : <ListGroup>{list}</ListGroup>}
+            {props.isFetching ? <p>Loading...</p> : petList}
 
             <br/>
             <h1 className="text-center">Add new pet</h1>

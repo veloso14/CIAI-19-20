@@ -4,7 +4,7 @@ import {
     AddPetAction,
     DeletePetAction,
     ReceivePetsAction, ReceivePetAction, UpdatePetAction,
-} from '../actions/PetActions';
+} from "../actions/PetActions";
 import {Pet, PetState} from "../components/PetList";
 
 const initialState = {
@@ -13,6 +13,7 @@ const initialState = {
         id: -1,
         name: "",
         species: "",
+        ownerID: -1
     },
     appointments: [],
     isFetching: false,
@@ -27,6 +28,7 @@ function petReducer(state: PetState = initialState, action: Action): PetState {
                     id: 0,
                     name: (action as AddPetAction).name,
                     species: (action as AddPetAction).species,
+                    ownerID: (action as AddPetAction).ownerId
                 }]
             };
         case PetActionsTypes.UPDATE_PET:

@@ -26,7 +26,7 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({newName, newSpecies}) => {
         console.log(newName, newSpecies);
-        props.updatePet(id as string, {name: newName, species: newSpecies, id: props.pet.id})
+        props.updatePet(id as string, {name: newName, species: newSpecies, id: props.pet.id, ownerID: props.pet.ownerID})
     });
 
     React.useEffect(() => {
@@ -41,6 +41,7 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
                 <Col>
                     <h5>Pet name: {props.pet.name}</h5><br/>
                     <h5>Pet species: {props.pet.species}</h5><br/>
+                    <h5>Owner id: {props.pet.ownerID}</h5><br/>
                 </Col>
             </Row>
             <br/>

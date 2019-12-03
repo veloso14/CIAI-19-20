@@ -4,6 +4,7 @@ import useForm from "react-hook-form";
 import {getData} from "../Utils/NetworkUtils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {  withRouter, useHistory } from 'react-router-dom';
 
 /*
 * Mudanças no servidor:
@@ -55,7 +56,9 @@ const AddAppointmentForm = () => {
     const [date, setDate] = React.useState(new Date());
 
     // TODO need to know the id of the current logged in client
-    const id = 4;
+    const id = 568;
+
+    let history = useHistory()
 
     const onSubmit = handleSubmit(({desc, pet, vet, slot}) => {
         console.log(desc, vet, pet, slot);
@@ -67,6 +70,7 @@ const AddAppointmentForm = () => {
                 postAppointment(id, date, desc, +vet, +pet);
             }
         })
+        history.push("/pet")
     });
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -139,18 +143,21 @@ const AddAppointmentForm = () => {
                 <div className="form-group">
                     <label>Description</label>
                     <textarea className="form-control" id="desc" name="desc" ref={register({required: true})}/>
-                    {errors.petName && 'Pet name is required'}
+                    {errors.desc && 'A brief description is required.'}
                 </div>
                 <div className="form-group">
                     <label>Vet</label>
-                    <select className="form-control" id="vet" name="vet" ref={register}>
+                    <select className="form-control" id="vet" name="vet" ref={register({required: true})}>
                         <option disabled selected> -- select an option --</option>
                         {vetOptionsList}
                     </select>
+                    {errors.vet && 'You need to choose a vet.'}
+
                 </div>
                 <div className="form-group">
                     <label>Pet</label>
-                    <select className="form-control" id="pet" name="pet" ref={register}>
+                    <select className="form-control" id="pet" name="pet" ref={register({required: true})}>
+                        <option disabled selected> -- select an option --</option>
                         {petOptionsList}
                     </select>
                 </div>
@@ -159,6 +166,8 @@ const AddAppointmentForm = () => {
                         selected={date}
                         onChange={handleChange}
                     />
+                    <p>you need to choose a date to pick free slot</p>
+
                 </div>
                 <div className="form-group">
                     <label>Free Slots</label>
@@ -173,4 +182,4 @@ const AddAppointmentForm = () => {
     );
 };
 
-export default AddAppointmentForm;
+export default withRouter(AddAppointmentForm);

@@ -15,7 +15,8 @@ export enum PetActionsTypes {
 
 export interface AddPetAction extends Action {
     name: string,
-    species: string
+    species: string,
+    ownerId: number
 }
 
 export interface ReceivePetsAction extends Action {
@@ -76,12 +77,12 @@ export function fetchPets() {
 export function postPet(pet: Pet) {
     return (dispatch: any) => {
         dispatch(addPet(pet));
-        return fetch('/pets', {
+        return fetch(`/pets`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({id: pet.id, name: pet.name, ownerID: 2, species: pet.species})
+            body: JSON.stringify({id: pet.id, name: pet.name, ownerID: pet.ownerID, species: pet.species})
         })
             .then(response => {
                 if (response.ok)
@@ -130,7 +131,7 @@ export function updatePetRequest(id: string, pet: Pet) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name: pet.name, species: pet.species, id: pet.id, ownerID: 2})
+            body: JSON.stringify({name: pet.name, species: pet.species, id: pet.id, ownerID: pet.ownerID})
         })
             .then(response => {
                 if (response.ok) {
