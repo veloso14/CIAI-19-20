@@ -2,8 +2,7 @@ import React from 'react';
 import Container from "react-bootstrap/Container";
 import {useParams} from "react-router";
 import {GlobalState} from "../App";
-import {fetchPet, updatePetRequest} from "../actions/PetActions";
-import {Appointment, Pet} from "./PetList";
+import {Appointment} from "./PetList";
 import {connect} from "react-redux";
 
 const AppointmentDetails = (props: { appointments: Appointment[] }) => {

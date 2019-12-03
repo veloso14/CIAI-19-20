@@ -1,8 +1,6 @@
 import {getData} from "../Utils/NetworkUtils";
 import {Action} from "redux";
 import {Admin} from "../components/AdminList";
-import {deletePet, PetActionsTypes, updatePet} from "./PetActions";
-import {Pet} from "../components/PetList";
 
 
 export enum AdminActionsTypes {

@@ -1,14 +1,8 @@
-
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {connect, Provider} from "react-redux";
 import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link
-} from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import thunk from 'redux-thunk';
 import PetList from "./PetList";
 import PetDetails from "./PetDetails";
@@ -18,6 +12,7 @@ import AppointmentDetails from "./AppointmentDetails";
 import AddAppointmentForm from "./AddAppointmentForm";
 import {applyMiddleware, createStore} from "redux";
 import AdminList from "./AdminList";
+
 export interface SignInState { isSignedIn: boolean }
 
 const ProtoSignInForm = (

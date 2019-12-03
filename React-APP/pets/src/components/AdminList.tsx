@@ -9,7 +9,6 @@ import Container from "react-bootstrap/Container";
 import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminActions";
 
 
-
 export interface Admin {
     employeeID: number;
     photo: string;
