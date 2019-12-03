@@ -66,7 +66,7 @@ export function fetchAdmin(id: string) {
 export function fetchAdmins() {
     return (dispatch: any) => {
         dispatch(requestAdmins());
-        return getData('/admins', [])
+        return getData(`/admins`, [])
             .then(data => {
                 data && dispatch(receiveAdmins(data.map((p: { admin: Admin }) => p.admin)))
             })
@@ -76,7 +76,7 @@ export function fetchAdmins() {
 export function postAdmin(admin: Admin) {
     return (dispatch: any) => {
         dispatch(addAdmin(admin));
-        return fetch('/admins', {
+        return fetch(`/admins`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -125,7 +125,7 @@ export function deleteAdminRequest(id: number) {
 export function updateAdminRequest(id: string, admin: Admin) {
     return (dispatch: any) => {
 
-        return fetch(`/admins/${+id}`, {
+        return fetch(`/admins/${+id}/info`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

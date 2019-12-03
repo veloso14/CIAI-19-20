@@ -6,7 +6,7 @@ import {
     ReceiveAdminAction,
     ReceiveAdminsAction,
     UpdateAdminAction,
-} from '../actions/AdminActions';
+} from "../actions/AdminActions";
 import {AdminState} from "../components/AdminList";
 
 const initialState = {

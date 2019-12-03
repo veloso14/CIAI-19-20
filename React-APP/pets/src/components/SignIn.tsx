@@ -15,6 +15,7 @@ import AdminList from "./AdminList";
 import AdminDetails from "./AdminDetails";
 import SignOutForm from "./SignOut";
 import ChangePassword from "./ChangePassword";
+import VetList from "./VetList";
 
 export interface SignInState { isSignedIn: boolean }
 
@@ -69,6 +70,7 @@ const ProtoSignInForm = (
                 <Route path="/admin/" exact component={AdminList} />
                 <Route path="/admin/:id" component={AdminDetails} />
                 <Route path="/profile/" component={ChangePassword} />
+                <Route path="/vet/" exact component={VetList} />
                 <Route path="/logout/" exact component ={SignOutForm} />
             </Router>
             <Page/>
