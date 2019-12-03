@@ -34,7 +34,7 @@ type FormData = {
 }
 
 
-const clientID = 568
+const clientID = 1
 
 const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () => void, postPet: (pet: Pet) => void, deletePet: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);

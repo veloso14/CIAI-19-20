@@ -35,7 +35,7 @@ class PetController(val pets: PetService, val vets: VetService, val clients: Cli
             }
 
 
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+    //@PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a pet"),
@@ -46,7 +46,7 @@ class PetController(val pets: PetService, val vets: VetService, val clients: Cli
     fun addNewPet(@RequestBody pet: PetDTO): PetDTO =
             PetDTO(pets.addNewPet(PetDAO(pet, emptyList(), clients.getOneClient(pet.ownerID))))
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET') or ( hasRole( 'ROLE_CLIENT' ) and @securityService.canEditPet(principal, #id) ) ")
+   // @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET') or ( hasRole( 'ROLE_CLIENT' ) and @securityService.canEditPet(principal, #id) ) ")
     @ApiOperation(value = "Get the details of a single pet by id", response = PetDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved pet details"),
