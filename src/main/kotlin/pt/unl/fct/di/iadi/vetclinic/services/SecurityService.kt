@@ -1,12 +1,9 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.util.*
 
 
 @Service

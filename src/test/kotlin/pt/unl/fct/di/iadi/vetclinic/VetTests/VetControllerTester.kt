@@ -25,7 +25,6 @@ import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
-import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import pt.unl.fct.di.iadi.vetclinic.AppointmentTests.AppointmentControllerTester.Companion.vet
 

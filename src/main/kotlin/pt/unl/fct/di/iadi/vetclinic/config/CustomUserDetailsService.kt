@@ -1,15 +1,11 @@
 package pt.unl.fct.di.iadi.vetclinic.config
 
-import org.springframework.context.support.BeanDefinitionDsl
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
-import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
-import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 class CustomUserDetails(

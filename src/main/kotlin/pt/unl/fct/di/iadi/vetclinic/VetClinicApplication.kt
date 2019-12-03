@@ -1,19 +1,11 @@
 package pt.unl.fct.di.iadi.vetclinic
 
-import jdk.nashorn.internal.runtime.regexp.joni.Config.log
-import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
-import java.util.*
-import jdk.nashorn.internal.objects.NativeArray.forEach
-
 
 
 @SpringBootApplication

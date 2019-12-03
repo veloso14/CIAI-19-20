@@ -2,7 +2,10 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.model.*
+import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
+import pt.unl.fct.di.iadi.vetclinic.model.AppointmentRepository
+import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 
 @Service
 class PetService(

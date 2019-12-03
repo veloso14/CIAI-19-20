@@ -8,9 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
-import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.ClientService
-import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
 import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 

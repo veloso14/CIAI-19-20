@@ -1,21 +1,13 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
 
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.model.*
+import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
+import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
 import java.util.*
-import java.util.ArrayList
-import java.util.stream.Collectors
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.GrantedAuthority
-import jdk.nashorn.internal.objects.NativeArray.forEach
-
-
-
-
-
-
 
 
 @Service

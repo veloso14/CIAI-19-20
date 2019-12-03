@@ -2,9 +2,7 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
-import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.util.*
 
 @Service
 class ClientService(val pets: PetRepository,

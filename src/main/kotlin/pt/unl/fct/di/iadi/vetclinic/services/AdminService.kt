@@ -3,8 +3,6 @@ package pt.unl.fct.di.iadi.vetclinic.services
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.time.LocalDateTime
-import java.time.Month
 
 @Service
 class AdminService(val admins: AdminRepository,

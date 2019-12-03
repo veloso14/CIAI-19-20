@@ -9,12 +9,9 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.filter.GenericFilterBean
-import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
-import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.ClientService
-import pt.unl.fct.di.iadi.vetclinic.services.SecurityService
+import pt.unl.fct.di.iadi.vetclinic.model.UserSecurityDAO
+import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.UserService
 import java.util.*
 import javax.servlet.FilterChain
@@ -23,10 +20,6 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.GrantedAuthority
-import pt.unl.fct.di.iadi.vetclinic.model.UserSecurityDAO
 
 
 object JWTSecret {
