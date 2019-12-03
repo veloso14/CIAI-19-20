@@ -69,7 +69,7 @@ export function fetchVet(id: string) {
 export function fetchVets() {
     return (dispatch: any) => {
         dispatch(requestVets());
-        return getData(`/vets`, [])
+        return getData('/vets', [])
             .then(data => {
                 data && dispatch(receiveVets(data.map((p: { vet: Vet }) => p.vet)))
             })
@@ -79,7 +79,7 @@ export function fetchVets() {
 export function postVet(vet: Vet) {
     return (dispatch: any) => {
         dispatch(addVet(vet));
-        return fetch(`/vets`, {
+        return fetch('/vets', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
