@@ -50,9 +50,6 @@ type FormData = {
     vetUsername: string;
 }
 
-
-const clientID = 568
-
 const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () => void, postVet: (vet: Vet) => void, deleteVet: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
@@ -122,32 +119,32 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
                 <div className="form-group">
                     <label>Username</label>
                     <input className="form-control" id="vetUsername" name="vetUsername" ref={register({required: true})}/>
-                    {errors.vetName && 'Vet username is required'}
+                    {errors.vetUsername && 'Vet username is required'}
                 </div>
                 <div className="form-group">
                     <label>Password</label>
                     <input className="form-control" id="vetPassword" name="vetPassword" ref={register({required: true})}/>
-                    {errors.vetName && 'Vet password is required'}
+                    {errors.vetPassword && 'Vet password is required'}
                 </div>
                 <div className="form-group">
                     <label>Cellphone</label>
                     <input type="number" min="0" className="form-control" id="vetCellphone" name="vetCellphone" ref={register({required: true})}/>
-                    {errors.vetName && 'Vet cellphone is required'}
+                    {errors.vetCellphone && 'Vet cellphone is required'}
                 </div>
                 <div className="form-group">
                     <label>Email</label>
                     <input className="form-control" id="vetEmail" name="vetEmail" ref={register({required: true})}/>
-                    {errors.vetName && 'Vet email is required'}
+                    {errors.vetEmail && 'Vet email is required'}
                 </div>
                 <div className="form-group">
                     <label>Address</label>
                     <input className="form-control" id="vetAddress" name="vetAddress" ref={register({required: true})}/>
-                    {errors.vetName && 'Vet address is required'}
+                    {errors.vetAddress && 'Vet address is required'}
                 </div>
                 <div className="form-group">
                     <label>Photo</label>
                     <input className="form-control" id="vetPhoto" name="vetPhoto" ref={register({required: true})}/>
-                    {errors.vetName && 'Vet photo is required'}
+                    {errors.vetPhoto && 'Vet photo is required'}
                 </div>
 
                 <input className="btn btn-primary float-right" type="submit" value="Add Vet"/>

@@ -1,13 +1,12 @@
 import React from 'react';
-import {GlobalState} from "../App";
-import {connect} from "react-redux";
-import ListGroup from "react-bootstrap/ListGroup";
-import {Link} from "react-router-dom";
 import useForm from "react-hook-form";
-import Button from "react-bootstrap/Button";
+import {connect} from "react-redux";
+import {GlobalState} from "../App";
+import {Link} from "react-router-dom"
 import Container from "react-bootstrap/Container";
+import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
 import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminActions";
-
 
 export interface Admin {
     id: number,
@@ -36,16 +35,15 @@ type FormData = {
     adminAddress: string;
     adminPassword: string;
     adminUsername: string;
-
-
 }
 
 
-const AdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: () => void, postAdmin: (admin: Admin) => void, deleteAdmin: (id: number) => void  }) => {
+
+const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: () => void, postAdmin: (admin: Admin) => void, deleteAdmin: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
-    const onSubmit = handleSubmit(({adminName, adminCellphone, adminEmail, adminAddress, adminPhoto,adminUsername,adminPassword}) => {
-        console.log(adminName, adminCellphone,adminEmail);
+    const onSubmit = handleSubmit(({adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername}) => {
+        console.log(adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername);
         props.postAdmin({
             address: adminAddress,
             employeeID: 0,
@@ -58,10 +56,10 @@ const AdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: ()
         setValue("adminName", "");
         setValue("adminCellphone", -1);
         setValue("adminEmail", "");
-        setValue("adminAddress", "");
         setValue("adminPhoto", "");
-        setValue("adminUsername", "");
+        setValue("adminAddress", "");
         setValue("adminPassword", "");
+        setValue("adminUsername", "");
     });
 
     // eslint-disable-next-line
@@ -80,22 +78,26 @@ const AdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: ()
                 <Button className="float-right" variant="primary" size="sm" onClick={() => {
                     props.deleteAdmin(admin.id);
                     setUpdate(true)
-                }}>Delete</Button>
+                }}>Fire</Button>
             </ListGroup.Item>
         )
-        
     });
+
+    let emptyList = (<p className="text-center">You currently don't have any admins registered!</p>)
+
+    let adminList = ( (props.admins.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+
 
     return (
         <Container>
             <br/>
-            <h1 className="text-center">Admins</h1>
+            <h1 className="text-center">Vets</h1>
             <br/>
 
-            {props.isFetching ? <p>Loading...</p> : <ListGroup>{list}</ListGroup>}
+            {props.isFetching ? <p>Loading...</p> : adminList}
 
             <br/>
-            <h1 className="text-center">Hire new admin</h1>
+            <h1 className="text-center">Hire vet</h1>
 
             <form onSubmit={onSubmit}>
                 <div className="form-group">
@@ -106,32 +108,32 @@ const AdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: ()
                 <div className="form-group">
                     <label>Username</label>
                     <input className="form-control" id="adminUsername" name="adminUsername" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin username is required'}
+                    {errors.adminUsername && 'Admin username is required'}
                 </div>
                 <div className="form-group">
                     <label>Password</label>
                     <input className="form-control" id="adminPassword" name="adminPassword" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin password is required'}
+                    {errors.adminPassword && 'Admin password is required'}
                 </div>
                 <div className="form-group">
                     <label>Cellphone</label>
                     <input type="number" min="0" className="form-control" id="adminCellphone" name="adminCellphone" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin cellphone is required'}
+                    {errors.adminCellphone && 'Admin cellphone is required'}
                 </div>
                 <div className="form-group">
                     <label>Email</label>
                     <input className="form-control" id="adminEmail" name="adminEmail" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin email is required'}
+                    {errors.adminEmail && 'Admin email is required'}
                 </div>
                 <div className="form-group">
                     <label>Address</label>
                     <input className="form-control" id="adminAddress" name="adminAddress" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin address is required'}
+                    {errors.adminAddress && 'Admin address is required'}
                 </div>
                 <div className="form-group">
                     <label>Photo</label>
                     <input className="form-control" id="adminPhoto" name="adminPhoto" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin photo is required'}
+                    {errors.adminPhoto && 'Admin photo is required'}
                 </div>
 
                 <input className="btn btn-primary float-right" type="submit" value="Add Admin"/>
@@ -156,6 +158,7 @@ const mapDispatchToProps = (dispatch: any) => {
         deleteAdmin: (id: number) => {
             dispatch(deleteAdminRequest(id))
         }
+
     }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(AdminList);
+export default connect(mapStateToProps, mapDispatchToProps)(ProtoAdminList);
