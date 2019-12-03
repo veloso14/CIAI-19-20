@@ -79,7 +79,7 @@ data class ShiftDTO(val id: Long, var slots: List<SlotDAO>, val scheduleID: Long
     constructor(shift: ShiftDAO) : this(shift.id, shift.slots, shift.schedule.id)
 }
 
-data class SlotDTO(val id: Long, val start: Date, val available: Boolean, val shiftID: Long) {
+data class SlotDTO(val id: Long, val start: Long, val available: Boolean, val shiftID: Long) {
     constructor(slot: SlotDAO) : this(slot.id, slot.start, slot.available, slot.shift.id)
 }
 
