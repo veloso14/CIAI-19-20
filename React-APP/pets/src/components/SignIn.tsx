@@ -14,7 +14,9 @@ import {applyMiddleware, createStore} from "redux";
 import AdminList from "./AdminList";
 import AdminDetails from "./AdminDetails";
 import SignOutForm from "./SignOut";
+import ChangePassword from "./ChangePassword";
 import VetList from "./VetList";
+import Container from "react-bootstrap/Container";
 
 export interface SignInState { isSignedIn: boolean }
 
@@ -35,18 +37,29 @@ const ProtoSignInForm = (
         setPassword("")
     };
 
-    let handlerLogout = (e:FormEvent<HTMLButtonElement>) => { props.performSignOut() };
-
     let usernameChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setUsername(e.target.value) };
 
     let passwordChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setPassword(e.target.value) };
 
     let signInForm =
-        (<form onSubmit={submitHandler}>
-            <div><label>Username: <input type="text" value={username} onChange={usernameChangeHandler}/></label></div>
-            <div><label>Password: <input type="password" value={password} onChange={passwordChangeHandler}/></label></div>
+        (
+            <Container>
+
+                <br/>
+
+                <h1 className="text-center">Login</h1>
+
+
+                <form onSubmit={submitHandler}>
+            <div className="form-group">
+                <label>Username: <input className="form-control" type="text" value={username} onChange={usernameChangeHandler}/></label>
+            </div>
+            <div className="form-group">
+                <label>Password: <input className="form-control" type="password" value={password} onChange={passwordChangeHandler}/></label>
+            </div>
             <button>Sign In</button>
-        </form>);
+        </form>
+            </Container>);
 
 
     const Content = () => {
@@ -70,6 +83,7 @@ const ProtoSignInForm = (
                 <Route path="/appointment/" exact component={AddAppointmentForm} />
                 <Route path="/admin/" exact component={AdminList} />
                 <Route path="/admin/:id" component={AdminDetails} />
+                <Route path="/profile/" component={ChangePassword} />
                 <Route path="/vet/" exact component={VetList} />
                 <Route path="/logout/" exact component ={SignOutForm} />
             </Router>
