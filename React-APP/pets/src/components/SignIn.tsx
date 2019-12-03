@@ -14,6 +14,7 @@ import {applyMiddleware, createStore} from "redux";
 import AdminList from "./AdminList";
 import AdminDetails from "./AdminDetails";
 import SignOutForm from "./SignOut";
+import ChangePassword from "./ChangePassword";
 
 export interface SignInState { isSignedIn: boolean }
 
@@ -33,8 +34,6 @@ const ProtoSignInForm = (
         setUsername("");
         setPassword("")
     };
-
-    let handlerLogout = (e:FormEvent<HTMLButtonElement>) => { props.performSignOut() };
 
     let usernameChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setUsername(e.target.value) };
 
@@ -69,6 +68,7 @@ const ProtoSignInForm = (
                 <Route path="/appointment/" exact component={AddAppointmentForm} />
                 <Route path="/admin/" exact component={AdminList} />
                 <Route path="/admin/:id" component={AdminDetails} />
+                <Route path="/profile/" component={ChangePassword} />
                 <Route path="/logout/" exact component ={SignOutForm} />
             </Router>
             <Page/>

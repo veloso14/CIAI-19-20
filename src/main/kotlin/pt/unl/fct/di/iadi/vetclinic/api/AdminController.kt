@@ -100,9 +100,5 @@ class AdminController(val admins: AdminService) {
     @PutMapping("/{id}/password")
     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
             handle4xx { admins.updatePassword(id, pass) }
-
-
-
-
-
+    
 }
