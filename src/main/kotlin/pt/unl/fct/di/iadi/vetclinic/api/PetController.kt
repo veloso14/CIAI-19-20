@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
+import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
@@ -17,7 +18,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
         description = "Management operations of Pets in the IADI 2019 Pet Clinic")
 @RestController
 @RequestMapping("/pets")
-class PetController(val pets: PetService, val vets:VetService) {
+class PetController(val pets: PetService, val vets: VetService, val clients: ClientService) {
 
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered pets", response = List::class)
@@ -27,9 +28,11 @@ class PetController(val pets: PetService, val vets:VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @GetMapping("")
-    fun getAllPets() : List<PetAptsDTO> =
-            pets.getAllPets().map { PetAptsDTO(PetDTO(it),
-                    it.appointments.map { AppointmentDTO(it) }) }
+    fun getAllPets(): List<PetAptsDTO> =
+            pets.getAllPets().map {
+                PetAptsDTO(PetDTO(it),
+                        it.appointments.map { AppointmentDTO(it) })
+            }
 
 
     @PreAuthorize("hasRole('ROLE_CLIENT')")
@@ -41,7 +44,7 @@ class PetController(val pets: PetService, val vets:VetService) {
     ])
     @PostMapping("")
     fun addNewPet(@RequestBody pet: PetDTO): PetDTO =
-        PetDTO(pets.addNewPet(PetDAO(pet, emptyList(),ClientDAO())))
+            PetDTO(pets.addNewPet(PetDAO(pet, emptyList(), clients.getOneClient(pet.ownerID))))
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET') or ( hasRole( 'ROLE_CLIENT' ) and @securityService.canEditPet(principal, #id) ) ")
     @ApiOperation(value = "Get the details of a single pet by id", response = PetDTO::class)
@@ -52,7 +55,7 @@ class PetController(val pets: PetService, val vets:VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}")
-    fun getOnePet(@PathVariable id:Long) : PetAptsDTO =
+    fun getOnePet(@PathVariable id: Long): PetAptsDTO =
             handle4xx { pets.getOnePet(id).let { PetAptsDTO(PetDTO(it), it.appointments.map { AppointmentDTO(it) }) } }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')  and @securityService.canEditPet(principal, #id) ")
@@ -86,7 +89,7 @@ class PetController(val pets: PetService, val vets:VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/appointments")
-    fun appointmentsOfPet(@PathVariable id:Long): List<AppointmentDTO> =
+    fun appointmentsOfPet(@PathVariable id: Long): List<AppointmentDTO> =
             handle4xx {
                 pets.appointmentsOfPet(id)
                         .map { AppointmentDTO(it) }
@@ -101,9 +104,9 @@ class PetController(val pets: PetService, val vets:VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @PostMapping("/{id}/appointments")
-    fun newAppointment(@PathVariable id:Long,
-                       @RequestBody apt:AppointmentDTO) =
+    fun newAppointment(@PathVariable id: Long,
+                       @RequestBody apt: AppointmentDTO) =
             handle4xx {
-                AppointmentDTO(pets.newAppointment(AppointmentDAO(apt, pets.getOnePet(id),pets.getOnePet(id).owner, vets.getOneVet(apt.vetID))))
+                AppointmentDTO(pets.newAppointment(AppointmentDAO(apt, pets.getOnePet(id), pets.getOnePet(id).owner, vets.getOneVet(apt.vetID))))
             }
 }

@@ -74,7 +74,7 @@ class AppointmentService(val appointment: AppointmentRepository,
         val calendarShift: Calendar = Calendar.getInstance()
 
         for (slot in freeSlots) {
-            calendarShift.time = slot.start
+            calendarShift.time = Date(slot.start)
             val sameDay = calendar.get(Calendar.DAY_OF_MONTH) == calendarShift.get(Calendar.DAY_OF_MONTH) &&
                     calendar.get(Calendar.MONTH) == calendarShift.get(Calendar.MONTH)
 

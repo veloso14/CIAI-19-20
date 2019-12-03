@@ -247,13 +247,13 @@ data class ShiftDAO(
 @Entity// each slot has start date and available status
 data class SlotDAO(
         @Id @GeneratedValue val id: Long,
-        var start: Date,
+        var start: Long,
         var available: Boolean,
         @JsonIgnore
         @ManyToOne(cascade = [CascadeType.ALL]) val shift: ShiftDAO
 ) {
 
-    constructor(date: Date, shift: ShiftDAO) : this(0L, date, true, shift)
+    constructor(date: Date, shift: ShiftDAO) : this(0L, date.time, true, shift)
 
     fun setAvailableFalse() {
         this.available = false

@@ -137,9 +137,9 @@ class VetController(val vets: VetService) {
             handle4xx { vets.fireVet(id)}
 
 
-    @GetMapping("/{month}/freeslots")
-    fun getMonthFreeSlots(@PathVariable month: String) =
-            vets.getFreeSlots(month).map { SlotDTO(it) }
+    @GetMapping("/{month}/{day}/{id}/freeslots")
+    fun getMonthFreeSlots(@PathVariable month: String, @PathVariable day: Int, @PathVariable id: Long) =
+            vets.getFreeSlots(month, day, id).map { SlotDTO(it) }
 
 
 
