@@ -12,6 +12,7 @@ import AppointmentDetails from "./AppointmentDetails";
 import AddAppointmentForm from "./AddAppointmentForm";
 import {applyMiddleware, createStore} from "redux";
 import AdminList from "./AdminList";
+import AdminDetails from "./AdminDetails";
 
 export interface SignInState { isSignedIn: boolean }
 
@@ -66,6 +67,7 @@ const ProtoSignInForm = (
                 <Route path="/appointment/:id" component={AppointmentDetails} />
                 <Route path="/appointment/" exact component={AddAppointmentForm} />
                 <Route path="/admin/" exact component={AdminList} />
+                <Route path="/admin/:id" component={AdminDetails} />
             </Router>
             <Page/>
         </Provider>

@@ -10,8 +10,7 @@ const NavigationBar = () => {
                 <Nav.Link href="/" >Home</Nav.Link>
                 <Nav.Link href="/pet">Pet</Nav.Link>
                 <Nav.Link href="/appointment">Create Appointment</Nav.Link>
-                <Nav.Link href="/vet">Vet</Nav.Link>
-
+                <Nav.Link href="/admin">Admin</Nav.Link>
             </Nav>
             <Navbar.Collapse>
                 <Nav className="justify-content-end" style={{ width: "100%" }}>

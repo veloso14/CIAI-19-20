@@ -10,12 +10,12 @@ import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminAction
 
 
 export interface Admin {
+    id: number,
     employeeID: number;
     photo: string;
     address: string;
     password: string;
     username: string;
-    id: number,
     name: string,
     cellphone: number,
     email: string
