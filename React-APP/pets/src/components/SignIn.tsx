@@ -1,98 +1,43 @@
-/**
- Copyright 2019 João Costa Seco, Eduardo Geraldo
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
 
 import React, {ChangeEvent, FormEvent, useState} from "react";
+import {connect, Provider} from "react-redux";
+import {GlobalState} from "../App";
+import {requestSignIn, signOut} from "../actions/SignInAction";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+import thunk from 'redux-thunk';
+import PetList from "./PetList";
+import PetDetails from "./PetDetails";
+import reducer from "../reducers";
+import NavigationBar from "./NavigationBar";
+import AppointmentDetails from "./AppointmentDetails";
+import AddAppointmentForm from "./AddAppointmentForm";
+import {applyMiddleware, createStore} from "redux";
+import AdminList from "./AdminList";
+export interface SignInState { isSignedIn: boolean }
 
-
-async function performLogin(username:string, password:string, signIn:(b:boolean)=>void) {
-    const myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-
-    fetch("/login",
-        {method:'POST',
-            headers: myHeaders,
-            body: JSON.stringify({username:username, password:password})})
-    .then( response => {
-        if( response.ok )
-            return response.headers.get('Authorization');
-        else {
-            console.log(`Error: ${response.status}: ${response.statusText}`)
-            return null;
-            // and add a message to the Ui: wrong password ?? other errors?
-        }
-    })
-    .catch( err => { console.log(err) })
-    .then( token => {
-        if (token ) {
-            localStorage.setItem('jwt', token);
-            // not the safest of ways... but usable for now.
-            signIn(true)
-        }
-    })
-}
-
-function performLogout(signIn:(b:boolean)=>void) {
-    signIn(false);
-    localStorage.removeItem('jwt');
-}
-
-export function getData<T>(url:string, defaultValue:T):Promise<T> {
-    let auth = {};
-    let token = localStorage.getItem('jwt');
-    if (token) auth = {'Authorization':token};
-
-    // sign out in case of unauthorized access (expired session)
-    return fetch(url, {
-        method: "GET",
-        mode: "cors",
-        cache: "no-cache",
-        headers: {
-            ...auth,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok)
-            return response.json();
-        else {
-            console.log(`Error: ${response.status}: ${response.statusText}`);
-            return new Promise<T>((resolve, reject) => resolve(defaultValue))
-        }
-    })
-    .catch(reason => {
-        console.log(reason);
-    });
-}
-
-const SignInForm = (props:{isSignedIn:boolean, signIn:(b:boolean)=>void}) => {
+const ProtoSignInForm = (
+    props:{
+        isSignedIn:boolean,
+        performSignIn:(username:string, password:string)=>void,
+        performSignOut:()=>void
+    }) => {
 
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("");
 
-    if( localStorage.getItem('jwt') ) props.signIn(true);
-    // and test if it is expired, if yes clean it up
-
     let submitHandler = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        performLogin(username, password, props.signIn);
+        props.performSignIn(username, password);
         setUsername("");
         setPassword("")
     };
 
-    let handlerLogout = (e:FormEvent<HTMLButtonElement>) => { performLogout(props.signIn) };
+    let handlerLogout = (e:FormEvent<HTMLButtonElement>) => { props.performSignOut() };
 
     let usernameChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setUsername(e.target.value) };
 
@@ -103,13 +48,46 @@ const SignInForm = (props:{isSignedIn:boolean, signIn:(b:boolean)=>void}) => {
             <div><label>Username: <input type="text" value={username} onChange={usernameChangeHandler}/></label></div>
             <div><label>Password: <input type="password" value={password} onChange={passwordChangeHandler}/></label></div>
             <button>Sign In</button>
-            </form>);
+        </form>);
 
-    let signOutForm = <button onClick={handlerLogout}>Sign out</button>;
+
+    const Content = () => {
+        return (<>
+        </>);
+
+    };
+
+    const Page = connect(mapStateToProps)(Content);
+
+    let store = createStore(reducer, applyMiddleware(thunk));
+
+    let signOutForm = (
+
+        <Provider store={store}>
+            <NavigationBar/>
+            <Router>
+                <Route path="/pet/" exact component={PetList} />
+                <Route path="/pet/:id" component={PetDetails} />
+                <Route path="/appointment/:id" component={AppointmentDetails} />
+                <Route path="/appointment/" exact component={AddAppointmentForm} />
+                <Route path="/admin/" exact component={AdminList} />
+            </Router>
+            <Page/>
+        </Provider>
+    );
+
 
     return (<> {props.isSignedIn ? signOutForm : signInForm} </>);
     // add a message space for alerts (you were signed out, expired session)
 };
+const mapStateToProps = (state:GlobalState) => ({isSignedIn:state.signIn.isSignedIn});
+const mapDispatchToProps =
+    (dispatch:any) =>
+        ({
+            performSignIn: (username:string, password:string) => { dispatch(requestSignIn(username,password))},
+            performSignOut: () => dispatch(signOut())
+        });
+const SignInForm = connect(mapStateToProps,mapDispatchToProps)(ProtoSignInForm);
 
 export default SignInForm
 
