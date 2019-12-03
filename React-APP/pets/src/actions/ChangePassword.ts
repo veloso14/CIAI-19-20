@@ -13,7 +13,7 @@ export const updatePassword = (id: number, password: string) => ({type: ChangePa
 export function updatePasswordRequest(id: number, password: string) {
     return (dispatch: any) => {
 
-        return fetch(`/${+id}/password/`, {
+        return fetch(`admins/${+id}/password/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
