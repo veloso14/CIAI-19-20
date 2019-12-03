@@ -11,11 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
-import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
 import pt.unl.fct.di.iadi.vetclinic.services.VetService
+import java.text.SimpleDateFormat
+import java.time.Month
 import java.util.*
+
 
 @RunWith(SpringRunner::class)
 @SpringBootTest
@@ -24,32 +26,39 @@ class VetServiceTester {
     @Autowired
     lateinit var vets: VetService
 
-    @MockBean
-    lateinit var repo:VetRepository
+    @Autowired
+    lateinit var apts: AppointmentService
 
     @MockBean
-    lateinit var clientsRepo:ClientRepository
+    lateinit var repo: VetRepository
 
     @MockBean
-    lateinit var petsRepo:PetRepository
+    lateinit var clientsRepo: ClientRepository
 
     @MockBean
-    lateinit var aptRepo:AppointmentRepository
+    lateinit var petsRepo: PetRepository
+
+    @MockBean
+    lateinit var aptRepo: AppointmentRepository
+
+    @MockBean
+    lateinit var schedulesRepository: ScheduleRepository
+
 
     companion object Constants {
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony", "1234", 1234, "Rua Romao", "rosto.jpg", 11, true, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val chenel = VetDAO(2L, "Chenel", "chenel@gmail.com", "chenel", "1234", 1234, "Rua Romao", "rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
         val vetsDAO = mutableListOf(antonio, chenel);
 
-        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog", false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat", false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
-        val manzanares = ClientDAO(1L,"JoseMari","man@gmail.com","manza","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
-        val campuzano = ClientDAO(2L,"Tomas","camp@gmail.com","camp","1234",1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val manzanares = ClientDAO(1L, "JoseMari", "man@gmail.com", "manza", "1234", 1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val campuzano = ClientDAO(2L, "Tomas", "camp@gmail.com", "camp", "1234", 1234, "Rua Romao", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
         val clientsDAO = mutableListOf(manzanares, campuzano);
 
-        val consulta1 = AppointmentDAO(1L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
+        val consulta1 = AppointmentDAO(1L, Date(2019,1,1,9,0), "consulta1", PetDAO(), ClientDAO(), VetDAO())
         val consulta2 = AppointmentDAO(2L, Date(), "consulta1", PetDAO(), ClientDAO(), VetDAO())
         val consultasDAO = mutableListOf(consulta1, consulta2);
 
@@ -70,30 +79,31 @@ class VetServiceTester {
 
         vets.getOneVet(0L)
     }
-/*
-    @Test
-    fun `basic test on getAllPets`() {
-        Mockito.`when`(petsRepo.findAll()).thenReturn(petsDAO);
 
-        assertThat(vets.getAllPets(), equalTo(petsDAO as List<PetDAO>))
-    }
+    /*
+        @Test
+        fun `basic test on getAllPets`() {
+            Mockito.`when`(petsRepo.findAll()).thenReturn(petsDAO);
 
-    @Test
-    fun `basic test on getAllClients`() {
-        Mockito.`when`(clientsRepo.findAll()).thenReturn(clientsDAO);
+            assertThat(vets.getAllPets(), equalTo(petsDAO as List<PetDAO>))
+        }
 
-        assertThat(vets.getAllClients(), equalTo(clientsDAO as List<ClientDAO>))
-    }
+        @Test
+        fun `basic test on getAllClients`() {
+            Mockito.`when`(clientsRepo.findAll()).thenReturn(clientsDAO);
 
-    @Test
-    fun `basic test on getAllApts`() {
-        Mockito.`when`(aptRepo.findAll()).thenReturn(consultasDAO);
+            assertThat(vets.getAllClients(), equalTo(clientsDAO as List<ClientDAO>))
+        }
 
-        assertThat(vets.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
-    }
+        @Test
+        fun `basic test on getAllApts`() {
+            Mockito.`when`(aptRepo.findAll()).thenReturn(consultasDAO);
+
+            assertThat(vets.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
+        }
 
 
- */
+     */
     @Test
     fun `test on retrieving appointments 1`() {
         val consulta1 = AppointmentDAO(1, Date(), "consulta1", PetDAO(), ClientDAO(), antonio)
@@ -113,7 +123,5 @@ class VetServiceTester {
 
         assertThat(vets.appointmentsOfVet(antonio.id), equalTo(antonio.appointments))
     }
-
-
 
 }

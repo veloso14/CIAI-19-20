@@ -13,7 +13,9 @@ import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
+import pt.unl.fct.di.iadi.vetclinic.services.VetService
 import java.time.LocalDateTime
+import java.time.Month
 import java.util.*
 
 @RunWith(SpringRunner::class)
@@ -23,6 +25,10 @@ class AppointmentServiceTester {
     @Autowired
     lateinit var apts: AppointmentService
 
+    @Autowired
+    lateinit var vets: VetService
+
+
     @MockBean
     lateinit var repo:AppointmentRepository
 
@@ -30,6 +36,9 @@ class AppointmentServiceTester {
     companion object Constants {
         val consulta = AppointmentDAO(1L, Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
         val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
+
+        val data = Date(2019,1,1,9,0)
+        val consulta_marcada = AppointmentDAO(1L, data, "consulta",PetDAO(), ClientDAO(), VetDAO())
 
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
@@ -72,11 +81,24 @@ class AppointmentServiceTester {
         apts.addNewAppointment(AppointmentDAO(0L, consulta.date, consulta.desc, consulta.pet, consulta.client, consulta.vet))
     }
 
+    @Test
+    fun `test 1`() {
+        val data = Date(2019,1,1,9,0)
+        val consulta_marcada = AppointmentDAO(1L, data, "consulta",PetDAO(), ClientDAO(), VetDAO())
+       println("consulta marcada: " +  apts.checkAvailable(consulta_marcada))
+        val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony",
+                "1234", 1234, "Rua Romao", "rosto.jpg", 11,
+                true, emptyList(), emptyList())
+        val schedule = vets.createSchedule(antonio, Month.APRIL)
+        schedule.shifts[1].slots[0].setAvailableFalse()
+        println("consulta marcada: " +  apts.checkAvailable(consulta_marcada))
+
+    }
+
     @Test(expected = PreconditionFailedException::class)
     fun `test on adding a new pet (Error)`() {
         apts.addNewAppointment(consulta) // pantufas has a non-0 id
     }
-
 
 
 }

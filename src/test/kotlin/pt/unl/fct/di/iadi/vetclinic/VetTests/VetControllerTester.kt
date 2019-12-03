@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.hamcrest.CoreMatchers.equalTo
-import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,14 +18,16 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.*
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
+import java.time.Month
 import java.util.*
 import kotlin.collections.ArrayList
+import org.springframework.http.MediaType
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import pt.unl.fct.di.iadi.vetclinic.AppointmentTests.AppointmentControllerTester.Companion.vet
 
 
 @RunWith(SpringRunner::class)
@@ -46,8 +47,8 @@ class VetControllerTester {
 
     companion object {
         val mapper = ObjectMapper().registerModule(KotlinModule())
-        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
-        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val antonio = VetDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11, false, emptyList(), emptyList())
+        val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList(), emptyList())
         val vetsDAO = mutableListOf(antonio, chenel);
 
         val vetsDTO =
@@ -193,7 +194,7 @@ fun `Test checking appointments (No Login)`() {
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
     fun `Test checking appointments`() {
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
 
         val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), veloso, vet)
 
@@ -217,6 +218,7 @@ fun `Test checking appointments (No Login)`() {
         val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
         assertThat(responseDTO, equalTo(aptDTO))
     }
+
 
     @Test
     fun `Test checking appointments of non vet  (No role)`() {
@@ -245,6 +247,21 @@ fun `Test checking appointments (No Login)`() {
     }
 
 
+    @Test
+    fun `Test POST One schedule`() {
+        val scheduleDTO = ScheduleDTO(0, Month.JANUARY, antonio.id)
+        var scheduleDAO = ScheduleDAO(antonio, scheduleDTO.month)
+        scheduleDAO = vets.createSchedule(vet, Month.JANUARY)
+        val scheduleJSON = mapper.writeValueAsString(scheduleDTO)
+
+        Mockito.`when`(vets.setSchedule(vet.id, "JAN"))
+                .then { assertThat(it.getArgument(0), equalTo(scheduleDAO)); it.getArgument(0) }
+
+        mvc.perform(post("$vetsURL/1/schedule")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(scheduleJSON))
+                .andExpect(status().isOk)
+    }
 
 
 }

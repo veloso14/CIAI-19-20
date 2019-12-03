@@ -3,7 +3,11 @@ package pt.unl.fct.di.iadi.vetclinic.model
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.query.Param
+import org.springframework.stereotype.Repository
+import java.time.Month
 import java.util.*
+import javax.swing.text.html.Option
 
 interface PetRepository : JpaRepository<PetDAO, Long> {
 
@@ -16,6 +20,7 @@ interface PetRepository : JpaRepository<PetDAO, Long> {
 
     @Query("select p from PetDAO p  where  p.frozen = false")
     fun findAllByFrozenFalse():List<PetDAO>
+
 }
 
 interface AppointmentRepository: JpaRepository<AppointmentDAO, Long>
@@ -48,6 +53,17 @@ interface AdminRepository : JpaRepository<AdminDAO, Long> {
     fun findByUsername(username: String) : Optional<AdminDAO>
 }
 
-interface ScheduleRepository : JpaRepository<ScheduleDAO, Long>
+interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
+
+    @Query("SELECT s FROM ScheduleDAO s  where s.vet = :vet and s.month = :month ")
+    fun findByVetAndMonth( @Param("vet") vet: VetDAO,  @Param("month") month: Month) : Optional<ScheduleDAO>
+
+    @Query("SELECT s FROM ScheduleDAO s  where s.vet = :vet")
+    fun findByVet(@Param("vet") vet: VetDAO) : List<ScheduleDAO>
+
+    @Query("SELECT s FROM ScheduleDAO s  where s.month = :month")
+    fun findByMonth(@Param("month") month: Month) : List<ScheduleDAO>
+
+}
 
 interface  ShiftRepository : JpaRepository<ShiftDAO, Long>

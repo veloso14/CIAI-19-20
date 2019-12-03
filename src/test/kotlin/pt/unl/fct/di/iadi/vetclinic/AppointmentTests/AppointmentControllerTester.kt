@@ -22,13 +22,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetAptsDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.*
-import java.time.LocalDateTime
 import java.util.*
-import javax.transaction.Transactional
 import kotlin.collections.ArrayList
 
 
@@ -57,7 +53,7 @@ class AppointmentControllerTester {
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
         val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
-        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
         val caramelo =  PetDAO(2, "pantufas", "Dog",false, emptyList(), veloso)
 
         val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())

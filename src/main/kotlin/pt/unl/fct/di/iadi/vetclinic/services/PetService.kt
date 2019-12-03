@@ -14,8 +14,9 @@ class PetService(
 
     val logger = LoggerFactory.getLogger(PetService::class.java)
 
-    fun getAllPets(): List<PetDAO> = pets.findAll().toList()
+    fun getAllPets(): List<PetDAO> = pets.findAllByFrozenFalse().toList()
 
+    // falta verificar se pet já existe
     fun addNewPet(pet: PetDAO) =
         // defensive programming
         if (pet.id != 0L)

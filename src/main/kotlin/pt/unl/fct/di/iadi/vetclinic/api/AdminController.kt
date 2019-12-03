@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
+import java.time.Month
 
 
 @Api(value = "VetClinic Management System - Admin API",
@@ -101,6 +102,7 @@ class AdminController(val admins: AdminService) {
     @PutMapping("/{id}/password")
     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
             handle4xx { admins.updatePassword(id, pass) }
+
 
 
 

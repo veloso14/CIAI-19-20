@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.Profile
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pt.unl.fct.di.iadi.vetclinic.model.*
@@ -39,6 +38,7 @@ class VetClinicApplication {
 
 
          /*  val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela",BCryptPasswordEncoder().encode("1234"),987682,"Pio","rosto.jpg","VET",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+
             vets.save(vet)
             val pantufas = PetDAO(2L, "pantufas", "dog",false, emptyList<AppointmentDAO>(), ClientDAO())
             val bigodes = PetDAO(3L, "bigode", "cat",false, emptyList<AppointmentDAO>(), ClientDAO())

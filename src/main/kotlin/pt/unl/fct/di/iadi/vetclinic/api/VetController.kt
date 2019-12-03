@@ -28,7 +28,7 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}")
-    fun getOneVet(@PathVariable id:Long) : VetDTO =
+    fun getOneVet(@PathVariable id: Long): VetDTO =
             handle4xx { vets.getOneVet(id).let { VetDTO(it) } }
 
 
@@ -51,8 +51,8 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/appointments/{id}")
-    fun completeAppointment(@RequestBody desc:String, @PathVariable id: Long) =
-            handle4xx { vets.completeAppointment(id, desc)}
+    fun completeAppointment(@RequestBody desc: String, @PathVariable id: Long) =
+            handle4xx { vets.completeAppointment(id, desc) }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id))")
     @ApiOperation(value = "List the appointments related to a Vet", response = List::class)
@@ -75,14 +75,14 @@ class VetController(val vets: VetService) {
     ])
     @PutMapping("/{id}/info")
     fun updateVet(@RequestBody user: VetDTO, @PathVariable id: Long) =
-            handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())) }
+            handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())) }
 
     @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
     @ApiOperation(value = "Change the password of a vet", response = Unit::class)
     @ApiResponses(value = [
-         ApiResponse(code = 200, message = "Successfully changed the password"),
-         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
-         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+        ApiResponse(code = 200, message = "Successfully changed the password"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/password")
     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
@@ -98,7 +98,31 @@ class VetController(val vets: VetService) {
     ])
     @PostMapping("")
     fun addNewVet(@RequestBody vet: VetDTO): VetDTO =
-            VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())))
+            VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())))
+
+
+    //TODO vet
+    @ApiOperation(value = "Get Schedule related to a Vet", response = List::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved the schedule"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/{id}/schedule")
+    fun getSchedule(@PathVariable id: Long, @RequestBody month: String): ScheduleDAO =
+            handle4xx { vets.getSchedule(id, month) }
+
+    //TODO admin
+    @ApiOperation(value = "Set vet schedule to default one", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully set vets schedule"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PostMapping("/{id}/schedule")
+    fun setVetSchedule(@PathVariable id: Long, @RequestBody month: String) =
+            handle4xx { vets.setSchedule(id, month) }
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -111,5 +135,12 @@ class VetController(val vets: VetService) {
     @PutMapping("/{id}")
     fun fireVet(@PathVariable id: Long) =
             handle4xx { vets.fireVet(id)}
+
+
+    @GetMapping("/{month}/freeslots")
+    fun getMonthFreeSlots(@PathVariable month: String) =
+            vets.getFreeSlots(month).map { SlotDTO(it) }
+
+
 
 }
