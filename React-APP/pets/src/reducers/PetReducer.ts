@@ -1,11 +1,15 @@
 import {Action} from "redux"
 import {
-    PetActionsTypes,
     AddPetAction,
     DeletePetAction,
-    ReceivePetsAction, ReceivePetAction, UpdatePetAction,
-} from "../actions/PetActions";
-import {Pet, PetState} from "../components/PetList";
+
+    PetActionsTypes,
+    ReceivePetAction,
+    ReceivePetsAction,
+    UpdatePetAction,
+} from '../actions/PetActions';
+import {PetState} from "../components/PetList";
+
 
 const initialState = {
     pets: [],

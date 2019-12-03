@@ -1,11 +1,13 @@
 import {Action} from "redux"
 import {
-    AdminActionsTypes,
     AddAdminAction,
+    AdminActionsTypes,
     DeleteAdminAction,
-    ReceiveAdminsAction, ReceiveAdminAction, UpdateAdminAction,
+    ReceiveAdminAction,
+    ReceiveAdminsAction,
+    UpdateAdminAction,
 } from '../actions/AdminActions';
-import {Admin, AdminState} from "../components/AdminList";
+import {AdminState} from "../components/AdminList";
 
 const initialState = {
     admins: [],

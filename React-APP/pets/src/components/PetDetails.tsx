@@ -1,9 +1,9 @@
 import React from 'react';
 import {Appointment, Pet} from "./PetList";
 import {GlobalState} from "../App";
-import {updatePetRequest, fetchPet} from "../actions/PetActions";
+import {fetchPet, updatePetRequest} from "../actions/PetActions";
 import {connect} from "react-redux";
-import {Link, useParams} from "react-router-dom"
+import {useParams} from "react-router-dom"
 import useForm from "react-hook-form";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image"

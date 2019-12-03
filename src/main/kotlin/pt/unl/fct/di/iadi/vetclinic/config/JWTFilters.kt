@@ -59,7 +59,8 @@ class UserPasswordAuthenticationFilterToJWT (
         val user = ObjectMapper().readValue(request!!.inputStream, UserSecurityDAO::class.java)
 
         // perform the "normal" authentication
-        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password))
+        //TODO meter roleshui
+        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password /* , meter o role*/ ))
 
         return if (auth.isAuthenticated) {
             // Proceed with an authenticated user
