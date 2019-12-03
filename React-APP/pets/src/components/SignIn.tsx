@@ -58,6 +58,8 @@ const ProtoSignInForm = (
                 <label>Password: <input className="form-control" type="password" value={password} onChange={passwordChangeHandler}/></label>
             </div>
             <button>Sign In</button>
+                    <br/> <br/>
+                    <button>Registar</button>
         </form>
             </Container>);
 
