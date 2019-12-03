@@ -20,7 +20,6 @@ export interface Admin {
     name: string,
     cellphone: number,
     email: string
-
 }
 
 
@@ -80,6 +79,7 @@ const AdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: ()
                 }}>Delete</Button>
             </ListGroup.Item>
         )
+        
     });
 
     return (
