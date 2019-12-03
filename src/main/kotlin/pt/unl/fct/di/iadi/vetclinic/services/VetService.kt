@@ -3,7 +3,9 @@ package pt.unl.fct.di.iadi.vetclinic.services
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.time.LocalDateTime
 import java.time.Month
+import java.time.ZoneId
 import java.util.*
 
 @Service
@@ -85,15 +87,18 @@ class VetService(val vets: VetRepository,
     //
 
     // returns list of free slots in a month for all vet schedules
-    fun getFreeSlots(month: String): List<SlotDAO> {
+    fun getFreeSlots(month: String, day: Int, id: Long): List<SlotDAO> {
         val mon = getMonth(month)
+        val vet = getOneVet(id)
         val monthFreeSlots = mutableListOf<SlotDAO>()
         val schedulesByMonth = schedulesRep.findByMonth(mon)
         schedulesByMonth.forEach { schedule ->
-            val shifts = schedule.shifts
-            shifts.forEach { shift ->
-                val freeSlots = shift.getFreeSlots()
+            if (schedule.vet == vet) {
+                val shifts = schedule.shifts
+                // shifts.forEach { shift ->
+                val freeSlots = shifts[day - 1].getFreeSlots()
                 monthFreeSlots.addAll(freeSlots)
+                // }
             }
         }
         return monthFreeSlots.toList()
@@ -193,7 +198,11 @@ class VetService(val vets: VetRepository,
 
         val year = 2019
         val month = schedules.month.value
-        val date = Date(year, month - 1, day, 9, 0)
+        //val date = Date(year, month - 1, day, 9, 0)
+        val dateTime = LocalDateTime.of(year, month, day, 9, 0)
+        val instant = dateTime.atZone(ZoneId.of("Portugal")).toInstant()
+        val date = Date.from(instant)
+
 
         for (x in 0..16) {
             val newDate = addMinutes(date, x * 30)
