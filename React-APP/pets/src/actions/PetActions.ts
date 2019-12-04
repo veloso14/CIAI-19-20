@@ -52,7 +52,7 @@ export const receivePet = (data: {}) => ({type: PetActionsTypes.RECEIVE_PET, dat
 export function fetchPet(id: string) {
     return (dispatch: any) => {
         dispatch(requestPet());
-        return getData('/pets/${+id}', {pet:{}, appointments: []})
+        return getData(`/pets/${+id}`, {pet:{}, appointments: []})
             .then(data => {
                 console.log("log: " + JSON.stringify(data))
                 data && dispatch(receivePet(data))

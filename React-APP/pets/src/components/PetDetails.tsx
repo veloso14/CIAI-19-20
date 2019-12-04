@@ -26,29 +26,46 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({newName, newSpecies}) => {
         console.log(newName, newSpecies);
-        props.updatePet(id as string, {name: newName, species: newSpecies, id: props.pet.id, ownerID: props.pet.ownerID})
+        props.updatePet(id as string, {
+            name: newName,
+            species: newSpecies,
+            id: props.pet.id,
+            ownerID: props.pet.ownerID
+        })
         setValue("newName", "")
         setValue("newSpecies", "")
     });
 
     React.useEffect(() => {
-        console.log("run effect details");
+        console.log("run effect details: " + id as string);
         props.loadPet(id as string);
     }, []);
 
     return (
         <Container>
-            <h1 className="text-center">Details</h1>
-            <Row>
-                <Image width={200} height={200} fluid src={require('../images/dog.jpg')} roundedCircle/>
-                <Col>
-                    <h5>Pet name: {props.pet.name}</h5><br/>
-                    <h5>Pet species: {props.pet.species}</h5><br/>
-                    <h5>Owner id: {props.pet.ownerID}</h5><br/>
-                </Col>
-            </Row>
+            <br/>
+            <h1 className="text-center">Details</h1><br/>
+
+            {props.pet.species === "dog" &&
+            <Image className="float-left mr-5" width={200} fluid src={require(`../images/dog.jpg`)}
+                   roundedCircle/>}
+            {props.pet.species === "cat" &&
+            <Image className="float-left mr-5" width={"20%"} fluid src={require(`../images/cat.jpg`)}
+                   roundedCircle/>}
+            {props.pet.species === "bird" &&
+            <Image className="float-left mr-5" width={"20%"} fluid src={require(`../images/bird.jpg`)}
+                   roundedCircle/>}
+
+            <div>
+                <h5>Pet name: </h5>
+                <p>{props.pet.name}</p>
+                <h5>Pet species: </h5><p>{props.pet.species}</p>
+                {/*<h5>Owner id: </h5><p>{props.pet.ownerID}</p>*/}
+            </div>
+
             <br/>
             {props.appointments.length > 0 && <AppointmentList/>}
+
             <br/>
             <h1 className="text-center">Edit Pet</h1>
             <form onSubmit={onSubmit}>
