@@ -19,11 +19,11 @@ data class PetDAO(
     constructor() : this(0,"","",false, emptyList(), ClientDAO())
 
     constructor(pet: PetDTO, apts:List<AppointmentDAO>, owner: ClientDAO) : this(pet.id,pet.name,pet.species,false, apts, owner)
+    constructor(pet: PetUpdateDTO) : this(pet.id,pet.name,pet.species,false, emptyList(), ClientDAO())
 
     fun update(other:PetDAO) {
         this.name = other.name
         this.species = other.species
-        this.appointments = other.appointments
     }
 
     fun frozenPet() {

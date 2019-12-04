@@ -66,8 +66,8 @@ class PetController(val pets: PetService, val vets: VetService, val clients: Cli
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}")
-    fun updatePet(@RequestBody pet: PetDTO, @PathVariable id: Long) =
-            handle4xx { pets.updatePet(PetDAO(pet, emptyList(), ClientDAO()), id) }
+    fun updatePet(@RequestBody pet: PetUpdateDTO, @PathVariable id: Long) =
+            handle4xx { pets.updatePet(PetDAO(pet), id) }
 
     @PreAuthorize("hasRole('ROLE_CLIENT')  and @securityService.canEditPet(principal, #id) ")
     @ApiOperation(value = "Delete a pet", response = Unit::class)
