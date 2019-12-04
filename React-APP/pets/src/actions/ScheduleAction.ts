@@ -1,10 +1,14 @@
 import {getData} from "../Utils/NetworkUtils";
 import {Action} from "redux";
 import {Appointment} from "../components/PetList";
+import {requestPet} from "./PetActions";
 
 
 export enum AppointmentActionsTypes {
-    GET_APPOINTMENT = 'UPDATE_APPOINTMENT'
+    ADD_APPOINTMENT = 'ADD_APPOINTMENT',
+    UPDATE_APPOINTMENT = 'UPDATE_APPOINTMENT',
+    REQUEST_APPOINTMENTS = 'REQUEST_APPOINTMENTS',
+    RECEIVE_APPOINTMENTS = 'RECEIVE_APPOINTMENTS',
 }
 
 export interface AddAppointmentAction extends Action {
@@ -12,19 +16,25 @@ export interface AddAppointmentAction extends Action {
     species: string
 }
 
-export interface ReceiveAppointmentAction extends Action {
+export interface ReceiveAppointmentsAction extends Action {
     data: Appointment[]
 }
 
+export interface ReceiveAppointmentAction extends Action {
+    data: Appointment
+}
 
-export const receiveAppointment = (data: {}) => ({type: AppointmentActionsTypes.GET_APPOINTMENT, data: data});
 
-export function fetchAppointment(id: number) {
+export const receiveAppointments = (data: {}) => ({type: AppointmentActionsTypes.RECEIVE_APPOINTMENTS, data: data});
+export const requestAppointments = () => ({type: AppointmentActionsTypes.REQUEST_APPOINTMENTS});
+
+export function fetchVetAppointments(id: string) {
     return (dispatch: any) => {
-        return getData(`/vets/appointments/${+id}`, {})
+        dispatch(requestAppointments());
+        return getData(`/vets/appointments/${+id}`, [] as Appointment[])
             .then(data => {
-                console.log("appointment fetch log: " + JSON.stringify(data))
-                data && dispatch(receiveAppointment(data))
+                console.log("appointments fetch log: " + JSON.stringify(data));
+                data && dispatch(receiveAppointments(data))
             })
         // notice that there is an extra "pet" in the path above which is produced
         // in this particular implementation of the service. {pet: Pet, appointments:List<AppointmentDTO>}

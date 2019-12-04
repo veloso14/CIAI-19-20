@@ -1,6 +1,7 @@
 import {Action} from "redux"
-import {AppointmentActionsTypes, ReceiveAppointmentAction} from '../actions/ScheduleAction';
+import {AppointmentActionsTypes, ReceiveAppointmentsAction} from '../actions/ScheduleAction';
 import {AppointmentState} from "../components/Schedule";
+import {ReceiveVetsAction, VetActionsTypes} from "../actions/VetActions";
 
 
 const initialState = {
@@ -11,8 +12,11 @@ const initialState = {
 function appointmentReducer(state: AppointmentState = initialState, action: Action): AppointmentState {
     switch (action.type) {
 
-        case AppointmentActionsTypes.GET_APPOINTMENT:
-            return {...state, isFetching: false, appointments: (action as ReceiveAppointmentAction).data};
+        case AppointmentActionsTypes.RECEIVE_APPOINTMENTS:
+            return {...state, isFetching: false, appointments: (action as ReceiveAppointmentsAction).data};
+
+        case AppointmentActionsTypes.REQUEST_APPOINTMENTS:
+            return {...state, isFetching: true};
 
         default:
             return state

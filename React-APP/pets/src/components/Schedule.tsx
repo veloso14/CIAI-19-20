@@ -2,12 +2,13 @@ import React from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
 import {GlobalState} from "../App";
+// @ts-ignore
 import Calendar from 'react-calendar';
 import {Link} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
-import {fetchAppointment} from "../actions/ScheduleAction";
+import {fetchVetAppointments} from "../actions/ScheduleAction";
 
 
 export interface Appointment {
@@ -27,10 +28,10 @@ type FormData = {
 }
 
 
-const clientID = 1
+const clientID = "1"
 
 
-const ProtoAppointmentList = (props: { appointment: Appointment[], isFetching: boolean, loadAppointment: ()
+const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: boolean, loadAppointment: (id:string)
         => void, postAppointment: (appointment: Appointment) => void, deleteAppointment: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
@@ -43,16 +44,14 @@ const ProtoAppointmentList = (props: { appointment: Appointment[], isFetching: b
     // eslint-disable-next-line
     React.useEffect(() => {
         console.log("run effect");
-        props.loadAppointment();
-        return () => {
-            setUpdate(false)
-        }
-    }, [update]);
+        props.loadAppointment(clientID);
 
-    let list = props.appointment.map((appointment: Appointment) => {
+    }, []);
+
+    let list = props.appointments.map((appointment: Appointment) => {
         return (
             <ListGroup.Item key={appointment.id}>
-            <Link to={`/vets/${appointment.id}/appointments/`}></Link>
+            <Link to={`/vets/${appointment.id}/appointments/`}>Link to appointment</Link>
         <Button className="float-right" variant="primary" size="sm" onClick={() => {
             props.deleteAppointment(appointment.id);
             setUpdate(true)
@@ -63,7 +62,7 @@ const ProtoAppointmentList = (props: { appointment: Appointment[], isFetching: b
 
     let emptyList = (<p className="text-center">You currently don't have any pets registered!</p>)
 
-    let petList = ( (props.appointment.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+    let petList = ( (props.appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
 
 
@@ -88,13 +87,17 @@ const ProtoAppointmentList = (props: { appointment: Appointment[], isFetching: b
 
 const mapStateToProps = (state: GlobalState) => ({
     pets: state.pets.pets,
-    isFetching: state.pets.isFetching
+
+    appointments: state.appointments.appointments
 });
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        postAppointment: (appointment: Appointment) => {
-            dispatch(fetchAppointment(clientID))
+     /*   postAppointment: (appointment: Appointment) => {
+            dispatch(fetchAppointment())
+        },*/
+        loadAppointment: (id:string) => {
+            dispatch(fetchVetAppointments(id))
         },
     }
 };
