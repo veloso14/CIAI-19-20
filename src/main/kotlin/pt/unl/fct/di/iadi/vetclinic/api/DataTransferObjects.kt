@@ -59,6 +59,13 @@ abstract class UserDTO( open val id: Long,
     //constructor(user: UserDAO) : this()
 }
 
+data class UserUpdateDTO( val id: Long,
+                          val email: String,
+                          val cellphone: Long,
+                          val address: String) {
+
+}
+
 
 data class ClientDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String, override var photo:String) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
     constructor(client: ClientDAO) : this(client.id, client.name, client.email,client.username,client.password, client.cellphone,client.address, client.photo)

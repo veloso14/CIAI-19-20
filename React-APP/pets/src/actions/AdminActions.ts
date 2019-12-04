@@ -55,7 +55,7 @@ export const receiveAdmin = (data: {}) => ({type: AdminActionsTypes.RECEIVE_ADMI
 export function fetchAdmin(id: string) {
     return (dispatch: any) => {
         dispatch(requestAdmin());
-        return getData('/admins/${+id}', {admin:{}})
+        return getData(`/admins/${+id}`, {admin:{}})
             .then(data => {
                 console.log("log: " + JSON.stringify(data))
                 data && dispatch(receiveAdmin(data))
@@ -100,7 +100,7 @@ export function postAdmin(admin: Admin) {
 export function deleteAdminRequest(id: number) {
     return (dispatch: any) => {
 
-        return fetch('/admins/${id}', {
+        return fetch(`/admins/${id}`, {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
@@ -125,18 +125,17 @@ export function deleteAdminRequest(id: number) {
 export function updateAdminRequest(id: string, admin: Admin) {
     return (dispatch: any) => {
 
-        return fetch('/admins/${+id}/info', {
+        return fetch(`/admins/${+id}/info`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ address: admin.address,
-                employeeID: 0,
+            body: JSON.stringify({
                 id: 0,
-                password: admin.password,
-                photo: admin.photo,
-                username: admin.username,
-                name: admin.name, cellphone: admin.cellphone, email: admin.email })
+                cellphone: admin.cellphone,
+                email: admin.email,
+                address: admin.address
+            })
         })
             .then(response => {
                 if (response.ok) {

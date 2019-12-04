@@ -87,7 +87,7 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/info")
-    fun updateAdmin(@RequestBody user: AdminDTO, @PathVariable id: Long) =
+    fun updateAdmin(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
             handle4xx { admins.updateUser(id,AdminDAO(user)) }
 
     //@PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
@@ -98,7 +98,7 @@ class AdminController(val admins: AdminService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/password")
-    fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
+    fun updatePassword(@RequestBody pass: UserPasswordDTO, @PathVariable id: Long) =
             handle4xx { admins.updatePassword(id, pass) }
 
 }

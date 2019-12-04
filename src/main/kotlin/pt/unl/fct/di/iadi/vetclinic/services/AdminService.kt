@@ -2,6 +2,7 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import pt.unl.fct.di.iadi.vetclinic.api.UserPasswordDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
 
 @Service
@@ -75,7 +76,7 @@ class AdminService(val admins: AdminRepository,
     fun updateUser(id: Long, user: AdminDAO) =
             getOneAdmin(id).let { it.update(user); admins.save(it) }
 
-    fun updatePassword(id: Long, password: String) = getOneAdmin(id).let { it.changePassword(BCryptPasswordEncoder().encode(password)); admins.save(it) }
+    fun updatePassword(id: Long, pass: UserPasswordDTO) = getOneAdmin(id).let { it.changePassword(BCryptPasswordEncoder().encode(pass.password)); admins.save(it) }
 
 
 }

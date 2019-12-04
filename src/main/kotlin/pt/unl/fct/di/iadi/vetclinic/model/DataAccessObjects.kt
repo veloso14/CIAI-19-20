@@ -170,6 +170,8 @@ data class AdminDAO( override val id: Long,
     constructor(admin: AdminDTO) : this(admin.id, admin.name, admin.email, admin.username, admin.password, admin.cellphone, admin.address,admin.photo, "ADMIN",admin.employeeID)
     constructor() : this(0,"","","","",0,"","","ADMIN",0)
     constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, photo:String, employeeID: Long) : this(id, name, email, username, password, cellphone, address,photo,"ADMIN",employeeID)
+    constructor(admin: UserUpdateDTO) : this(admin.id,"",admin.email,"","",admin.cellphone,admin.address,"","ADMIN",0)
+
     override fun update(other: UserDAO) {
         super.update(other)
     }
