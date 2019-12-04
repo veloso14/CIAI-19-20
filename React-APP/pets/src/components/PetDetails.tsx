@@ -1,5 +1,5 @@
 import React from 'react';
-import {Appointment, Pet} from "./PetList";
+import PetList, {Appointment, Pet} from "./PetList";
 import {GlobalState} from "../App";
 import {fetchPet, updatePetRequest} from "../actions/PetActions";
 import {connect} from "react-redux";
@@ -10,6 +10,11 @@ import Image from "react-bootstrap/Image"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import AppointmentList from "./AppointmentList";
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import AddAppointmentForm from "./AddAppointmentForm";
+import Spinner from "react-bootstrap/Spinner";
 
 type FormData = {
     newName: string;
@@ -20,7 +25,7 @@ type FormData = {
 * #TODO: Update pet request não funciona (erro 500)
 * */
 
-const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id: string) => void, updatePet: (id: string, pet: Pet) => void }) => {
+const PetDetails = (props: { pet: Pet, isFetching: boolean, appointments: Appointment[], loadPet: (id: string) => void, updatePet: (id: string, pet: Pet) => void }) => {
     let {id} = useParams();
 
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
@@ -41,7 +46,7 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
         props.loadPet(id as string);
     }, []);
 
-    return (
+    const content = (
         <Container>
             <br/>
             <h1 className="text-center">Details</h1><br/>
@@ -67,26 +72,54 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
             {props.appointments.length > 0 && <AppointmentList appointments={props.appointments}/>}
 
             <br/>
-            <h1 className="text-center">Edit Pet</h1>
-            <form onSubmit={onSubmit}>
-                <div className="form-group">
-                    <label>Enter new pet name</label>
-                    <input className="form-control" id="newName" name="newName" ref={register({required: true})}/>
-                    {errors.newName && 'New pet name is required'}
-                </div>
-                <div className="form-group">
-                    <label>Enter new species</label>
-                    <select className="form-control" id="newSpecies" name="newSpecies" ref={register}>
-                        <option value="cat">Cat</option>
-                        <option value="dog">Dog</option>
-                        <option value="bird">Bird</option>
-                    </select>
-                </div>
-                <input className="btn btn-primary float-right" type="submit" value="Edit Pet"/>
-            </form>
+            <Accordion>
+                <Card>
+                    <Card.Header>
+                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                            Edit pet
+                        </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="0">
+                        <Card.Body>
+                            <form onSubmit={onSubmit}>
+                                <div className="form-group">
+                                    <label>Enter new pet name</label>
+                                    <input className="form-control" id="newName" name="newName"
+                                           ref={register({required: true})}/>
+                                    {errors.newName && 'New pet name is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Enter new species</label>
+                                    <select className="form-control" id="newSpecies" name="newSpecies" ref={register}>
+                                        <option value="cat">Cat</option>
+                                        <option value="dog">Dog</option>
+                                        <option value="bird">Bird</option>
+                                    </select>
+                                </div>
+                                <input className="btn btn-primary float-right" type="submit" value="Edit Pet"/>
+                            </form>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
 
+            </Accordion>
+            <br/>
+        </Container>
+
+    );
+
+    const loadingContent = (
+        <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+        </Spinner>
+    );
+
+    return (
+        <Container>
+            {props.isFetching ? loadingContent : content}
         </Container>
     );
+
 };
 
 

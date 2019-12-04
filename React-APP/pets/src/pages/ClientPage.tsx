@@ -5,10 +5,10 @@ import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import AddAppointmentForm from "../components/AddAppointmentForm";
 import AppointmentList from "../components/AppointmentList";
-import {loadavg} from "os";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+
 
 export interface Client {
     id: number,
@@ -74,7 +74,7 @@ const ClientPage = () => {
     );
 
     const loadingContent = (
-        <Spinner  animation="border" role="status">
+        <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
         </Spinner>
     );
