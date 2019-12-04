@@ -50,7 +50,7 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @PutMapping("/appointments/{id}")
+    @PutMapping("/{id}/appointments")
     fun completeAppointment(@RequestBody desc: String, @PathVariable id: Long) =
             handle4xx { vets.completeAppointment(id, desc) }
 
@@ -101,7 +101,7 @@ class VetController(val vets: VetService) {
             VetDTO(vets.hireVet(VetDAO(vet, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())))
 
 
-    //TODO vet
+    // @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
     @ApiOperation(value = "Get Schedule related to a Vet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the schedule"),
@@ -113,7 +113,7 @@ class VetController(val vets: VetService) {
     fun getSchedule(@PathVariable id: Long, @RequestBody month: String): ScheduleDAO =
             handle4xx { vets.getSchedule(id, month) }
 
-    //TODO admin
+    //   @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Set vet schedule to default one", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully set vets schedule"),
