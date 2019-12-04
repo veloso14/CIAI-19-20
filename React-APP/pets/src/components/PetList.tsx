@@ -7,6 +7,8 @@ import {Link} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
 
 export interface Pet {
     id: number,
@@ -70,7 +72,7 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
 
     let emptyList = (<p className="text-center">You currently don't have any pets registered!</p>)
 
-    let petList = ( (props.pets.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+    let petList = ((props.pets.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
 
     return (
@@ -81,25 +83,38 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
 
             {props.isFetching ? <p>Loading...</p> : petList}
 
-            <br/>
-            <h1 className="text-center">Add new pet</h1>
+            <Accordion>
+                <Card>
+                    <Card.Header>
+                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                            Add new pet
+                        </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="0">
+                        <Card.Body>
+                            <form onSubmit={onSubmit}>
+                                <div className="form-group">
+                                    <label>Pet Name</label>
+                                    <input className="form-control" id="petName" name="petName"
+                                           ref={register({required: true})}/>
+                                    {errors.petName && 'Pet name is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Pet Species</label>
+                                    <select className="form-control" id="petSpecies" name="petSpecies" ref={register}>
+                                        <option value="cat">Cat</option>
+                                        <option value="dog">Dog</option>
+                                        <option value="bird">Bird</option>
+                                    </select>
+                                </div>
+                                <input className="btn btn-primary float-right" type="submit" value="Add Pet"/>
+                            </form>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
 
-            <form onSubmit={onSubmit}>
-                <div className="form-group">
-                    <label>Pet Name</label>
-                    <input className="form-control" id="petName" name="petName" ref={register({required: true})}/>
-                    {errors.petName && 'Pet name is required'}
-                </div>
-                <div className="form-group">
-                    <label>Pet Species</label>
-                    <select className="form-control" id="petSpecies" name="petSpecies" ref={register}>
-                        <option value="cat">Cat</option>
-                        <option value="dog">Dog</option>
-                        <option value="bird">Bird</option>
-                    </select>
-                </div>
-                <input className="btn btn-primary float-right" type="submit" value="Add Pet"/>
-            </form>
+            </Accordion>
+
         </Container>
     );
 };

@@ -69,7 +69,7 @@ const AddAppointmentForm = () => {
                 postAppointment(id, date, desc, +vet, +pet);
             }
         })
-        history.push("/pet")
+        history.push("/client")
     });
 
     const monthNames = ["January", "February", "March", "April", "May", "June",

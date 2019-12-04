@@ -16,12 +16,5 @@ const AppointmentList = (props: { appointments: Appointment[] }) => {
     );
 };
 
-const mapStateToProps = (state: GlobalState) => ({
-    pet: state.pets.pet,
-    appointments: state.pets.appointments,
-    isFetching: state.pets.isFetching
-});
-const mapDispatchToProps = (dispatch: any) => {
-    return {}
-};
-export default connect(mapStateToProps, mapDispatchToProps)(AppointmentList);
+
+export default AppointmentList;

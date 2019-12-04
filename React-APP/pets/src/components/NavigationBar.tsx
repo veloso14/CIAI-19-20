@@ -7,9 +7,7 @@ const NavigationBar = () => {
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">Vetclinic</Navbar.Brand>
             <Nav className="mr-auto">
-                <Nav.Link href="/">Home</Nav.Link>
-                <Nav.Link href="/pet">Pet</Nav.Link>
-                <Nav.Link href="/appointment">Create Appointment</Nav.Link>
+                <Nav.Link href="/client">Client</Nav.Link>
 
                 <Nav.Link href="/admin">Admin</Nav.Link>
                 <Nav.Link href="/vet">Vets</Nav.Link>

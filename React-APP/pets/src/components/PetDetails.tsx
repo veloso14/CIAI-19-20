@@ -64,7 +64,7 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
             </div>
 
             <br/>
-            {props.appointments.length > 0 && <AppointmentList/>}
+            {props.appointments.length > 0 && <AppointmentList appointments={props.appointments}/>}
 
             <br/>
             <h1 className="text-center">Edit Pet</h1>

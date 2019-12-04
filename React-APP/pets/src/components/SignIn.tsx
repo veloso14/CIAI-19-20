@@ -19,6 +19,7 @@ import ChangePassword from "./ChangePassword";
 import VetList from "./VetList";
 import Container from "react-bootstrap/Container";
 import NoMatch from "./NoMatch";
+import ClientPage from "../pages/ClientPage";
 
 export interface SignInState {
     isSignedIn: boolean
@@ -99,6 +100,7 @@ const ProtoSignInForm = (
                     <Route path="/admin/:id" component={AdminDetails}/>
                     <Route path="/profile/" component={ChangePassword}/>
                     <Route path="/vet/" exact component={VetList}/>
+                    <Route path="/client/" exact component={ClientPage}/>
                     <Route path="/logout/" exact component={SignOutForm}/>
                     <Route component={NoMatch}/>
                 </Switch>
