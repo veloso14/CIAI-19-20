@@ -1,5 +1,6 @@
 import React from 'react';
-import {Appointment, Pet} from "./PetList";
+import {Pet} from "./PetList";
+import {Appointment} from "./AppointmentList";
 import {GlobalState} from "../App";
 import {fetchPet, updatePetRequest} from "../actions/PetActions";
 import {connect} from "react-redux";

@@ -8,6 +8,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
+import {Appointment} from "./AppointmentList";
 
 export interface Pet {
     id: number,
@@ -16,11 +17,6 @@ export interface Pet {
     ownerID: number
 }
 
-export interface Appointment {
-    id: number,
-    date: number,
-    desc: string,
-}
 
 export interface PetState {
     pets: Pet[],

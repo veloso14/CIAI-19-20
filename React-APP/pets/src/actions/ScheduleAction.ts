@@ -1,6 +1,6 @@
 import {getData} from "../Utils/NetworkUtils";
 import {Action} from "redux";
-import {Appointment} from "../components/PetList";
+import {Appointment} from "../components/AppointmentList";
 import {requestPet} from "./PetActions";
 
 

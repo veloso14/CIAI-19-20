@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {getData} from "../Utils/NetworkUtils";
-import PetList, {Appointment} from "../components/PetList";
+import PetList from "../components/PetList";
+import {Appointment} from "../components/AppointmentList"
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import AddAppointmentForm from "../components/AddAppointmentForm";

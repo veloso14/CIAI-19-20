@@ -1,9 +1,15 @@
 import React from 'react';
-import {Appointment} from "./PetList";
 import ListGroup from "react-bootstrap/ListGroup";
 import {Link} from "react-router-dom";
 
+export interface Appointment {
+    id: number,
+    date: number,
+    desc: string,
+}
+
 const AppointmentList = (props: { appointments: Appointment[] }) => {
+
 
     const {appointments} = props;
 
