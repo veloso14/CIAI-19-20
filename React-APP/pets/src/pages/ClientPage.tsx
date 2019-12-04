@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getData} from "../Utils/NetworkUtils";
 import PetList, {Appointment} from "../components/PetList";
 import Container from "react-bootstrap/Container";

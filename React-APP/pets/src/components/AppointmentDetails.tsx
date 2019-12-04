@@ -5,7 +5,6 @@ import {GlobalState} from "../App";
 import {Appointment} from "./PetList";
 import {connect} from "react-redux";
 import {getData} from "../Utils/NetworkUtils";
-import {receivePet} from "../actions/PetActions";
 
 const AppointmentDetails = (props: { appointments: Appointment[] }) => {
     let {id} = useParams();

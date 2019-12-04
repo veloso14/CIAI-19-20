@@ -1,6 +1,6 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
 import {connect, Provider} from "react-redux";
-import App, {GlobalState} from "../App";
+import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import thunk from 'redux-thunk';

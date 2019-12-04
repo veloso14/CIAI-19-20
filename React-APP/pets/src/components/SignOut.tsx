@@ -1,8 +1,8 @@
-import React, {ChangeEvent, FormEvent, useState} from "react";
-import {connect, Provider} from "react-redux";
+import React from "react";
+import {connect} from "react-redux";
 import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
-import  { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 export interface SignOutState { isSignedIn: boolean }
 

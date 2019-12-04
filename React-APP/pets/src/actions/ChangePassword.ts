@@ -1,8 +1,3 @@
-import {getData} from "../Utils/NetworkUtils";
-import {Action} from "redux";
-import {Pet} from "../components/PetList";
-
-
 export enum ChangePasswordTypes {
     UPDATE_PASSWORD = 'UPDATE_PET',
 }

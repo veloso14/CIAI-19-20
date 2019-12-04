@@ -1,8 +1,7 @@
 import React from 'react';
-import {Appointment, Pet} from "./PetList";
+import {Appointment} from "./PetList";
 import ListGroup from "react-bootstrap/ListGroup";
 import {Link} from "react-router-dom";
-import Button from "react-bootstrap/Button";
 
 const AppointmentList = (props: { appointments: Appointment[] }) => {
 

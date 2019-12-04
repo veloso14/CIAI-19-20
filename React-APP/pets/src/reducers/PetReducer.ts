@@ -2,7 +2,6 @@ import {Action} from "redux"
 import {
     AddPetAction,
     DeletePetAction,
-
     PetActionsTypes,
     ReceivePetAction,
     ReceivePetsAction,

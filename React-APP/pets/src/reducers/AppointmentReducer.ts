@@ -1,7 +1,5 @@
 import {Action} from "redux"
-import {
-    AppointmentActionsTypes, ReceiveAppointmentAction
-} from '../actions/ScheduleAction';
+import {AppointmentActionsTypes, ReceiveAppointmentAction} from '../actions/ScheduleAction';
 import {AppointmentState} from "../components/Schedule";
 
 

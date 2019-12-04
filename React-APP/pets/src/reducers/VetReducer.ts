@@ -1,12 +1,10 @@
 import {Action} from "redux"
 import {
     AddVetAction,
-    DeleteVetAction,
-
-    VetActionsTypes,
     ReceiveVetAction,
     ReceiveVetsAction,
     UpdateVetAction,
+    VetActionsTypes,
 } from '../actions/VetActions';
 import {VetState} from "../components/VetList";
 

@@ -1,10 +1,9 @@
 import React from 'react';
-import Container from "react-bootstrap/Container";
 import useForm from "react-hook-form";
 import {getData} from "../Utils/NetworkUtils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {withRouter, useHistory} from 'react-router-dom';
+import {useHistory, withRouter} from 'react-router-dom';
 
 /*
 * Mudanças no servidor:

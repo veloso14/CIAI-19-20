@@ -1,10 +1,9 @@
 import React from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
-import {updatePassword, updatePasswordRequest} from "../actions/ChangePassword";
+import {updatePasswordRequest} from "../actions/ChangePassword";
 import {GlobalState} from "../App";
 import Container from "react-bootstrap/Container";
-
 
 
 type FormData = {

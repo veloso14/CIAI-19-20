@@ -6,7 +6,7 @@ import {Link} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
-import {deleteVetRequest, fetchVets, postVet} from "../actions/VetActions";
+import {fetchVets, postVet} from "../actions/VetActions";
 
 export interface Vet {
     id: number,

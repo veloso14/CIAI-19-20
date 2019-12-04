@@ -1,5 +1,5 @@
 import React from 'react';
-import PetList, {Appointment, Pet} from "./PetList";
+import {Appointment, Pet} from "./PetList";
 import {GlobalState} from "../App";
 import {fetchPet, updatePetRequest} from "../actions/PetActions";
 import {connect} from "react-redux";
@@ -7,13 +7,10 @@ import {useParams} from "react-router-dom"
 import useForm from "react-hook-form";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image"
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import AppointmentList from "./AppointmentList";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
-import AddAppointmentForm from "./AddAppointmentForm";
 import Spinner from "react-bootstrap/Spinner";
 
 type FormData = {

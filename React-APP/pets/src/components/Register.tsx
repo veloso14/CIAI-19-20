@@ -1,26 +1,11 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
-import {connect, Provider} from "react-redux";
-import App, {GlobalState} from "../App";
+import {connect} from "react-redux";
+import {GlobalState} from "../App";
 import {requestRegister} from "../actions/RegisterAction";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import thunk from 'redux-thunk';
-import PetList from "./PetList";
-import PetDetails from "./PetDetails";
 import reducer from "../reducers";
-import NavigationBar from "./NavigationBar";
-import AppointmentDetails from "./AppointmentDetails";
-import AddAppointmentForm from "./AddAppointmentForm";
 import {applyMiddleware, createStore} from "redux";
-import AdminList from "./AdminList";
-import Home from "./Home";
-import AdminDetails from "./AdminDetails";
-import SignOutForm from "./SignOut";
-import ChangePassword from "./ChangePassword";
-import VetList from "./VetList";
 import Container from "react-bootstrap/Container";
-import NoMatch from "./NoMatch";
-import Schedule from "./Schedule";
-import ClientPage from "../pages/ClientPage";
 
 
 export interface RegisterState {
