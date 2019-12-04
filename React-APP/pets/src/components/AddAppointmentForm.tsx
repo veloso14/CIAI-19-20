@@ -26,26 +26,6 @@ type FormData = {
     slot: string
 }
 
-function postAppointment(clientID: number, date: Date, desc: string, vet: number, pet: number) {
-    return fetch('/appointments/', {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({clientID: clientID, date: date, desc: desc, id: 0, petID: pet, vetID: vet})
-    })
-        .then(response => {
-            if (response.ok)
-                return response.json();
-            else {
-                console.log(`Error: ${response.status}: ${response.statusText}`);
-                console.error(response)
-            }
-        })
-        .catch(reason => {
-            console.log(reason);
-        });
-}
 
 const AddAppointmentForm = () => {
     const {register, setValue, handleSubmit, watch, errors} = useForm<FormData>();
@@ -56,7 +36,28 @@ const AddAppointmentForm = () => {
     const [date, setDate] = React.useState(new Date());
 
     // TODO need to know the id of the current logged in client
-    const id = 1;
+    const id = 571;
+
+    const postAppointment = (clientID: number, date: Date, desc: string, vet: number, pet: number) => {
+        return fetch('/appointments/', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({clientID: clientID, date: date, desc: desc, id: 0, petID: pet, vetID: vet})
+        })
+            .then(response => {
+                if (response.ok)
+                    return response.json();
+                else {
+                    console.log(`Error: ${response.status}: ${response.statusText}`);
+                    console.error(response)
+                }
+            })
+            .catch(reason => {
+                console.log(reason);
+            });
+    }
 
     let history = useHistory()
 
@@ -69,7 +70,7 @@ const AddAppointmentForm = () => {
                 postAppointment(id, date, desc, +vet, +pet);
             }
         })
-        history.push("/pet")
+        history.push("/")
     });
 
     const monthNames = ["January", "February", "March", "April", "May", "June",
