@@ -4,19 +4,24 @@ import {useParams} from "react-router";
 import {GlobalState} from "../App";
 import {Appointment} from "./PetList";
 import {connect} from "react-redux";
+import {getData} from "../Utils/NetworkUtils";
+import {receivePet} from "../actions/PetActions";
 
 const AppointmentDetails = (props: { appointments: Appointment[] }) => {
     let {id} = useParams();
     const [apt, setApt] = React.useState({id: -1, desc: "", date:Date.now()})
 
+    const loadAppointment = (id:string) => {
+        return getData(`/appointments/${id}`, {} as Appointment)
+            .then(data => {
+                console.log("fetch appointment: " + JSON.stringify(data))
+                setApt(data)
+            })
+    };
+
 
     React.useEffect(() => {
-        let appointments = props.appointments
-        appointments.map((apt) => {
-            if ((apt.id) == +(id as string)) {
-                setApt(apt)
-            }
-        })
+      loadAppointment(id as string)
     }, [])
 
 

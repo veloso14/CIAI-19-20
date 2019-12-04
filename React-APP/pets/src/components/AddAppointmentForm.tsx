@@ -4,7 +4,7 @@ import useForm from "react-hook-form";
 import {getData} from "../Utils/NetworkUtils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {  withRouter, useHistory } from 'react-router-dom';
+import {withRouter, useHistory} from 'react-router-dom';
 
 /*
 * Mudanças no servidor:
@@ -26,7 +26,7 @@ type FormData = {
     slot: string
 }
 
-function postAppointment(clientID:number, date:Date, desc:string, vet:number, pet:number) {
+function postAppointment(clientID: number, date: Date, desc: string, vet: number, pet: number) {
     return fetch('/appointments/', {
         method: "POST",
         headers: {
@@ -56,17 +56,16 @@ const AddAppointmentForm = () => {
     const [date, setDate] = React.useState(new Date());
 
     // TODO need to know the id of the current logged in client
-    const id = 568;
+    const id = 1;
 
     let history = useHistory()
 
     const onSubmit = handleSubmit(({desc, pet, vet, slot}) => {
         console.log(desc, vet, pet, slot);
         slots.map((s) => {
-            if(s.id == slot) {
+            if (s.id == slot) {
                 let d = s.start
                 let date = new Date(d)
-                console.log(date)
                 postAppointment(id, date, desc, +vet, +pet);
             }
         })
@@ -101,11 +100,13 @@ const AddAppointmentForm = () => {
         let day = date.getUTCDate();
         let id = watch("vet");
 
-        getData(`/vets/${month}/${day}/${id}/freeslots`, [])
-            .then(data => {
-                console.log("fetch free slots: " + JSON.stringify(data));
-                setSlots(data);
-            });
+        if (id != "") {
+            getData(`/vets/${month}/${day}/${id}/freeslots`, [])
+                .then(data => {
+                    console.log("fetch free slots: " + JSON.stringify(data));
+                    setSlots(data);
+                });
+        }
     }, [date])
 
     let vetOptionsList = vets.length > 0
@@ -131,12 +132,12 @@ const AddAppointmentForm = () => {
             let date = new Date(d)
 
             return (
-               <option disabled={!item.available} key={i} value={item.id}>{date.toTimeString().slice(0, 8)}</option>
+                <option disabled={!item.available} key={i} value={item.id}>{date.toTimeString().slice(0, 8)}</option>
             )
         });
 
     return (
-        <Container>
+        <div className="container mb-5">
             <br/>
             <h1 className="text-center">Create a new Appointment</h1>
             <form onSubmit={onSubmit}>
@@ -148,7 +149,7 @@ const AddAppointmentForm = () => {
                 <div className="form-group">
                     <label>Vet</label>
                     <select className="form-control" id="vet" name="vet" ref={register({required: true})}>
-                        <option disabled selected> -- select an option --</option>
+                        <option disabled selected value=""> -- select an option --</option>
                         {vetOptionsList}
                     </select>
                     {errors.vet && 'You need to choose a vet.'}
@@ -157,9 +158,10 @@ const AddAppointmentForm = () => {
                 <div className="form-group">
                     <label>Pet</label>
                     <select className="form-control" id="pet" name="pet" ref={register({required: true})}>
-                        <option disabled selected> -- select an option --</option>
+                        <option disabled selected value=""> -- select an option --</option>
                         {petOptionsList}
                     </select>
+                    {errors.pet && 'You need to choose a pet.'}
                 </div>
                 <div className="form-group">
                     <DatePicker
@@ -178,7 +180,7 @@ const AddAppointmentForm = () => {
 
                 <input className="btn btn-primary float-right" type="submit" value="Create appointment"/>
             </form>
-        </Container>
+        </div>
     );
 };
 

@@ -27,12 +27,15 @@ const PetDetails = (props: { pet: Pet, appointments: Appointment[], loadPet: (id
     const onSubmit = handleSubmit(({newName, newSpecies}) => {
         console.log(newName, newSpecies);
         props.updatePet(id as string, {name: newName, species: newSpecies, id: props.pet.id, ownerID: props.pet.ownerID})
+        setValue("newName", "")
+        setValue("newSpecies", "")
     });
 
     React.useEffect(() => {
         console.log("run effect details");
         props.loadPet(id as string);
     }, []);
+
     return (
         <Container>
             <h1 className="text-center">Details</h1>
