@@ -9,6 +9,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import {Vet} from "./AdminList";
 import {fetchAdmin, updateAdminRequest} from "../actions/AdminActions";
+import {fetchVet, updateVetRequest} from "../actions/VetActions";
 
 type FormData = {
     newEmail: string;
@@ -17,18 +18,18 @@ type FormData = {
 }
 
 
-const AdminDetails = (props: { admin: Vet, loadAdmin: (id: string) => void, updateAdmin: (id: string, admin: Vet) => void }) => {
+const VetDetails = (props: { vet: Vet, loadVet: (id: string) => void, updateVet: (id: string, vet: Vet) => void }) => {
     let {id} = useParams();
 
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({newEmail, newCellphone,newAddress}) => {
         console.log(newEmail, newCellphone,newAddress);
-        props.updateAdmin(id as string, {email: newEmail, cellphone:newCellphone, address:newAddress, id: props.admin.id, employeeID: props.admin.employeeID, photo:props.admin.photo, name:props.admin.name, password: props.admin.password, username:props.admin.username})
+        props.updateVet(id as string, {email: newEmail, cellphone:newCellphone, address:newAddress, id: props.vet.id, employeeID: props.vet.employeeID, photo:props.vet.photo, name:props.vet.name, password: props.vet.password, username:props.vet.username})
     });
 
     React.useEffect(() => {
         console.log("run effect details");
-        props.loadAdmin(id as string);
+        props.loadVet(id as string);
     }, []);
     return (
         <Container>
@@ -36,9 +37,9 @@ const AdminDetails = (props: { admin: Vet, loadAdmin: (id: string) => void, upda
             <Row>
                 <Image width={200} height={200} fluid src={require('../images/dog.jpg')} roundedCircle/>
                 <Col>
-                    <h5>Name: {props.admin.name}</h5><br/>
-                    <h5>Email: {props.admin.email}</h5><br/>
-                    <h5>Cellphone: {props.admin.cellphone}</h5><br/>
+                    <h5>Name: {props.vet.name}</h5><br/>
+                    <h5>Email: {props.vet.email}</h5><br/>
+                    <h5>Cellphone: {props.vet.cellphone}</h5><br/>
                 </Col>
             </Row>
             <h1 className="text-center">Edit Admin</h1>
@@ -46,19 +47,19 @@ const AdminDetails = (props: { admin: Vet, loadAdmin: (id: string) => void, upda
                 <div className="form-group">
                     <label>Cellphone</label>
                     <input type="number" min="0" className="form-control" id="newCellphone" name="newCellphone" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin cellphone is required'}
+                    {errors.adminName && 'Vet cellphone is required'}
                 </div>
                 <div className="form-group">
                     <label>Email</label>
                     <input className="form-control" id="newEmail" name="newEmail" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin email is required'}
+                    {errors.adminName && 'Vet email is required'}
                 </div>
                 <div className="form-group">
                     <label>Address</label>
                     <input className="form-control" id="newAddress" name="newAddress" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin address is required'}
+                    {errors.adminName && 'Vet address is required'}
                 </div>
-                <input className="btn btn-primary float-right" type="submit" value="Edit Admin Contact Info"/>
+                <input className="btn btn-primary float-right" type="submit" value="Edit Vet Contact Info"/>
             </form>
 
         </Container>
@@ -68,18 +69,18 @@ const AdminDetails = (props: { admin: Vet, loadAdmin: (id: string) => void, upda
 
 const mapStateToProps = (state: GlobalState) => {
     return {
-        admin: state.admins.admin,
-        isFetching: state.pets.isFetching
+        vet: state.vets.vet,
+        isFetching: state.vets.isFetching
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        loadAdmin: (id: string) => {
-            dispatch(fetchAdmin(id))
+        loadVet: (id: string) => {
+            dispatch(fetchVet(id))
         },
-        updateAdmin: (id: string, newAdmin: Vet) => {
-            dispatch(updateAdminRequest(id, newAdmin))
+        updateVet: (id: string, newVet: Vet) => {
+            dispatch(updateVetRequest(id, newVet))
         },
     }
 };
-export default connect(mapStateToProps, mapDispatchToProps)(AdminDetails);
+export default connect(mapStateToProps, mapDispatchToProps)(VetDetails);

@@ -1,6 +1,6 @@
 import {getData} from "../Utils/NetworkUtils";
 import {Action} from "redux";
-import {Admin} from "../components/AdminList";
+import {Vet} from "../components/AdminList";
 
 
 export enum AdminActionsTypes {
@@ -25,10 +25,10 @@ export interface AddAdminAction extends Action {
 }
 
 export interface ReceiveAdminsAction extends Action {
-    data: Admin[]
+    data: Vet[]
 }
 export interface ReceiveAdminAction extends Action {
-    data: Admin
+    data: Vet
 
 }
 
@@ -39,16 +39,16 @@ export interface DeleteAdminAction extends Action {
 export interface UpdateAdminAction extends Action {
     data: {
         id: string
-        admin: Admin,
+        admin: Vet,
     }
 }
 
 
-export const addAdmin = (admin: Admin) => ({type: AdminActionsTypes.ADD_ADMIN, data: admin});
+export const addAdmin = (admin: Vet) => ({type: AdminActionsTypes.ADD_ADMIN, data: admin});
 export const deleteAdmin = (id: number) => ({type: AdminActionsTypes.DELETE_ADMIN, data: id});
-export const updateAdmin = (id: string, admin: Admin) => ({type: AdminActionsTypes.UPDATE_ADMIN, data: {id: id, admin: admin}});
+export const updateAdmin = (id: string, admin: Vet) => ({type: AdminActionsTypes.UPDATE_ADMIN, data: {id: id, admin: admin}});
 export const requestAdmins = () => ({type: AdminActionsTypes.REQUEST_ADMINS});
-export const receiveAdmins = (data: Admin[]) => ({type: AdminActionsTypes.RECEIVE_ADMINS, data: data});
+export const receiveAdmins = (data: Vet[]) => ({type: AdminActionsTypes.RECEIVE_ADMINS, data: data});
 export const requestAdmin = () => ({type: AdminActionsTypes.REQUEST_ADMIN});
 export const receiveAdmin = (data: {}) => ({type: AdminActionsTypes.RECEIVE_ADMIN, data: data});
 
@@ -68,12 +68,12 @@ export function fetchAdmins() {
         dispatch(requestAdmins());
         return getData('/admins', [])
             .then(data => {
-                data && dispatch(receiveAdmins(data.map((p: { admin: Admin }) => p.admin)))
+                data && dispatch(receiveAdmins(data.map((p: { admin: Vet }) => p.admin)))
             })
     }
 }
 
-export function postAdmin(admin: Admin) {
+export function postAdmin(admin: Vet) {
     return (dispatch: any) => {
         dispatch(addAdmin(admin));
         return fetch('/admins', {
@@ -122,7 +122,7 @@ export function deleteAdminRequest(id: number) {
     }
 }
 
-export function updateAdminRequest(id: string, admin: Admin) {
+export function updateAdminRequest(id: string, admin: Vet) {
     return (dispatch: any) => {
 
         return fetch(`/admins/${+id}/info`, {
@@ -130,12 +130,7 @@ export function updateAdminRequest(id: string, admin: Admin) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                id: 0,
-                cellphone: admin.cellphone,
-                email: admin.email,
-                address: admin.address
-            })
+            body: JSON.stringify({id: 0, cellphone: admin.cellphone, email: admin.email, address: admin.address})
         })
             .then(response => {
                 if (response.ok) {

@@ -21,6 +21,7 @@ import Container from "react-bootstrap/Container";
 import NoMatch from "./NoMatch";
 import Schedule from "./Schedule";
 import ClientPage from "../pages/ClientPage";
+import VetDetails from "./VetDetails";
 
 
 export interface SignInState {
@@ -100,6 +101,7 @@ const ProtoSignInForm = (
                     <Route path="/appointment/" exact component={AddAppointmentForm}/>
                     <Route path="/admin/" exact component={AdminList}/>
                     <Route path="/admin/:id" component={AdminDetails}/>
+                    <Route path="/vet/:id" component={VetDetails}/>
                     <Route path="/profile/" component={ChangePassword}/>
                     <Route path="/schedule/" component={Schedule}/>
                     <Route path="/vet/" exact component={VetList}/>

@@ -5,6 +5,7 @@ import {Vet} from "../components/VetList";
 
 export enum VetActionsTypes {
     ADD_VET = 'ADD_VET',
+    ADD_SCHEDULE_VET = 'ADD_SCHEDULE_VET',
     UPDATE_VET = 'UPDATE_VET',
     DELETE_VET = 'DELETE_VET',
     REQUEST_VETS = 'REQUEST_VETS',
@@ -22,6 +23,10 @@ export interface AddVetAction extends Action {
     username: string;
     cellphone: number
     email: string
+}
+
+export interface AddScheduleVetAction extends Action {
+    month: string
 }
 
 export interface ReceiveVetsAction extends Action {
@@ -48,6 +53,7 @@ export interface DeleteVetAction extends Action {
 }
 
 export const addVet = (vet: Vet) => ({type: VetActionsTypes.ADD_VET, data: vet});
+export const addScheduleVet = (month: string) => ({type: VetActionsTypes.ADD_SCHEDULE_VET, data: month});
 export const deleteVet = (id: string, vet: Vet) => ({type: VetActionsTypes.DELETE_VET, data: {id: id, pet: vet}});
 export const updateVet = (id: string, vet: Vet) => ({type: VetActionsTypes.UPDATE_VET, data: {id: id, pet: vet}});
 export const requestVets = () => ({type: VetActionsTypes.REQUEST_VETS});
@@ -154,6 +160,32 @@ export function updateVetRequest(id: string, vet: Vet) {
             })
             .catch(reason => {
                 //console.log(reason);
+            });
+    }
+
+
+}
+
+export function setScheduleVet(month: string) {
+    return (dispatch: any) => {
+        dispatch(addScheduleVet(month));
+        return fetch(`/vets/{id}/schedule`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ month: month})
+        })
+            .then(response => {
+                if (response.ok)
+                    return response.json();
+                else {
+                    console.log(`Error: ${response.status}: ${response.statusText}`);
+                    console.error(response)
+                }
+            })
+            .catch(reason => {
+                console.log(reason);
             });
     }
 }
