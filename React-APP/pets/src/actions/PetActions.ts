@@ -126,12 +126,12 @@ export function deletePetRequest(id: number) {
 export function updatePetRequest(id: string, pet: Pet) {
     return (dispatch: any) => {
 
-        return fetch('/pets/${+id}', {
+        return fetch(`/pets/${+id}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({name: pet.name, species: pet.species, id: pet.id, ownerID: pet.ownerID})
+            body: JSON.stringify({id: pet.id, name: pet.name, species: pet.species})
         })
             .then(response => {
                 if (response.ok) {

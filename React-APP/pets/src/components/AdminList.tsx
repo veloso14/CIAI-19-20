@@ -1,11 +1,14 @@
 import React from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
+import {deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
 import {GlobalState} from "../App";
 import {Link} from "react-router-dom"
-import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
+import Accordion from "react-bootstrap/Accordion";
+import Card from "react-bootstrap/Card";
+import {Appointment} from "./AppointmentList";
 import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminActions";
 
 export interface Admin {
@@ -27,6 +30,7 @@ export interface AdminState {
     isFetching: boolean
 }
 
+
 type FormData = {
     adminName: string;
     adminCellphone: number;
@@ -36,6 +40,7 @@ type FormData = {
     adminPassword: string;
     adminUsername: string;
 }
+
 
 
 
@@ -78,67 +83,79 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
                 <Button className="float-right" variant="primary" size="sm" onClick={() => {
                     props.deleteAdmin(admin.id);
                     setUpdate(true)
-                }}>Fire</Button>
+                }}>Delete</Button>
             </ListGroup.Item>
         )
     });
 
-    let emptyList = (<p className="text-center">You currently don't have any admins registered!</p>)
+    let emptyList = (<p className="text-center">Currently don't have any admins registered!</p>)
 
-    let adminList = ( (props.admins.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+    let adminList = ((props.admins.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
 
     return (
-        <Container>
+        <div>
             <br/>
-            <h1 className="text-center">Vets</h1>
+            <h1 className="text-center">Admins</h1>
             <br/>
 
             {props.isFetching ? <p>Loading...</p> : adminList}
 
-            <br/>
-            <h1 className="text-center">Hire vet</h1>
+            <Accordion>
+                <Card>
+                    <Card.Header>
+                        <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                            Add new Admin
+                        </Accordion.Toggle>
+                    </Card.Header>
+                    <Accordion.Collapse eventKey="0">
+                        <Card.Body>
+                            <form onSubmit={onSubmit}>
+                                <div className="form-group">
+                                    <label>Name</label>
+                                    <input className="form-control" id="adminName" name="adminName" ref={register({required: true})}/>
+                                    {errors.adminName && 'Admin name is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Username</label>
+                                    <input className="form-control" id="adminUsername" name="adminUsername" ref={register({required: true})}/>
+                                    {errors.adminUsername && 'Admin username is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Password</label>
+                                    <input className="form-control" id="adminPassword" name="adminPassword" ref={register({required: true})}/>
+                                    {errors.adminPassword && 'Admin password is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Cellphone</label>
+                                    <input type="number" min="0" className="form-control" id="adminCellphone" name="adminCellphone" ref={register({required: true})}/>
+                                    {errors.adminCellphone && 'Admin cellphone is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Email</label>
+                                    <input className="form-control" id="adminEmail" name="adminEmail" ref={register({required: true})}/>
+                                    {errors.adminEmail && 'Admin email is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Address</label>
+                                    <input className="form-control" id="adminAddress" name="adminAddress" ref={register({required: true})}/>
+                                    {errors.adminAddress && 'Admin address is required'}
+                                </div>
+                                <div className="form-group">
+                                    <label>Photo</label>
+                                    <input className="form-control" id="adminPhoto" name="adminPhoto" ref={register({required: true})}/>
+                                    {errors.adminPhoto && 'Admin photo is required'}
+                                </div>
 
-            <form onSubmit={onSubmit}>
-                <div className="form-group">
-                    <label>Name</label>
-                    <input className="form-control" id="adminName" name="adminName" ref={register({required: true})}/>
-                    {errors.adminName && 'Admin name is required'}
-                </div>
-                <div className="form-group">
-                    <label>Username</label>
-                    <input className="form-control" id="adminUsername" name="adminUsername" ref={register({required: true})}/>
-                    {errors.adminUsername && 'Admin username is required'}
-                </div>
-                <div className="form-group">
-                    <label>Password</label>
-                    <input className="form-control" id="adminPassword" name="adminPassword" ref={register({required: true})}/>
-                    {errors.adminPassword && 'Admin password is required'}
-                </div>
-                <div className="form-group">
-                    <label>Cellphone</label>
-                    <input type="number" min="0" className="form-control" id="adminCellphone" name="adminCellphone" ref={register({required: true})}/>
-                    {errors.adminCellphone && 'Admin cellphone is required'}
-                </div>
-                <div className="form-group">
-                    <label>Email</label>
-                    <input className="form-control" id="adminEmail" name="adminEmail" ref={register({required: true})}/>
-                    {errors.adminEmail && 'Admin email is required'}
-                </div>
-                <div className="form-group">
-                    <label>Address</label>
-                    <input className="form-control" id="adminAddress" name="adminAddress" ref={register({required: true})}/>
-                    {errors.adminAddress && 'Admin address is required'}
-                </div>
-                <div className="form-group">
-                    <label>Photo</label>
-                    <input className="form-control" id="adminPhoto" name="adminPhoto" ref={register({required: true})}/>
-                    {errors.adminPhoto && 'Admin photo is required'}
-                </div>
+                                <input className="btn btn-primary float-right" type="submit" value="Add Admin"/>
+                            </form>
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
 
-                <input className="btn btn-primary float-right" type="submit" value="Add Admin"/>
-            </form>
-        </Container>
+            </Accordion>
+
+        </div>
     );
 };
 
@@ -158,7 +175,6 @@ const mapDispatchToProps = (dispatch: any) => {
         deleteAdmin: (id: number) => {
             dispatch(deleteAdminRequest(id))
         }
-
     }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ProtoAdminList);
