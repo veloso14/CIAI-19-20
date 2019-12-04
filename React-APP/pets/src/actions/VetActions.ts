@@ -53,7 +53,7 @@ export interface DeleteVetAction extends Action {
 }
 
 export const addVet = (vet: Vet) => ({type: VetActionsTypes.ADD_VET, data: vet});
-export const addScheduleVet = (month: string) => ({type: VetActionsTypes.ADD_SCHEDULE_VET, data: month});
+export const addScheduleVet = (id: string, month: string) => ({type: VetActionsTypes.ADD_SCHEDULE_VET, data: {id: id,month}});
 export const deleteVet = (id: string, vet: Vet) => ({type: VetActionsTypes.DELETE_VET, data: {id: id, pet: vet}});
 export const updateVet = (id: string, vet: Vet) => ({type: VetActionsTypes.UPDATE_VET, data: {id: id, pet: vet}});
 export const requestVets = () => ({type: VetActionsTypes.REQUEST_VETS});
@@ -166,10 +166,10 @@ export function updateVetRequest(id: string, vet: Vet) {
 
 }
 
-export function setScheduleVet(month: string) {
+export function setScheduleVet(id: string, month: string) {
     return (dispatch: any) => {
-        dispatch(addScheduleVet(month));
-        return fetch(`/vets/{id}/schedule`, {
+        dispatch(addScheduleVet(id,month));
+        return fetch(`/vets/${+id}/schedule`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'

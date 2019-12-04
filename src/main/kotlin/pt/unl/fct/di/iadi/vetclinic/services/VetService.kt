@@ -137,6 +137,7 @@ class VetService(val vets: VetRepository,
             mon.contains("FEB") -> Month.FEBRUARY
             mon.contains("MAR") -> Month.MARCH
             mon.contains("APR") -> Month.APRIL
+            mon.contains("MAY") -> Month.MAY
             mon.contains("JUN") -> Month.JUNE
             mon.contains("JUL") -> Month.JULY
             mon.contains("AUG") -> Month.AUGUST
