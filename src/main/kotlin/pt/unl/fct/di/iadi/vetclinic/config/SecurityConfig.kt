@@ -28,6 +28,7 @@ class SecurityConfig(
                 .antMatchers("/admins").permitAll()
                 .antMatchers("/vets").permitAll()
                 .antMatchers("/pets").permitAll()
+                .antMatchers("/appointments").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()

@@ -10,7 +10,7 @@ const NavigationBar = () => {
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/pet">Pet</Nav.Link>
                 <Nav.Link href="/appointment">Create Appointment</Nav.Link>
-
+                <Nav.Link href="/schedule">Schedule</Nav.Link>
                 <Nav.Link href="/admin">Admin</Nav.Link>
                 <Nav.Link href="/vet">Vets</Nav.Link>
             </Nav>

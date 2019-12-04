@@ -19,7 +19,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 class VetController(val vets: VetService) {
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id))")
+    //@PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id))")
     @ApiOperation(value = "Get the details of a single vet by id", response = VetDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved vet details"),
@@ -43,7 +43,7 @@ class VetController(val vets: VetService) {
     fun getAllVets() = vets.getAllVets().map { VetDTO(it) }
 
 
-    @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
+   // @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
     @ApiOperation(value = "Complete an appointment", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully completed"),
@@ -54,7 +54,7 @@ class VetController(val vets: VetService) {
     fun completeAppointment(@RequestBody desc: String, @PathVariable id: Long) =
             handle4xx { vets.completeAppointment(id, desc) }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id))")
+   // @PreAuthorize("hasRole('ROLE_ADMIN') or (hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id))")
     @ApiOperation(value = "List the appointments related to a Vet", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
@@ -66,7 +66,7 @@ class VetController(val vets: VetService) {
     fun appointmentsOfVet(@PathVariable id: Long): List<AppointmentDTO> =
             handle4xx { vets.appointmentsOfVet(id).map { AppointmentDTO(it) } }
 
-    @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
+  //  @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
     @ApiOperation(value = "Update contact info of a vet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
@@ -77,7 +77,7 @@ class VetController(val vets: VetService) {
     fun updateVet(@RequestBody user: VetDTO, @PathVariable id: Long) =
             handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())) }
 
-    @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
+  //  @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
     @ApiOperation(value = "Change the password of a vet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully changed the password"),
@@ -89,7 +89,7 @@ class VetController(val vets: VetService) {
             handle4xx { vets.updatePassword(id, pass) }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+ //   @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Hire new vet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a vet"),
