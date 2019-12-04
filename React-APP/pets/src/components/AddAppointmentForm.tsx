@@ -36,7 +36,7 @@ const AddAppointmentForm = () => {
     const [date, setDate] = React.useState(new Date());
 
     // TODO need to know the id of the current logged in client
-    const id = 1;
+    const id = 571;
 
     const postAppointment = (clientID: number, date: Date, desc: string, vet: number, pet: number) => {
         return fetch('/appointments/', {

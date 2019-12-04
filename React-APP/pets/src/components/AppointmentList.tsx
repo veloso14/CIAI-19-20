@@ -1,17 +1,28 @@
 import React from 'react';
-import {Appointment} from "./PetList";
-import {GlobalState} from "../App";
-import {connect} from "react-redux";
+import {Appointment, Pet} from "./PetList";
 import ListGroup from "react-bootstrap/ListGroup";
 import {Link} from "react-router-dom";
+import Button from "react-bootstrap/Button";
 
 const AppointmentList = (props: { appointments: Appointment[] }) => {
+
+    const {appointments} = props;
+
+    const list = appointments.map((apt: Appointment) => (
+        <ListGroup.Item key={apt.id}>
+            <Link to={`/appointment/${apt.id}`}>{apt.desc}</Link>
+        </ListGroup.Item>)
+    );
+
+    let emptyList = (<p className="text-center">You currently don't have any appointments registered!</p>)
+
+    let aptList = ((appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList);
+
     return (
         <div>
             <h1 className="text-center">Appointments list</h1>
             <br/>
-            <ListGroup>{props.appointments.map((apt: Appointment) => <ListGroup.Item
-                key={apt.id}><Link to={`/appointment/${apt.id}`}>{apt.desc}</Link></ListGroup.Item>)}</ListGroup>
+            <ListGroup>{aptList}</ListGroup>
         </div>
     );
 };

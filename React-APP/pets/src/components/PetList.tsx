@@ -36,7 +36,7 @@ type FormData = {
 }
 
 
-const clientID = 1
+const clientID = 571
 
 const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () => void, postPet: (pet: Pet) => void, deletePet: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
@@ -76,7 +76,7 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
 
 
     return (
-        <Container>
+        <div>
             <br/>
             <h1 className="text-center">My Pets</h1>
             <br/>
@@ -115,7 +115,7 @@ const ProtoPetList = (props: { pets: Pet[], isFetching: boolean, loadPets: () =>
 
             </Accordion>
 
-        </Container>
+        </div>
     );
 };
 
