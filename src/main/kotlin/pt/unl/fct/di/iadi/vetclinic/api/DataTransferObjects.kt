@@ -39,6 +39,7 @@ data class PetUpdateDTO(val id:Long, val name:String, val species:String) {
 
 data class UserPasswordDTO(val username:String, val password:String)
 
+
 data class PetAptsDTO(val pet:PetDTO, val appointments:List<AppointmentDTO>)
 
 data class AppointmentDTO(val id:Long, var date: Date, var desc:String, var petID:Long, var clientID:Long, var vetID:Long) {

@@ -253,6 +253,7 @@ fun `Test checking appointments (No Login)`() {
         scheduleDAO = vets.createSchedule(vet, Month.JANUARY)
         val scheduleJSON = mapper.writeValueAsString(scheduleDTO)
 
+
         Mockito.`when`(vets.setSchedule(vet.id, "JAN"))
                 .then { assertThat(it.getArgument(0), equalTo(scheduleDAO)); it.getArgument(0) }
 
