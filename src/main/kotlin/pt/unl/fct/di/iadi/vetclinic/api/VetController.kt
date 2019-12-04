@@ -32,7 +32,7 @@ class VetController(val vets: VetService) {
             handle4xx { vets.getOneVet(id).let { VetDTO(it) } }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "View a list of registered vets", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),

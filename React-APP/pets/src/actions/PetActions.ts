@@ -52,7 +52,7 @@ export const receivePet = (data: {}) => ({type: PetActionsTypes.RECEIVE_PET, dat
 export function fetchPet(id: string) {
     return (dispatch: any) => {
         dispatch(requestPet());
-        return getData(`/pets/${+id}`, {pet:{}, appointments: []})
+        return getData('/pets/${+id}', {pet:{}, appointments: []})
             .then(data => {
                 console.log("log: " + JSON.stringify(data))
                 data && dispatch(receivePet(data))
@@ -77,7 +77,7 @@ export function fetchPets() {
 export function postPet(pet: Pet) {
     return (dispatch: any) => {
         dispatch(addPet(pet));
-        return fetch(`/pets`, {
+        return fetch('/pets', {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -101,7 +101,7 @@ export function postPet(pet: Pet) {
 export function deletePetRequest(id: number) {
     return (dispatch: any) => {
 
-        return fetch(`/pets/${id}`, {
+        return fetch('/pets/${id}', {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json'
@@ -126,7 +126,7 @@ export function deletePetRequest(id: number) {
 export function updatePetRequest(id: string, pet: Pet) {
     return (dispatch: any) => {
 
-        return fetch(`/pets/${+id}`, {
+        return fetch('/pets/${+id}', {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

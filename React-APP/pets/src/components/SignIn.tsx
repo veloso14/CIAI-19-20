@@ -16,6 +16,7 @@ import AdminDetails from "./AdminDetails";
 import SignOutForm from "./SignOut";
 import ChangePassword from "./ChangePassword";
 import VetList from "./VetList";
+import Container from "react-bootstrap/Container";
 
 export interface SignInState { isSignedIn: boolean }
 
@@ -41,11 +42,26 @@ const ProtoSignInForm = (
     let passwordChangeHandler = (e:ChangeEvent<HTMLInputElement>) => { setPassword(e.target.value) };
 
     let signInForm =
-        (<form onSubmit={submitHandler}>
-            <div><label>Username: <input type="text" value={username} onChange={usernameChangeHandler}/></label></div>
-            <div><label>Password: <input type="password" value={password} onChange={passwordChangeHandler}/></label></div>
+        (
+            <Container>
+
+                <br/>
+
+                <h1 className="text-center">Login</h1>
+
+
+                <form onSubmit={submitHandler}>
+            <div className="form-group">
+                <label>Username: <input className="form-control" type="text" value={username} onChange={usernameChangeHandler}/></label>
+            </div>
+            <div className="form-group">
+                <label>Password: <input className="form-control" type="password" value={password} onChange={passwordChangeHandler}/></label>
+            </div>
             <button>Sign In</button>
-        </form>);
+                    <br/> <br/>
+                    <button>Registar</button>
+        </form>
+            </Container>);
 
 
     const Content = () => {

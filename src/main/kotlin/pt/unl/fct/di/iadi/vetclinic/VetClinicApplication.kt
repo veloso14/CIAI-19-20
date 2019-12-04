@@ -6,6 +6,7 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import pt.unl.fct.di.iadi.vetclinic.model.*
+import java.util.*
 
 
 @SpringBootApplication
@@ -51,6 +52,11 @@ class VetClinicApplication {
             val defaultAdmin = AdminDAO(8L,"default","","default", BCryptPasswordEncoder().encode("1234"),987682,"Pio","rosto.jpg","ADMIN",1)
             admins.save(defaultAdmin)
 
+            val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList(), emptyList())
+            vets.save(chenel)
+
+            //val consulta = AppointmentDAO(1L, Date(), "consulta",pantufas, antonio, chenel)
+            //apts.save(consulta)
         }
 }
 
