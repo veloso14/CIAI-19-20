@@ -9,7 +9,8 @@ import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import {Appointment} from "./AppointmentList";
-import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminActions";
+import {deleteAdminRequest, fetchAdmins, postAdmin, receiveAdmins} from "../actions/AdminActions";
+import {getData} from "../Utils/NetworkUtils";
 
 export interface Admin {
     id: number,
@@ -46,6 +47,7 @@ type FormData = {
 
 const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: () => void, postAdmin: (admin: Admin) => void, deleteAdmin: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
+    const [admins, setAdmins] = React.useState([] as Admin[]);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername}) => {
         console.log(adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername);
@@ -67,18 +69,25 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
         setValue("adminUsername", "");
     });
 
-    // eslint-disable-next-line
+    const fetchAdmins = () => {
+        return getData('/admins', [])
+            .then(data => {
+                console.log("admins data: "+JSON.stringify(data))
+                data && setAdmins(data)
+            })
+    }
+
     React.useEffect(() => {
         console.log("run effect");
-        props.loadAdmins();
-        return () => {
-            setUpdate(false)
-        }
-    }, [update]);
+        //props.loadAdmins();
+        fetchAdmins();
 
-    let list = props.admins.map((admin: Admin) => {
+
+    }, []);
+
+    let list = admins.map((admin: Admin) => {
         return (
-            <ListGroup.Item key={admin.id}>
+            typeof admin != "undefined" && <ListGroup.Item key={admin.id}>
                 <Link to={`/pet/${admin.id}`}>{admin.name}</Link>
                 <Button className="float-right" variant="primary" size="sm" onClick={() => {
                     props.deleteAdmin(admin.id);
@@ -91,7 +100,7 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
 
     let emptyList = (<p className="text-center">Currently don't have any admins registered!</p>)
 
-    let adminList = ((props.admins.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+    let adminList = ((admins.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
 
     return (
