@@ -26,7 +26,7 @@ type FormData = {
 }
 
 
-const AddAppointmentForm = () => {
+const AddAppointmentForm = (props: { currentUserId: number }) => {
     const {register, setValue, handleSubmit, watch, errors} = useForm<FormData>();
 
     const [vets, setVets] = React.useState([]);
@@ -35,7 +35,7 @@ const AddAppointmentForm = () => {
     const [date, setDate] = React.useState(new Date());
 
     // TODO need to know the id of the current logged in client
-    const id = 571;
+    const id = props.currentUserId;
 
     const postAppointment = (clientID: number, date: Date, desc: string, vet: number, pet: number) => {
         return fetch('/appointments/', {
@@ -87,11 +87,13 @@ const AddAppointmentForm = () => {
                 setVets(data);
             });
 
-        getData(`/clients/${id}/pets`, [])
-            .then(data => {
-                console.log("fetch client pets form effect: " + JSON.stringify(data));
-                setPets(data);
-            })
+        if (typeof id != "undefined") {
+            getData(`/clients/${id}/pets`, [])
+                .then(data => {
+                    console.log("fetch client pets form effect: " + JSON.stringify(data));
+                    setPets(data);
+                })
+        }
 
     }, []);
 
@@ -148,8 +150,9 @@ const AddAppointmentForm = () => {
                 </div>
                 <div className="form-group">
                     <label>Vet</label>
-                    <select className="form-control" id="vet" name="vet" ref={register({required: true})}>
-                        <option disabled selected value=""> -- select an option --</option>
+                    <select defaultValue="" className="form-control" id="vet" name="vet"
+                            ref={register({required: true})}>
+                        <option disabled value=""> -- select an option --</option>
                         {vetOptionsList}
                     </select>
                     {errors.vet && 'You need to choose a vet.'}
@@ -157,8 +160,9 @@ const AddAppointmentForm = () => {
                 </div>
                 <div className="form-group">
                     <label>Pet</label>
-                    <select className="form-control" id="pet" name="pet" ref={register({required: true})}>
-                        <option disabled selected value=""> -- select an option --</option>
+                    <select defaultValue="" className="form-control" id="pet" name="pet"
+                            ref={register({required: true})}>
+                        <option disabled value=""> -- select an option --</option>
                         {petOptionsList}
                     </select>
                     {errors.pet && 'You need to choose a pet.'}
@@ -184,4 +188,4 @@ const AddAppointmentForm = () => {
     );
 };
 
-export default withRouter(AddAppointmentForm);
+export default AddAppointmentForm;

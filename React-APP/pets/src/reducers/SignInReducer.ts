@@ -1,5 +1,7 @@
 import {Action} from "redux";
 import {SIGN_IN, SIGN_OUT, SignInAction} from "../actions/SignInAction";
+import {getData} from "../Utils/NetworkUtils";
+import {Client} from "../pages/ClientPage";
 
 
 function checkIfTokenIsValid() {
