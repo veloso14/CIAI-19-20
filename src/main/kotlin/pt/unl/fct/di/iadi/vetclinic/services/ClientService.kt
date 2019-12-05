@@ -24,6 +24,10 @@ class ClientService(val pets: PetRepository,
             clients.findById(id)
                     .orElseThrow { NotFoundException("There is no Client with Id $id") }
 
+    fun getOneClientByUsername(username: String): ClientDAO =
+            clients.findByUsername(username)
+                    .orElseThrow { NotFoundException("There is no Client with username $username") }
+
     fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
 
     fun newAppointment(apt: AppointmentDAO) =
@@ -41,13 +45,15 @@ class ClientService(val pets: PetRepository,
         return client.pets
     }
 
-
+/*
     fun newPet(pet: PetDAO) =
             // defensive programming
             if (pet.id != 0L)
                 throw PreconditionFailedException("Id must be 0 in insertion")
             else
                 pets.save(pet)
+                
+ */
 
     fun deletePet(id:Long) = pets.getOne(id).let { it.frozenPet();pets.save(it) }
 

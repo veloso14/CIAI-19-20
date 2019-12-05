@@ -27,7 +27,7 @@ interface UserRepository : JpaRepository<UserDAO, Long> {
 }
 
 interface ClientRepository : JpaRepository<ClientDAO, Long> {
-    //fun findByName(name:String): MutableIterable<ClientDAO>
+    fun findByUsername(username: String) : Optional<ClientDAO>
 
     @Query("select c from ClientDAO c inner join fetch c.appointments where c.id = :id")
     fun findByIdWithAppointment(id: Long): Optional<ClientDAO>
