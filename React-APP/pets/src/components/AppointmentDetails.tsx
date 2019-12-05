@@ -21,7 +21,7 @@ const AppointmentDetails = (props: { appointments: Appointment[] }) => {
 
     React.useEffect(() => {
       loadAppointment(id as string)
-    }, [])
+    }, [id])
 
 
     return (

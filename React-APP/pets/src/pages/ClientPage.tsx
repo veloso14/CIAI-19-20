@@ -10,7 +10,6 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import {GlobalState} from "../App";
-import {deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
 import {connect} from "react-redux";
 
 
@@ -25,11 +24,15 @@ const ClientPage = (props: {
 }) => {
     const [client, setClient] = useState({} as Client);
     const [appointments, setAppointments] = useState([] as Appointment[]);
+    const [pets, setPets] = useState([] as Pet[]);
     const [loading, setLoading] = useState(false);
+
+
+
 
     const loadClient = (username: string) => {
         setLoading(true);
-        return getData(`/clients/${username}`, {} as Client)
+        return getData(`/clients/client/${username}`, {} as Client)
             .then(data => {
                 console.log("client loaded: " + JSON.stringify(data));
                 setClient(data);
@@ -37,28 +40,41 @@ const ClientPage = (props: {
             })
     };
 
-    const loadAppointments = (id: string) => {
+    const loadAppointments = () => {
         setLoading(true);
-        return getData(`/clients/${id}/appointments`, [] as Appointment[])
+        return getData(`/clients/${client.id}/appointments`, [] as Appointment[])
             .then(data => {
-                console.log("client loaded: " + JSON.stringify(data));
+                console.log("apt loaded: " + JSON.stringify(data));
                 setAppointments(data);
                 setLoading(false);
             })
     };
 
-    const clientId = "571";
+    const loadPets = () => {
+        setLoading(true);
+        return getData(`/clients/${client.id}/pets`, [] as Pet[])
+            .then(data => {
+                console.log("pets loaded: " + JSON.stringify(data));
+                setPets(data);
+                setLoading(false);
+            })
+    };
 
     useEffect(() => {
-        console.log("props. " + JSON.stringify(props))
         loadClient(props.currentUser)
-        loadAppointments(clientId)
     }, []);
+
+    useEffect(() => {
+        if (typeof client.id != "undefined") {
+            loadAppointments()
+            loadPets()
+        }
+    }, [client]);
 
     const content = (
         <div>
             <h1 className="text-center">Welcome {props.currentUser}!</h1>
-            <PetList/> <br/>
+            <PetList currentUserId={client.id} pets={pets}/> <br/>
             <AppointmentList appointments={appointments}/>
             <Accordion>
                 <Card>
@@ -69,7 +85,7 @@ const ClientPage = (props: {
                     </Card.Header>
                     <Accordion.Collapse eventKey="0">
                         <Card.Body>
-                            <AddAppointmentForm/>
+                            <AddAppointmentForm currentUserId={client.id}/>
                         </Card.Body>
                     </Accordion.Collapse>
                 </Card>
