@@ -22,7 +22,7 @@ function decodeRole() {
     if (token) {
         const t = token.slice(7, token.length);
         const decode = jwt.decode(t);
-      
+
         return decode.roles[0].authority
     } else {
         return ""

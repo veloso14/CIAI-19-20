@@ -2,15 +2,15 @@ import React from 'react';
 import Navbar from "react-bootstrap/Navbar";
 import Nav from "react-bootstrap/Nav";
 
-const NavigationBar = () => {
+const NavigationBar = (props: { currentRole: string }) => {
     return (
         <Navbar bg="dark" variant="dark">
             <Navbar.Brand href="/">Vetclinic</Navbar.Brand>
             <Nav className="mr-auto">
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/schedule">Schedule</Nav.Link>
-                <Nav.Link href="/client">Client</Nav.Link>
-                <Nav.Link href="/admin">Admin</Nav.Link>
+                {props.currentRole == "CLIENT" && <Nav.Link href="/client">Client</Nav.Link>}
+                {props.currentRole == "ROLE_ADMIN" && <Nav.Link href="/admin">Admin</Nav.Link>}
                 <Nav.Link href="/vet">Vets</Nav.Link>
             </Nav>
             <Navbar.Collapse>

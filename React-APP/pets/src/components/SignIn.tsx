@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useState} from "react";
 import {connect, Provider} from "react-redux";
 import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
-import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import thunk from 'redux-thunk';
 import PetList from "./PetList";
 import PetDetails from "./PetDetails";
@@ -30,9 +30,12 @@ export interface SignInState {
     currentRole: string
 }
 
+
+
 const ProtoSignInForm = (
     props: {
         isSignedIn: boolean,
+        currentRole: string,
         performSignIn: (username: string, password: string) => void,
         performSignOut: () => void
     }) => {
@@ -86,6 +89,48 @@ const ProtoSignInForm = (
 
     };
 
+    // @ts-ignore
+    const ClientRoute = ({ children, ...rest }) => {
+        return (
+            <Route
+                {...rest}
+                render={({ location }) =>
+                    props.currentRole == "CLIENT" ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/login",
+                                state: { from: location }
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    }
+
+    // @ts-ignore
+    const AdminRoute = ({ children, ...rest }) => {
+        return (
+            <Route
+                {...rest}
+                render={({ location }) =>
+                    props.currentRole == "ROLE_ADMIN" ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/login",
+                                state: { from: location }
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    }
+
     const Page = connect(mapStateToProps)(Content);
 
     let store = createStore(reducer, applyMiddleware(thunk));
@@ -93,7 +138,7 @@ const ProtoSignInForm = (
     let signOutForm = (
 
         <Provider store={store}>
-            <NavigationBar/>
+            <NavigationBar currentRole={props.currentRole}/>
             <Router>
                 <Switch>
                     <Route path="/" exact component={Home}/>
@@ -101,13 +146,13 @@ const ProtoSignInForm = (
                     <Route path="/pet/:id" component={PetDetails}/>
                     <Route path="/appointment/:id" component={AppointmentDetails}/>
                     <Route path="/appointment/" exact component={AddAppointmentForm}/>
-                    <Route path="/admin/" exact component={AdminList}/>
-                    <Route path="/admin/:id" component={AdminDetails}/>
+                    <AdminRoute path="/admin/" exact><AdminList/></AdminRoute>
+                    <AdminRoute path="/admin/:id"><AdminDetails/></AdminRoute>
                     <Route path="/vet/:id" component={VetDetails}/>
                     <Route path="/profile/" component={ChangePassword}/>
                     <Route path="/schedule/" component={Schedule}/>
                     <Route path="/vet/" exact component={VetList}/>
-                    <Route path="/client/" exact component={ClientPage}/>
+                    <ClientRoute path="/client/"><ClientPage/></ClientRoute>
                     <Route path="/logout/" exact component={SignOutForm}/>
                     <Route component={NoMatch}/>
                 </Switch>
@@ -120,7 +165,7 @@ const ProtoSignInForm = (
     return (<> {props.isSignedIn ? signOutForm : signInForm} </>);
     // add a message space for alerts (you were signed out, expired session)
 };
-const mapStateToProps = (state: GlobalState) => ({isSignedIn: state.signIn.isSignedIn});
+const mapStateToProps = (state: GlobalState) => ({isSignedIn: state.signIn.isSignedIn, currentRole: state.signIn.currentRole});
 const mapDispatchToProps =
     (dispatch: any) =>
         ({

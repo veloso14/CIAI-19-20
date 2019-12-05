@@ -11,6 +11,7 @@ import Card from "react-bootstrap/Card";
 import {Appointment} from "./AppointmentList";
 import {deleteAdminRequest, fetchAdmins, postAdmin, receiveAdmins} from "../actions/AdminActions";
 import {getData} from "../Utils/NetworkUtils";
+import Container from "react-bootstrap/Container";
 
 export interface Admin {
     id: number,
@@ -88,7 +89,7 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
     let list = admins.map((admin: Admin) => {
         return (
             typeof admin != "undefined" && <ListGroup.Item key={admin.id}>
-                <Link to={`/pet/${admin.id}`}>{admin.name}</Link>
+                <Link to={`/admin/${admin.id}`}>{admin.name}</Link>
                 <Button className="float-right" variant="primary" size="sm" onClick={() => {
                     props.deleteAdmin(admin.id);
                     setUpdate(true)
@@ -104,7 +105,7 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
 
 
     return (
-        <div>
+        <Container>
             <br/>
             <h1 className="text-center">Admins</h1>
             <br/>
@@ -165,7 +166,7 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
 
             </Accordion>
 
-        </div>
+        </Container>
     );
 };
 

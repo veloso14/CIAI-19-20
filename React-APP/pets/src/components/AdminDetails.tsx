@@ -21,9 +21,19 @@ const AdminDetails = (props: { admin: Admin, loadAdmin: (id: string) => void, up
     let {id} = useParams();
 
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
-    const onSubmit = handleSubmit(({newEmail, newCellphone,newAddress}) => {
-        console.log(newEmail, newCellphone,newAddress);
-        props.updateAdmin(id as string, {email: newEmail, cellphone:newCellphone, address:newAddress, id: props.admin.id, employeeID: props.admin.employeeID, photo:props.admin.photo, name:props.admin.name, password: props.admin.password, username:props.admin.username})
+    const onSubmit = handleSubmit(({newEmail, newCellphone, newAddress}) => {
+        console.log(newEmail, newCellphone, newAddress);
+        props.updateAdmin(id as string, {
+            email: newEmail,
+            cellphone: newCellphone,
+            address: newAddress,
+            id: props.admin.id,
+            employeeID: props.admin.employeeID,
+            photo: props.admin.photo,
+            name: props.admin.name,
+            password: props.admin.password,
+            username: props.admin.username
+        })
     });
 
     React.useEffect(() => {
@@ -32,20 +42,21 @@ const AdminDetails = (props: { admin: Admin, loadAdmin: (id: string) => void, up
     }, []);
     return (
         <Container>
-            <h1 className="text-center">Details</h1>
-            <Row>
-                <Image width={200} height={200} fluid src={require('../images/dog.jpg')} roundedCircle/>
-                <Col>
-                    <h5>Name: {props.admin.name}</h5><br/>
-                    <h5>Email: {props.admin.email}</h5><br/>
-                    <h5>Cellphone: {props.admin.cellphone}</h5><br/>
-                </Col>
-            </Row>
+            <h1 className="text-center">Admin Details</h1>
+            <br/>
+
+            <Image className="float-left mr-5" width={"20%"} fluid src={require('../images/user.jpg')} roundedCircle/>
+
+            <h5>Name: {props.admin.name}</h5><br/>
+            <h5>Email: {props.admin.email}</h5><br/>
+            <h5>Cellphone: {props.admin.cellphone}</h5><br/>
+
             <h1 className="text-center">Edit Admin</h1>
             <form onSubmit={onSubmit}>
                 <div className="form-group">
                     <label>Cellphone</label>
-                    <input type="number" min="0" className="form-control" id="newCellphone" name="newCellphone" ref={register({required: true})}/>
+                    <input type="number" min="0" className="form-control" id="newCellphone" name="newCellphone"
+                           ref={register({required: true})}/>
                     {errors.adminName && 'Admin cellphone is required'}
                 </div>
                 <div className="form-group">
@@ -62,6 +73,7 @@ const AdminDetails = (props: { admin: Admin, loadAdmin: (id: string) => void, up
             </form>
 
         </Container>
+
     );
 };
 
