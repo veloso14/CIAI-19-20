@@ -11,7 +11,7 @@ import Card from "react-bootstrap/Card";
 import {Appointment} from "./AppointmentList";
 import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminActions";
 
-export interface Vet {
+export interface Admin {
     id: number,
     employeeID: number;
     photo: string;
@@ -25,8 +25,8 @@ export interface Vet {
 
 
 export interface AdminState {
-    admins: Vet[],
-    admin: Vet,
+    admins: Admin[],
+    admin: Admin,
     isFetching: boolean
 }
 
@@ -44,7 +44,7 @@ type FormData = {
 
 
 
-const ProtoAdminList = (props: { admins: Vet[], isFetching: boolean, loadAdmins: () => void, postAdmin: (admin: Vet) => void, deleteAdmin: (id: number) => void }) => {
+const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: () => void, postAdmin: (admin: Admin) => void, deleteAdmin: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername}) => {
@@ -76,15 +76,16 @@ const ProtoAdminList = (props: { admins: Vet[], isFetching: boolean, loadAdmins:
         }
     }, [update]);
 
-    let list = props.admins.map((admin: Vet) => {
+    let list = props.admins.map((admin: Admin) => {
         return (
             <ListGroup.Item key={admin.id}>
-                <Link to={`/admin/${admin.id}`}>{admin.name}</Link>
+                <Link to={`/pet/${admin.id}`}>{admin.name}</Link>
                 <Button className="float-right" variant="primary" size="sm" onClick={() => {
                     props.deleteAdmin(admin.id);
                     setUpdate(true)
                 }}>Delete</Button>
             </ListGroup.Item>
+
         )
     });
 
@@ -169,7 +170,7 @@ const mapDispatchToProps = (dispatch: any) => {
         loadAdmins: () => {
             dispatch(fetchAdmins())
         },
-        postAdmin: (admin: Vet) => {
+        postAdmin: (admin: Admin) => {
             dispatch(postAdmin(admin))
         },
         deleteAdmin: (id: number) => {

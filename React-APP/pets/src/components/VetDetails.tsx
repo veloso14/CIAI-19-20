@@ -42,7 +42,9 @@ const VetDetails = (props: { vet: Vet, loadVet: (id: string) => void, updateVet:
             <Row>
                 <Image width={200} height={200} fluid src={require('../images/dog.jpg')} roundedCircle/>
                 <Col>
-
+                    <h5>Name: {props.vet.name}</h5><br/>
+                    <h5>Email: {props.vet.email}</h5><br/>
+                    <h5>Cellphone: {props.vet.cellphone}</h5><br/>
                 </Col>
             </Row>
             <h1 className="text-center">Edit Admin</h1>

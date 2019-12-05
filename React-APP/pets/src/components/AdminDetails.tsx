@@ -7,7 +7,7 @@ import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image"
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import {Vet} from "./AdminList";
+import {Admin} from "./AdminList";
 import {fetchAdmin, updateAdminRequest} from "../actions/AdminActions";
 
 type FormData = {
@@ -17,7 +17,7 @@ type FormData = {
 }
 
 
-const AdminDetails = (props: { admin: Vet, loadAdmin: (id: string) => void, updateAdmin: (id: string, admin: Vet) => void }) => {
+const AdminDetails = (props: { admin: Admin, loadAdmin: (id: string) => void, updateAdmin: (id: string, admin: Admin) => void }) => {
     let {id} = useParams();
 
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
@@ -77,7 +77,7 @@ const mapDispatchToProps = (dispatch: any) => {
         loadAdmin: (id: string) => {
             dispatch(fetchAdmin(id))
         },
-        updateAdmin: (id: string, newAdmin: Vet) => {
+        updateAdmin: (id: string, newAdmin: Admin) => {
             dispatch(updateAdminRequest(id, newAdmin))
         },
     }

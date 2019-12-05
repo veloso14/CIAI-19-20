@@ -22,7 +22,7 @@ class VetClinicApplication {
             users: UserRepository
     ) =
         CommandLineRunner {
-            val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony",BCryptPasswordEncoder().encode("1234"),1234, "Rua Romao", emptyList(), emptyList())
+            val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","cliente",BCryptPasswordEncoder().encode("1234"),1234, "Rua Romao", emptyList(), emptyList())
             users.save(antonio)
 
             val pantufas = PetDAO(2L, "pantufas", "dog",false, emptyList<AppointmentDAO>(), antonio)
