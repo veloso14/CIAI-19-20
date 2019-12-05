@@ -254,7 +254,7 @@ fun `Test checking appointments (No Login)`() {
         val scheduleJSON = mapper.writeValueAsString(scheduleDTO)
 
 
-        Mockito.`when`(vets.setSchedule(vet.id, "JAN"))
+        Mockito.`when`(vets.setSchedule(vet.id, MonthDTO("JAN")))
                 .then { assertThat(it.getArgument(0), equalTo(scheduleDAO)); it.getArgument(0) }
 
         mvc.perform(post("$vetsURL/1/schedule")
