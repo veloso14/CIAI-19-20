@@ -1,5 +1,6 @@
 import {Action} from "redux"
 import {
+    AddScheduleVetAction,
     AddVetAction,
     ReceiveVetAction,
     ReceiveVetsAction,
@@ -44,6 +45,14 @@ function vetReducer(state: VetState = initialState, action: Action): VetState {
                     email:  (action as AddVetAction).email,
                 }]
             };
+/*
+        case VetActionsTypes.ADD_SCHEDULE_VET:
+            return {
+                ...state, month:(action as AddScheduleVetAction).data.month
+            };
+
+ */
+
         case VetActionsTypes.UPDATE_VET:
             return {
                 ...state,
