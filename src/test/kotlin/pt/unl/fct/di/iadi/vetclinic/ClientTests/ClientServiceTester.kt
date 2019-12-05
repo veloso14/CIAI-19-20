@@ -148,7 +148,7 @@ class ClientServiceTester {
         val pantufas = PetDAO(1, "pantufas", "Dog",false, emptyList(), ClientDAO())
         clients.newPet(pantufas)
     }
-    
+
      */
 
 

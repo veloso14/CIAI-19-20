@@ -43,7 +43,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
-    @GetMapping("/{username}")
+    @GetMapping("/client/{username}")
     fun getOneClientByUsername(@PathVariable username: String): ClientDTO =
             handle4xx { clients.getOneUserByUsername(username).let { ClientDTO(it) } }
 

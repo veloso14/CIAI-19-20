@@ -121,8 +121,8 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
-    @GetMapping("/{username}")
-    fun getOneClientByUsername(@PathVariable username: String): VetDTO =
+    @GetMapping("/vet/{username}")
+    fun getOneVetByUsername(@PathVariable username: String): VetDTO =
             handle4xx { vets.getOneVetByUsername(username).let { VetDTO(it) } }
 
     //   @PreAuthorize("hasRole('ROLE_ADMIN')")
