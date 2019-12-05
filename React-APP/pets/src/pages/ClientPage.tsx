@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {getData} from "../Utils/NetworkUtils";
-import PetList from "../components/PetList";
+import PetList, {Pet} from "../components/PetList";
 import {Appointment} from "../components/AppointmentList"
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
@@ -9,6 +9,9 @@ import AppointmentList from "../components/AppointmentList";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import {GlobalState} from "../App";
+import {deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
+import {connect} from "react-redux";
 
 
 export interface Client {
@@ -17,14 +20,16 @@ export interface Client {
     username: string
 }
 
-const ClientPage = () => {
+const ClientPage = (props: {
+    currentUser: string,
+}) => {
     const [client, setClient] = useState({} as Client);
     const [appointments, setAppointments] = useState([] as Appointment[]);
     const [loading, setLoading] = useState(false);
 
-    const loadClient = (id: string) => {
+    const loadClient = (username: string) => {
         setLoading(true);
-        return getData(`/clients/${id}`, {} as Client)
+        return getData(`/clients/${username}`, {} as Client)
             .then(data => {
                 console.log("client loaded: " + JSON.stringify(data));
                 setClient(data);
@@ -45,13 +50,14 @@ const ClientPage = () => {
     const clientId = "571";
 
     useEffect(() => {
-        loadClient(clientId)
+        console.log("props. " + JSON.stringify(props))
+        loadClient(props.currentUser)
         loadAppointments(clientId)
     }, []);
 
     const content = (
         <div>
-            <h1 className="text-center">Welcome {client.name}!</h1>
+            <h1 className="text-center">Welcome {props.currentUser}!</h1>
             <PetList/> <br/>
             <AppointmentList appointments={appointments}/>
             <Accordion>
@@ -87,4 +93,12 @@ const ClientPage = () => {
     );
 };
 
-export default ClientPage;
+const mapStateToProps = (state: GlobalState) => ({
+    currentUser: state.signIn.currentUser
+});
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {}
+};
+export default connect(mapStateToProps, mapDispatchToProps)(ClientPage);
+

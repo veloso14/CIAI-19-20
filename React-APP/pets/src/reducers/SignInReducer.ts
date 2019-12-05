@@ -18,7 +18,7 @@ function decodeUsername() {
     }
 }
 
-const initialState = {isSignedIn: checkIfTokenIsValid()};
+const initialState = {isSignedIn: checkIfTokenIsValid(), currentUser: decodeUsername()};
 
 function signInReducer(state = initialState, action: Action) {
     switch (action.type) {
