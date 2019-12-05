@@ -2,6 +2,7 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import pt.unl.fct.di.iadi.vetclinic.api.UserPasswordDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.time.LocalDateTime
 import java.time.Month
@@ -48,30 +49,23 @@ class VetService(val vets: VetRepository,
         return vet.appointments // This redirection has pre-fetching
     }
 
-/*
-    fun getAllPets(): List<PetDAO> = pets.findAll().toList()
 
-    fun getAllClients(): List<ClientDAO> = clients.findAll().toList()
-
-    fun getAllAppointments(): List<AppointmentDAO> = appointments.findAll().toList();
-
- */
 
     fun hireVet(vet: VetDAO) =
             when {
                 vet.id != 0L -> throw PreconditionFailedException("Id must be 0 in insertion")
                 users.findByUsername(vet.username).isPresent -> throw PreconditionFailedException("There is already an user with the specified username")
-                else -> {vet.password = BCryptPasswordEncoder().encode(vet.password);vets.save(vet)}
+                else -> {vet.password = BCryptPasswordEncoder().encode(vet.password);users.save(vet)}
             }
 
 
     fun updateUser(id: Long, user: VetDAO) =
-            getOneVet(id).let { it.update(user); vets.save(it) }
+            getOneVet(id).let { it.update(user); users.save(it) }
 
-    fun updatePassword(id: Long, password: String) = getOneVet(id).let { it.changePassword(BCryptPasswordEncoder().encode(password)); vets.save(it) }
+    fun updatePassword(id: Long, password: UserPasswordDTO) = getOneVet(id).let { it.changePassword(BCryptPasswordEncoder().encode(password.password)); users.save(it) }
 
 
-    fun fireVet(id: Long) = getOneVet(id).let { it.updateFrozen(true); vets.save(it) }
+    fun fireVet(id: Long) = getOneVet(id).let { it.updateFrozen(true); users.save(it) }
     /* fun fireVet(id:Long){
         val user = getOneVet(id)
         if (user is VetDAO){

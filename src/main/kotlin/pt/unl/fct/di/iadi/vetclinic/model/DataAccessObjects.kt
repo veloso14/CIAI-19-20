@@ -107,6 +107,7 @@ data class ClientDAO(override val id: Long,
         super.changePassword(password)
     }
 
+    constructor(client: UserUpdateDTO) : this(client.id,"",client.email,"","",client.cellphone,client.address,"","CLIENT", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
     constructor(client: ClientDTO, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(client.id, client.name, client.email, client.username, client.password, client.cellphone, client.address,client.photo,"CLIENT", pets, apts)
     constructor() : this(0,"","","","",0,"","","CLIENT", emptyList<PetDAO>(),emptyList<AppointmentDAO>())
     constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, pets: List<PetDAO>, apts:List<AppointmentDAO>) : this(id, name, email, username, password, cellphone, address,"","CLIENT", pets, apts)
@@ -134,6 +135,8 @@ data class VetDAO(
     constructor(vet: VetDTO, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(vet.id, vet.name, vet.email, vet.username, vet.password, vet.cellphone, vet.address,vet.photo,"VET" ,vet.employeeID, false, apts, schedules)
     constructor() : this(0,"","","","",0,"","","VET",0, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
     constructor(id: Long,name:String,email: String,username: String,password: String,cellphone: Long,address: String, photo:String, employeeID: Long,frozen: Boolean, apts:List<AppointmentDAO>, schedules:List<ScheduleDAO>) : this(id, name, email, username, password, cellphone, address,photo,"VET",employeeID,frozen, apts, schedules)
+    constructor(vet: UserUpdateDTO) : this(vet.id,"",vet.email,"","",vet.cellphone,vet.address,"","VET",0,false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>())
+
     fun updateFrozen(frozen: Boolean) {
         this.frozen = frozen
     }

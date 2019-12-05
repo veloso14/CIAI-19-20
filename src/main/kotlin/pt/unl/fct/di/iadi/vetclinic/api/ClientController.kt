@@ -22,7 +22,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.VetService
 class ClientController(val clients: ClientService, val pets:PetService, val vets: VetService) {
 
 
-    @PreAuthorize("(hasRole('ROLE_CLIENT' )  and @securityService.canEditClient(principal, #id) ) or  hasRole('ROLE_VET')")
+   // @PreAuthorize("(hasRole('ROLE_CLIENT' )  and @securityService.canEditClient(principal, #id) ) or  hasRole('ROLE_VET')")
     @ApiOperation(value = "Get the details of a single client by id", response = ClientDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved client details"),
@@ -34,7 +34,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun getOneClient(@PathVariable id: Long): ClientDTO =
             handle4xx { clients.getOneClient(id).let { ClientDTO(it) } }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered clients", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -44,7 +44,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     @GetMapping("")
     fun getAllClients() = clients.getAllClients().map { ClientDTO(it) }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAppointmentOfClient(principal, #id) " )
+    //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAppointmentOfClient(principal, #id) " )
      @ApiOperation(value = "List the appointments related to a Client", response = List::class)
      @ApiResponses(value = [
      ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
@@ -69,7 +69,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
 
 
 
-    @PreAuthorize("hasAnyRole('ROLE_CLIENT' , 'ROLE_VET' )")
+   // @PreAuthorize("hasAnyRole('ROLE_CLIENT' , 'ROLE_VET' )")
     @ApiOperation(value = "Book an appointment", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
@@ -84,7 +84,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id), vets.getOneVet(apt.vetID))))
             }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAllPetsOfClient(principal, #id) ")
+    //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAllPetsOfClient(principal, #id) ")
     @ApiOperation(value = "List the pets related to a client", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of pets"),
@@ -99,7 +99,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                         .map { PetDTO(it) }
             }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT')")
+   // @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new pet to a client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a pet to a client"),
@@ -115,7 +115,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                 PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
+   // @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully deleted a pet"),
@@ -126,7 +126,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun deletePet( @PathVariable id: Long) =
             handle4xx { clients.deletePet(id) }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
+   // @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
     @ApiOperation(value = "Update contact info of a client", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
@@ -134,10 +134,10 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/info")
-    fun updateClient(@RequestBody user: ClientDTO, @PathVariable id: Long) =
-            handle4xx { clients.updateUser(id, ClientDAO(user, emptyList(), emptyList())) }
+    fun updateClient(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
+            handle4xx { clients.updateUser(id, ClientDAO(user)) }
 
-    @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
+    //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
      @ApiOperation(value = "Change the password of a client", response = Unit::class)
      @ApiResponses(value = [
          ApiResponse(code = 200, message = "Successfully changed the password"),
@@ -145,7 +145,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
          ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
      ])
      @PutMapping("/{id}/password")
-     fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
+     fun updatePassword(@RequestBody pass: UserPasswordDTO, @PathVariable id: Long) =
              handle4xx { clients.updatePassword(id, pass) }
 
 }

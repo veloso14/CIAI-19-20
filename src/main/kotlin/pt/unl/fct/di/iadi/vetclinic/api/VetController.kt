@@ -74,8 +74,8 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/info")
-    fun updateVet(@RequestBody user: VetDTO, @PathVariable id: Long) =
-            handle4xx { vets.updateUser(id, VetDAO(user, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())) }
+    fun updateVet(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
+            handle4xx { vets.updateUser(id, VetDAO(user)) }
 
   //  @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
     @ApiOperation(value = "Change the password of a vet", response = Unit::class)
@@ -85,7 +85,7 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PutMapping("/{id}/password")
-    fun updatePassword(@RequestBody pass: String, @PathVariable id: Long) =
+    fun updatePassword(@RequestBody pass: UserPasswordDTO, @PathVariable id: Long) =
             handle4xx { vets.updatePassword(id, pass) }
 
 
@@ -125,7 +125,7 @@ class VetController(val vets: VetService) {
             handle4xx { vets.setSchedule(id, month) }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Fire a vet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully fired a vet"),

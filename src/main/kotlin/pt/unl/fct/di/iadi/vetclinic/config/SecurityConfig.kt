@@ -27,6 +27,7 @@ class SecurityConfig(
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/admins/**").permitAll()
                 .antMatchers("/vets/**").permitAll()
+                .antMatchers("/clients/**").permitAll()
                 .antMatchers("/pets/**").permitAll()
                 .antMatchers("/appointments").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()

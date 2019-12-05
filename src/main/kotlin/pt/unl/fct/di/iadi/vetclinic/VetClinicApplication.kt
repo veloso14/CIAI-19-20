@@ -23,7 +23,7 @@ class VetClinicApplication {
     ) =
         CommandLineRunner {
             val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony",BCryptPasswordEncoder().encode("1234"),1234, "Rua Romao", emptyList(), emptyList())
-            clients.save(antonio)
+            users.save(antonio)
 
             val pantufas = PetDAO(2L, "pantufas", "dog",false, emptyList<AppointmentDAO>(), antonio)
             val bigodes = PetDAO(3L, "bigode", "cat",false, emptyList<AppointmentDAO>(), antonio)
@@ -50,10 +50,12 @@ class VetClinicApplication {
           */
 
             val defaultAdmin = AdminDAO(1L,"default","","default", BCryptPasswordEncoder().encode("1234"),987682,"Pio","rosto.jpg","ADMIN",1)
-            admins.save(defaultAdmin)
+            //admins.save(defaultAdmin)
+            users.save(defaultAdmin)
 
             val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList(), emptyList())
-            vets.save(chenel)
+           // vets.save(chenel)
+            users.save(chenel)
 
             //val consulta = AppointmentDAO(1L, Date(), "consulta",pantufas, antonio, chenel)
             //apts.save(consulta)
