@@ -1,6 +1,6 @@
 import {getData} from "../Utils/NetworkUtils";
 import {Action} from "redux";
-import {Vet} from "../components/VetList";
+import {Schedule, Vet} from "../components/VetList";
 
 
 export enum VetActionsTypes {
@@ -53,8 +53,8 @@ export interface DeleteVetAction extends Action {
 }
 
 export const addVet = (vet: Vet) => ({type: VetActionsTypes.ADD_VET, data: vet});
-export const addScheduleVet = (id: string, month: string) => ({type: VetActionsTypes.ADD_SCHEDULE_VET, data: {id: id,month}});
-export const deleteVet = (id: string, vet: Vet) => ({type: VetActionsTypes.DELETE_VET, data: {id: id, pet: vet}});
+export const addScheduleVet = (id: string, month: Schedule) => ({type: VetActionsTypes.ADD_SCHEDULE_VET, data: {id: id,month:month}});
+export const deleteVet = (id: number) => ({type: VetActionsTypes.DELETE_VET, data: {id: id}});
 export const updateVet = (id: string, vet: Vet) => ({type: VetActionsTypes.UPDATE_VET, data: {id: id, pet: vet}});
 export const requestVets = () => ({type: VetActionsTypes.REQUEST_VETS});
 export const receiveVets = (data: Vet[]) => ({type: VetActionsTypes.RECEIVE_VETS, data: data});
@@ -107,7 +107,7 @@ export function postVet(vet: Vet) {
 }
 
 
-export function deleteVetRequest(id: string, vet: Vet) {
+export function deleteVetRequest(id: number) {
     return (dispatch: any) => {
 
         return fetch(`/vets/${+id}`, {
@@ -115,11 +115,11 @@ export function deleteVetRequest(id: string, vet: Vet) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({id: vet.id})
+            body: JSON.stringify({id:id})
         })
             .then(response => {
                 if (response.ok) {
-                    dispatch(deleteVet(id, vet));
+                    dispatch(deleteVet(id));
                     console.log("fired vet with id: " + id);
                     return response.json();
                 } else {
@@ -166,7 +166,7 @@ export function updateVetRequest(id: string, vet: Vet) {
 
 }
 
-export function setScheduleVet(id: string, month: string) {
+export function setScheduleVet(id: string, month: Schedule) {
     return (dispatch: any) => {
         dispatch(addScheduleVet(id,month));
         return fetch(`/vets/${+id}/schedule`, {
@@ -174,7 +174,7 @@ export function setScheduleVet(id: string, month: string) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body:  JSON.stringify({month: month})
+            body:  JSON.stringify({month: month.month})
         })
             .then(response => {
                 if (response.ok)
