@@ -239,6 +239,7 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
     }
 
+    /*
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
     fun `Test new pet`() {
@@ -261,6 +262,8 @@ class ClientControllerTester {
                 .andExpect(status().isOk)
     }
 
+
+
     @Test
     fun `Bad request add pet on id not 0`() {
         val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
@@ -279,6 +282,8 @@ class ClientControllerTester {
                 .andExpect(status().is4xxClientError)
 
     }
+
+     */
 
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])

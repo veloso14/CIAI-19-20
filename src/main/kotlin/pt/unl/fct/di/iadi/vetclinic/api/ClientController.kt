@@ -34,7 +34,8 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
     fun getOneClient(@PathVariable id: Long): ClientDTO =
             handle4xx { clients.getOneClient(id).let { ClientDTO(it) } }
 
-    // @PreAuthorize("(hasRole('ROLE_CLIENT' )  and @securityService.canEditClient(principal, #id) ) or  hasRole('ROLE_VET')")
+
+    // @PreAuthorize("(hasAnyRole('ROLE_CLIENT' )  and @securityService.canEditClient(principal, #id) ) or  hasRole('ROLE_VET')")
     @ApiOperation(value = "Get the details of a single client by username", response = ClientDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved client details"),
@@ -43,8 +44,9 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{username}")
-    fun getOneClient(@PathVariable username: String): ClientDTO =
-            handle4xx { clients.getOneClientByUsername(username).let { ClientDTO(it) } }
+    fun getOneClientByUsername(@PathVariable username: String): ClientDTO =
+            handle4xx { clients.getOneUserByUsername(username).let { ClientDTO(it) } }
+
 
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
     @ApiOperation(value = "View a list of registered clients", response = List::class)
@@ -96,7 +98,7 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id), vets.getOneVet(apt.vetID))))
             }
 
-    /*
+
     //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAllPetsOfClient(principal, #id) ")
     @ApiOperation(value = "List the pets related to a client", response = List::class)
     @ApiResponses(value = [
@@ -112,7 +114,9 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                         .map { PetDTO(it) }
             }
 
-     */
+
+
+    /*
 
    // @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new pet to a client", response = Unit::class)
@@ -129,6 +133,8 @@ class ClientController(val clients: ClientService, val pets:PetService, val vets
                 val onePet = pets.getOnePet(id)
                 PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
+
+     */
 
    // @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
     @ApiOperation(value = "Delete a pet", response = Unit::class)

@@ -123,6 +123,7 @@ class ClientServiceTester {
         assertThat(clients.petsOfClient(antonio.id), equalTo(antonio.pets))
     }
 
+    /*
     @Test
     fun `test on adding a new Pet`() {
         val pantufas = PetDAO(0, "pantufas", "Dog",false, emptyList(), antonio)
@@ -147,6 +148,8 @@ class ClientServiceTester {
         val pantufas = PetDAO(1, "pantufas", "Dog",false, emptyList(), ClientDAO())
         clients.newPet(pantufas)
     }
+    
+     */
 
 
 

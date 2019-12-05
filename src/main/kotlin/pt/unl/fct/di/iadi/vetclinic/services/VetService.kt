@@ -216,4 +216,10 @@ class VetService(val vets: VetRepository,
         return Date(date.time + minutes * 60000)
     }
 
+
+    fun getOneVetByUsername(username: String): VetDAO =
+            vets.findByUsername(username)
+                    .orElseThrow { NotFoundException("There is no Vet with username $username") }
+
 }
+

@@ -113,6 +113,18 @@ class VetController(val vets: VetService) {
     fun getSchedule(@PathVariable id: Long, @RequestBody month: MonthDTO): ScheduleDAO =
             handle4xx { vets.getSchedule(id, month) }
 
+    // @PreAuthorize("hasRole('ROLE_VET') and @securityService.canEditVet(principal, #id)")
+    @ApiOperation(value = "Get the details of a single vet by username", response = VetDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved client details"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/{username}")
+    fun getOneClientByUsername(@PathVariable username: String): VetDTO =
+            handle4xx { vets.getOneVetByUsername(username).let { VetDTO(it) } }
+
     //   @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Set vet schedule to default one", response = Unit::class)
     @ApiResponses(value = [

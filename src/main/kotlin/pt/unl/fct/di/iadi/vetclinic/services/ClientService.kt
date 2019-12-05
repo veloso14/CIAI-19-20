@@ -24,7 +24,7 @@ class ClientService(val pets: PetRepository,
             clients.findById(id)
                     .orElseThrow { NotFoundException("There is no Client with Id $id") }
 
-    fun getOneClientByUsername(username: String): ClientDAO =
+    fun getOneUserByUsername(username: String): ClientDAO =
             clients.findByUsername(username)
                     .orElseThrow { NotFoundException("There is no Client with username $username") }
 
@@ -52,7 +52,7 @@ class ClientService(val pets: PetRepository,
                 throw PreconditionFailedException("Id must be 0 in insertion")
             else
                 pets.save(pet)
-                
+
  */
 
     fun deletePet(id:Long) = pets.getOne(id).let { it.frozenPet();pets.save(it) }

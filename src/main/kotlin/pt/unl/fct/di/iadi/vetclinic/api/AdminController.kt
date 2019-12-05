@@ -28,6 +28,18 @@ class AdminController(val admins: AdminService) {
     fun getOneAdmin(@PathVariable id:Long) : AdminDTO =
             handle4xx { admins.getOneAdmin(id).let { AdminDTO(it) } }
 
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @ApiOperation(value = "Get the details of a single admin by username", response = AdminDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved client details"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/{username}")
+    fun getOneClientByUsername(@PathVariable username: String): AdminDTO =
+            handle4xx { admins.getOneAdminByUsername(username).let { AdminDTO(it) } }
+
 
     //Aqui podem todos mesmo nem estando registado
     @ApiOperation(value = "View a list of registered admins", response = List::class)

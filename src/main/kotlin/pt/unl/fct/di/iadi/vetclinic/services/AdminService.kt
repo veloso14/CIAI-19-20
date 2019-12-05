@@ -46,4 +46,8 @@ class AdminService(val admins: AdminRepository,
     fun updatePassword(id: Long, pass: UserPasswordDTO) = getOneAdmin(id).let { it.changePassword(BCryptPasswordEncoder().encode(pass.password)); admins.save(it) }
 
 
+    fun getOneAdminByUsername(username: String): AdminDAO =
+            admins.findByUsername(username)
+                    .orElseThrow { NotFoundException("There is no Admin with username $username") }
+
 }
