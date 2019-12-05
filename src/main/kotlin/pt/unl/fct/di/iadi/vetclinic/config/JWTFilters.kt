@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.web.filter.GenericFilterBean
@@ -50,7 +51,8 @@ private fun addResponseToken(authentication: Authentication, response: HttpServl
 
 class UserPasswordAuthenticationFilterToJWT (
         defaultFilterProcessesUrl: String?,
-        private val anAuthenticationManager: AuthenticationManager
+        private val anAuthenticationManager: AuthenticationManager,
+        val users: UserService
 ) : AbstractAuthenticationProcessingFilter(defaultFilterProcessesUrl) {
 
     override fun attemptAuthentication(request: HttpServletRequest?,
@@ -60,7 +62,7 @@ class UserPasswordAuthenticationFilterToJWT (
 
         // perform the "normal" authentication
         //TODO meter roleshui
-        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password /* , meter o role*/ ))
+        val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password ,users.getAuthorities(user.username) ))
 
         return if (auth.isAuthenticated) {
             // Proceed with an authenticated user
@@ -80,10 +82,10 @@ class UserPasswordAuthenticationFilterToJWT (
     }
 }
 
-class UserAuthToken(private var login:String/*, private var authorities:MutableCollection<out GrantedAuthority> */) : Authentication {
+class UserAuthToken(private var login:String, private var authorities:MutableCollection<out GrantedAuthority> ) : Authentication {
 
-    //override fun getAuthorities() = authorities
-    override fun getAuthorities() = null
+    override fun getAuthorities() = authorities
+    //override fun getAuthorities() = null
 
     override fun setAuthenticated(isAuthenticated: Boolean) {}
 
@@ -126,7 +128,7 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
                 //authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 
-                val authentication = UserAuthToken(claims["username"] as String/*, claims["roles"] as MutableCollection<GrantedAuthority>*/)
+                val authentication = UserAuthToken(claims["username"] as String, claims["roles"] as MutableCollection<GrantedAuthority>)
 
                 // Can go to the database to get the actual user information (e.g. authorities)
 
@@ -169,11 +171,12 @@ class UserPasswordSignUpFilterToJWT (
         //getting user from request body
         val user = ObjectMapper().readValue(request!!.inputStream, ClientDAO::class.java)
 
+
         return users
                 .addUser(user)
                 .orElse( null )
                 .let {
-                    val auth = UserAuthToken(user.username)
+                    val auth = UserAuthToken(user.username, users.getAuthorities(user.username) )
                     SecurityContextHolder.getContext().authentication = auth
                     auth
                 }
