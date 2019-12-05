@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Vet} from "./VetList";
 import {Appointment} from "./AppointmentList";
 import {GlobalState} from "../App";
@@ -10,7 +10,8 @@ import Image from "react-bootstrap/Image"
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
 import {Schedule} from "./VetList";
-import {fetchVet, setScheduleVet, updateVetRequest} from "../actions/VetActions";
+import {fetchVet, receiveVet, setScheduleVet, updateVetRequest} from "../actions/VetActions";
+import {getData} from "../Utils/NetworkUtils";
 
 type FormData = {
     month: string
@@ -20,6 +21,8 @@ type FormData = {
 const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appointment[], schedules: Schedule[], loadVet: (id: string) => void, updateVet: (id: string, vet: Vet) => void ,  postScheduleVet: (id: string, month: Schedule) => void}) => {
     let {id} = useParams();
 
+    const [vet, setVet] = useState({} as Vet)
+
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
 
     const onSubmit = handleSubmit(({month}) => {
@@ -28,9 +31,19 @@ const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appoin
         setValue("month", "JAN")
     });
 
+    const fetchVet = (id:string) => {
+
+        return getData(`/vets/${id}`, {} as Vet)
+            .then(data => {
+
+                data && setVet(data)
+            })
+    }
+
     React.useEffect(() => {
         console.log("run effect details: " + id as string);
-        props.loadVet(id as string);
+        //props.loadVet(id as string);
+        fetchVet(id as string)
     }, []);
 
     const content = (
@@ -42,10 +55,10 @@ const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appoin
 
             <div>
                 <h5>Vet name: </h5>
-                <p>{props.vet.name}</p>
-                <h5>Cellphone: </h5><p>{props.vet.cellphone}</p>
-                <h5>Email: </h5><p>{props.vet.email}</p>
-                <h5>Address: </h5><p>{props.vet.address}</p>
+                <p>{vet.name}</p>
+                <h5>Cellphone: </h5><p>{vet.cellphone}</p>
+                <h5>Email: </h5><p>{vet.email}</p>
+                <h5>Address: </h5><p>{vet.address}</p>
             </div>
 
             <br/>

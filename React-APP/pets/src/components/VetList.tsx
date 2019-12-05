@@ -9,6 +9,8 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import {Appointment} from "./AppointmentList";
 import {deleteVetRequest, fetchVets, postVet} from "../actions/VetActions";
+import {getData} from "../Utils/NetworkUtils";
+import Container from "react-bootstrap/Container";
 
 export interface Vet {
     id: number,
@@ -50,6 +52,7 @@ type FormData = {
 
 const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () => void, postVet: (vet: Vet) => void, deleteVet: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
+    const [vets, setVets] = React.useState([] as Vet[]);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({vetName, vetCellphone, vetEmail, vetPhoto, vetAddress,vetPassword,vetUsername}) => {
         console.log(vetName, vetCellphone, vetEmail, vetPhoto, vetAddress,vetPassword,vetUsername);
@@ -71,16 +74,22 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
         setValue("vetUsername", "");
     });
 
+    const fetchVets = () => {
+        return getData('/vets', [])
+            .then(data => {
+                console.log("vets data: "+JSON.stringify(data))
+                data && setVets(data)
+            })
+    }
+
     // eslint-disable-next-line
     React.useEffect(() => {
         console.log("run effect");
-        props.loadVets();
-        return () => {
-            setUpdate(false)
-        }
-    }, [update]);
+        //props.loadVets();
+        fetchVets()
+    }, []);
 
-    let list = props.vets.map((vet: Vet) => {
+    let list = vets.map((vet: Vet) => {
         return (
             <ListGroup.Item key={vet.id}>
                 <Link to={`/vet/${vet.id}`}>{vet.name}</Link>
@@ -94,11 +103,11 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
 
     let emptyList = (<p className="text-center">System currently doesn't have any vets registered!</p>)
 
-    let vetList = ((props.vets.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+    let vetList = ((vets.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
 
     return (
-        <div>
+        <Container>
             <br/>
             <h1 className="text-center">Vets</h1>
             <br/>
@@ -159,7 +168,7 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
 
             </Accordion>
 
-        </div>
+        </Container>
     );
 };
 
