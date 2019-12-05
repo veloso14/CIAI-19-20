@@ -21,13 +21,16 @@ import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
+import kotlin.collections.LinkedHashMap
+import org.springframework.security.core.authority.AuthorityUtils
+import org.springframework.util.StringUtils
 
 
 object JWTSecret {
     private const val passphrase = "este é um grande segredo que tem que ser mantido escondido"
     val KEY: String = Base64.getEncoder().encodeToString(passphrase.toByteArray())
     const val SUBJECT = "JSON Web Token for CIAI 2019/20"
-    const val VALIDITY = 1000 * 60 * 60 * 10 // 10 minutes in microseconds
+    const val VALIDITY = 1000 * 60 * 60 * 10 * 10 // 100 minutes in microseconds
 }
 
 private fun addResponseToken(authentication: Authentication, response: HttpServletResponse) {
@@ -35,7 +38,6 @@ private fun addResponseToken(authentication: Authentication, response: HttpServl
     val claims = HashMap<String, Any?>()
     claims["username"] = authentication.name
     claims["roles"]= authentication.authorities
-    //???
 
     val token = Jwts
             .builder()
@@ -61,7 +63,6 @@ class UserPasswordAuthenticationFilterToJWT (
         val user = ObjectMapper().readValue(request!!.inputStream, UserSecurityDAO::class.java)
 
         // perform the "normal" authentication
-        //TODO meter roleshui
         val auth = anAuthenticationManager.authenticate(UsernamePasswordAuthenticationToken(user.username, user.password ,users.getAuthorities(user.username) ))
 
         return if (auth.isAuthenticated) {
@@ -102,8 +103,6 @@ class UserAuthToken(private var login:String, private var authorities:MutableCol
 
 class JWTAuthenticationFilter(): GenericFilterBean() {
 
-    // To try it out, go to https://jwt.io to generate custom tokens, in this case we only need a name...
-
 
     override fun doFilter(request: ServletRequest?,
                           response: ServletResponse?,
@@ -126,9 +125,9 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
                 //val userDetails :UserDetails = customUserDetailsService.loadUserById(userId)
                 //var authentication: UsernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 //authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                val roles = claims.get("roles")
 
-
-                val authentication = UserAuthToken(claims["username"] as String, claims["roles"] as MutableCollection<GrantedAuthority>)
+                val authentication = UserAuthToken(claims["username"] as String, getAuthorities(claims))
 
                 // Can go to the database to get the actual user information (e.g. authorities)
 
@@ -142,24 +141,24 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
         } else {
             chain!!.doFilter(request, response)
         }
+
+
+
+    }
+
+    private fun getAuthorities(map: Map<String, *>): MutableCollection<GrantedAuthority> {
+
+        val authorities = map["roles"]
+        return if (authorities is String) {
+            AuthorityUtils.commaSeparatedStringToAuthorityList(authorities)
+        } else if (authorities is MutableCollection<*>) {
+            AuthorityUtils.commaSeparatedStringToAuthorityList(StringUtils.collectionToCommaDelimitedString(authorities))
+        } else {
+            throw IllegalArgumentException("Authorities must be either a String or a Collection")
+        }
     }
 }
 
-/**
- * Instructions:
- *
- * http POST :8080/login username=user password=password
- *
- * AuthenticationManagerBuilder
- *
- * Observe in the response:
- *
- * HTTP/1.1 200
- * Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKU09OIFdlYiBUb2tlbiBmb3IgQ0lBSSAyMDE5LzIwIiwiZXhwIjoxNTcxNzc2MTM4LCJpYXQiOjE1NzE3NDAxMzgsInVzZXJuYW1lIjoidXNlciJ9.Mz18cn5xw-7rBXw8KwlWxUDSsfNCqlliiwoIpvYPDzk
- *
- * http :8080/pets Authorization:"Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKU09OIFdlYiBUb2tlbiBmb3IgQ0lBSSAyMDE5LzIwIiwiZXhwIjoxNTcxNzc2MTM4LCJpYXQiOjE1NzE3NDAxMzgsInVzZXJuYW1lIjoidXNlciJ9.Mz18cn5xw-7rBXw8KwlWxUDSsfNCqlliiwoIpvYPDzk"
- *
- */
 
 class UserPasswordSignUpFilterToJWT (
         defaultFilterProcessesUrl: String?,
