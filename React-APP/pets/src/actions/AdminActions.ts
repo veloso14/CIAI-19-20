@@ -9,8 +9,8 @@ export enum AdminActionsTypes {
     RECEIVE_ADMINS = 'RECEIVE_ADMINS',
     REQUEST_ADMIN = 'REQUEST_ADMIN',
     RECEIVE_ADMIN = 'RECEIVE_ADMIN',
-    DELETE_ADMIN = 'DELETE_PET',
-    UPDATE_ADMIN = 'UPDATE_PET',
+    DELETE_ADMIN = 'DELETE_ADMIN',
+    UPDATE_ADMIN = 'UPDATE_ADMIN',
 }
 
 export interface AddAdminAction extends Action {
