@@ -145,8 +145,8 @@ class VetService(val vets: VetRepository,
     }
 
     // gets one vet, creates default empty schedule and updates vet
-    fun setSchedule(id: Long, mon: String) {
-        val month = getMonth(mon)
+    fun setSchedule(id: Long, mon: MonthDTO) {
+        val month = getMonth(mon.month)
         val vet = getOneVet(id)
         val schedules: List<ScheduleDAO> = vet.schedules
 

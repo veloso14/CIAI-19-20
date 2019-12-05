@@ -133,7 +133,7 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @PostMapping("/{id}/schedule")
-    fun setVetSchedule(@PathVariable id: Long, @RequestBody month: String) =
+    fun setVetSchedule(@PathVariable id: Long, @RequestBody month: MonthDTO) =
             handle4xx { vets.setSchedule(id, month) }
 
 
