@@ -110,7 +110,7 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/schedule")
-    fun getSchedule(@PathVariable id: Long, @RequestBody month: String): ScheduleDAO =
+    fun getSchedule(@PathVariable id: Long, @RequestBody month: MonthDTO): ScheduleDAO =
             handle4xx { vets.getSchedule(id, month) }
 
     //   @PreAuthorize("hasRole('ROLE_ADMIN')")

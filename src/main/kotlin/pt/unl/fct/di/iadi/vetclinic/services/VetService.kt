@@ -2,6 +2,7 @@ package pt.unl.fct.di.iadi.vetclinic.services
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import pt.unl.fct.di.iadi.vetclinic.api.MonthDTO
 import pt.unl.fct.di.iadi.vetclinic.api.UserPasswordDTO
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import java.time.LocalDateTime
@@ -113,9 +114,9 @@ class VetService(val vets: VetRepository,
     }*/
 
 
-    fun getSchedule(id: Long, mon: String): ScheduleDAO {
+    fun getSchedule(id: Long, mon: MonthDTO): ScheduleDAO {
         val vet = getOneVet(id)
-        val month = getMonth(mon)
+        val month = getMonth(mon.month)
         val list = vet.schedules
         for (sch in list) {
             if (sch.month == month) {

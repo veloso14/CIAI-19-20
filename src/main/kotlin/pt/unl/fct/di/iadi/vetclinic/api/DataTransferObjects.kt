@@ -38,6 +38,7 @@ data class PetUpdateDTO(val id:Long, val name:String, val species:String) {
 }
 
 data class UserPasswordDTO(val username:String, val password:String)
+data class MonthDTO(val month:String)
 
 
 data class PetAptsDTO(val pet:PetDTO, val appointments:List<AppointmentDTO>)

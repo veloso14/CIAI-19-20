@@ -172,9 +172,9 @@ export function setScheduleVet(id: string, month: string) {
         return fetch(`/vets/${+id}/schedule`, {
             method: "POST",
             headers: {
-                'Content-Type': 'text/plain'
+                'Content-Type': 'application/json'
             },
-            body:  month
+            body:  JSON.stringify({month: month})
         })
             .then(response => {
                 if (response.ok)
