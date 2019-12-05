@@ -26,7 +26,8 @@ import VetDetails from "./VetDetails";
 
 export interface SignInState {
     isSignedIn: boolean,
-    currentUser: string
+    currentUser: string,
+    currentRole: string
 }
 
 const ProtoSignInForm = (

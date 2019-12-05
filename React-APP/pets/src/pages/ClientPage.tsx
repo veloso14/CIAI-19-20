@@ -21,6 +21,7 @@ export interface Client {
 
 const ClientPage = (props: {
     currentUser: string,
+    currentRole: string,
 }) => {
     const [client, setClient] = useState({} as Client);
     const [appointments, setAppointments] = useState([] as Appointment[]);
@@ -62,6 +63,7 @@ const ClientPage = (props: {
 
     useEffect(() => {
         loadClient(props.currentUser)
+        console.log(props.currentRole)
     }, []);
 
     useEffect(() => {
@@ -110,7 +112,8 @@ const ClientPage = (props: {
 };
 
 const mapStateToProps = (state: GlobalState) => ({
-    currentUser: state.signIn.currentUser
+    currentUser: state.signIn.currentUser,
+    currentRole: state.signIn.currentRole
 });
 
 const mapDispatchToProps = (dispatch: any) => {
