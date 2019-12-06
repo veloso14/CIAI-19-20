@@ -37,7 +37,7 @@ interface ClientRepository : JpaRepository<ClientDAO, Long> {
 }
 
 interface VetRepository : JpaRepository<VetDAO, Long> {
-   @Query("select c from VetDAO c inner join fetch c.appointments where c.id = :id")
+    @Query("select c from VetDAO c inner join fetch c.appointments where c.id = :id")
     fun findByIdWithAppointment(id: Long): Optional<VetDAO>
 
     @Query("select c from VetDAO c  where  c.frozen = false")
@@ -46,20 +46,9 @@ interface VetRepository : JpaRepository<VetDAO, Long> {
     fun findByUsername(username: String) : Optional<VetDAO>
 }
 
-interface UserRepository : JpaRepository<UserDAO, String> {
-    fun findByUsername(username: String) : UserDAO
-}
-
-
 interface AdminRepository : JpaRepository<AdminDAO, Long> {
     fun findByUsername(username: String) : Optional<AdminDAO>
 }
-
-interface AdminRepository : JpaRepository<AdminDAO, String> {}
-interface ClientRepository : JpaRepository<ClientDAO, String> {
-    @Query("select c from ClientDAO c inner join fetch c.appointments where c.name = :name")
-    fun findByIdWithAppointment(name: String): Optional<ClientDAO>
-
 
 interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
 
@@ -71,7 +60,6 @@ interface ScheduleRepository : JpaRepository<ScheduleDAO, Long> {
 
     @Query("SELECT s FROM ScheduleDAO s  where s.month = :month")
     fun findByMonth(@Param("month") month: Month) : List<ScheduleDAO>
-
 
 }
 

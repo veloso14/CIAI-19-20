@@ -105,8 +105,7 @@ class AdminServiceTester {
         assertThat(admins.getAllAppointments(), equalTo(consultasDAO as List<AppointmentDAO>))
     }
 
-
-     
+     */
 
 /*
     @Test
@@ -170,7 +169,7 @@ class AdminServiceTester {
                     assertThat(admin.name, equalTo(cid.name))
                     assertThat(admin.email, equalTo(cid.email))
                     assertThat(admin.username, equalTo(cid.username))
-                   // assertThat(admin.password, equalTo(cid.password))
+                    // assertThat(admin.password, equalTo(cid.password))
                     assertThat(admin.cellphone, equalTo(cid.cellphone))
                     assertThat(admin.address, equalTo(cid.address))
                     assertThat(admin.photo, equalTo(cid.photo))
@@ -185,36 +184,5 @@ class AdminServiceTester {
     fun `test on hiring a new admin (Error)`() {
         admins.hireAdmin(cid) // antonio has a non-0 id
     }
-
-    /* @Test
-     fun `test on firing a vet`() {
-         Mockito.`when`(vetsRepo.delete(Mockito.any(VetDAO::class.java)))
-                 .then {
-                     val vet:VetDAO = it.getArgument(0)
-                     assertThat(vet.id, equalTo(0L))
-                     assertThat(vet.name, equalTo(antonio.name))
-                     assertThat(vet.email, equalTo(antonio.email))
-                     assertThat(vet.username, equalTo(antonio.username))
-                     assertThat(vet.password, equalTo(antonio.password))
-                     assertThat(vet.cellphone, equalTo(antonio.cellphone))
-                     assertThat(vet.address, equalTo(antonio.address))
-                     assertThat(vet.employeeID, equalTo(antonio.employeeID))
-                     assertThat(vet.frozen, equalTo(antonio.frozen))
-                     assertThat(vet.appointments, equalTo(antonio.appointments))
-                     vet
-                 }
-
-         admins.fireVet(0)
-     }
-
-    */
-
-    /*@Test(expected = NotFoundException::class)
-    fun `test on firing a vet (Error)`() {
-        admins.fireVet(antonio.id) // antonio has a non-0 id
-    }
-
-     */
-
-
+    
 }

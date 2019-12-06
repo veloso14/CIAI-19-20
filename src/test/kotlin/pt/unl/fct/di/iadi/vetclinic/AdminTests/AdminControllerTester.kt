@@ -4,9 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Assert.assertThat
-import org.junit.Test
-import org.junit.runner.RunWith
 import org.hamcrest.Matchers.hasSize
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -23,14 +20,6 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.api.UserDTO
-import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
-import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
-import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.UserService
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -40,7 +29,6 @@ import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
 
 
-
 @RunWith(SpringRunner::class)
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -48,12 +36,13 @@ class AdminControllerTester {
 
     @Autowired
     lateinit var mvc:MockMvc
-   @MockBean
-    lateinit var admins: AdminService
 
+    @MockBean
+    lateinit var admins: AdminService
 
     @MockBean
     lateinit var adminsRepo: AdminRepository
+
 
 
     companion object {
@@ -61,29 +50,6 @@ class AdminControllerTester {
         // see: https://github.com/FasterXML/jackson-module-kotlin
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
-        val admin = AdminDAO(1L, "admin", "admin@admin.pt", "admin", "123456", 965216264, "morada", 123)
-        val userDAO = ArrayList(listOf(admin))
-
-        val adminURL = "/user/admin"
-    }
-
-    @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
-    fun `Test GET all employees`() {
-        Mockito.`when`(admins.getAllEmployees()).thenReturn(userDAO)
-
-        val result = mvc.perform(get(adminURL + "/employees"))
-                .andExpect(status().isOk())
-                .andReturn()
-
-        val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<ArrayList<UserDTO>>(responseString)
-        assertThat(responseDTO.get(0).email , equalTo(admin.email))
-        assertThat(responseDTO.get(0).address , equalTo(admin.address))
-        assertThat(responseDTO.get(0).cellphone , equalTo(admin.cellphone))
-        assertThat(responseDTO.get(0).username , equalTo(admin.username))
-    }
-
 
         val cid = AdminDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao","rosto.jpg", 11)
         val curro = AdminDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12)
@@ -159,7 +125,7 @@ class AdminControllerTester {
     fun `Test Get One Admin (Bad Role)`() {
         Mockito.`when`(admins.getOneAdmin(1)).thenReturn(cid)
 
-         mvc.perform(get("$adminsURL/1"))
+        mvc.perform(get("$adminsURL/1"))
                 .andExpect(status().is4xxClientError)
                 .andReturn()
     }
@@ -231,27 +197,27 @@ class AdminControllerTester {
 
         val responseString = result.response.contentAsString
         val responseDTO = mapper.readValue<List<AdminDTO>>(responseString)
-         assertThat(responseDTO, equalTo(adminsDTO))
+        assertThat(responseDTO, equalTo(adminsDTO))
     }
 
-/*
-    @Test
-    fun `Test hire One Vet`() {
-        val vinhas = VetDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao","rosto.jpg", 11, false)
+    /*
+        @Test
+        fun `Test hire One Vet`() {
+            val vinhas = VetDTO(0,"Antonio","antonio@gmail.com","vinha","1234",1234, "Rua Romao","rosto.jpg", 11, false)
 
-        val vinhasDAO = VetDAO(vinhas.id,vinhas.name,vinhas.email,vinhas.username, vinhas.password, vinhas.cellphone, vinhas.address,vinhas.photo, vinhas.employeeID,vinhas.frozen, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>() )
+            val vinhasDAO = VetDAO(vinhas.id,vinhas.name,vinhas.email,vinhas.username, vinhas.password, vinhas.cellphone, vinhas.address,vinhas.photo, vinhas.employeeID,vinhas.frozen, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>() )
 
-        val vinhasJSON = mapper.writeValueAsString(vinhas)
+            val vinhasJSON = mapper.writeValueAsString(vinhas)
 
-        Mockito.`when`(admins.hireVet(nonNullAny(VetDAO::class.java)))
-                .then { assertThat(it.getArgument(0), equalTo(vinhasDAO)); it.getArgument(0) }
+            Mockito.`when`(admins.hireVet(nonNullAny(VetDAO::class.java)))
+                    .then { assertThat(it.getArgument(0), equalTo(vinhasDAO)); it.getArgument(0) }
 
-        mvc.perform(post("$adminsURL/vets")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(vinhasJSON))
-                .andExpect(status().isOk)
-    }
-    */
+            mvc.perform(post("$adminsURL/vets")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(vinhasJSON))
+                    .andExpect(status().isOk)
+        }
+        */
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
     fun `Test hire One Admin`() {
@@ -325,6 +291,8 @@ class AdminControllerTester {
                 .content(curroJSON))
                 .andExpect(status().isOk)
     }
+
+
 
 
 
