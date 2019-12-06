@@ -43,7 +43,7 @@ class AdminService(val admins: AdminRepository,
     fun updateUser(id: Long, user: AdminDAO) =
             getOneAdmin(id).let { it.update(user); admins.save(it) }
 
-    fun updatePassword(id: Long, pass: UserPasswordDTO) = getOneAdmin(id).let { it.changePassword(BCryptPasswordEncoder().encode(pass.password)); users.save(it) }
+    fun updatePassword(id: Long, pass: UserPasswordDTO) = getOneAdmin(id).let { it.changePassword(BCryptPasswordEncoder().encode(pass.password)); admins.save(it) }
 
 
     fun getOneAdminByUsername(username: String): AdminDAO =
