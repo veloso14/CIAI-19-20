@@ -18,9 +18,10 @@ export interface GlobalState {
     admins:AdminState,
     appointments: AppointmentState,
     vets:VetState,
-    currentUser: {
+        currentUser: {
         id:string,
         name:string,
+        token:string
     }
 }
 
