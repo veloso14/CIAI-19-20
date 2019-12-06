@@ -3,7 +3,7 @@ import {connect, Provider} from "react-redux";
 import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
 import Container from "react-bootstrap/Container";
-import {Link} from "react-router-dom";
+import {Link, useHistory} from "react-router-dom";
 
 
 
@@ -26,11 +26,14 @@ const ProtoLogin = (
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
+    const history = useHistory()
+
     let submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         props.performSignIn(username, password);
         setUsername("");
         setPassword("")
+        history.push("/")
     };
 
     let usernameChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
