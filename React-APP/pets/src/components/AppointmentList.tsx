@@ -6,6 +6,8 @@ export interface Appointment {
     id: number,
     date: number,
     desc: string,
+    vetID: string,
+    petID: string
 }
 
 const AppointmentList = (props: { appointments: Appointment[] }) => {
@@ -15,7 +17,7 @@ const AppointmentList = (props: { appointments: Appointment[] }) => {
 
     const list = appointments.map((apt: Appointment) => (
         <ListGroup.Item key={apt.id}>
-            <Link to={`/appointment/${apt.id}`}>{apt.desc}</Link>
+            <Link to={`/appointment/${apt.id}`}>{apt.date}</Link>
         </ListGroup.Item>)
     );
 

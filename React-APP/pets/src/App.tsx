@@ -15,20 +15,20 @@ import {AppointmentState} from "./components/Schedule";
 export interface GlobalState {
     pets: PetState,
     signIn: SignInState,
-    admins:AdminState,
+    admins: AdminState,
     appointments: AppointmentState,
-    vets:VetState,
-        currentUser: {
-        id:string,
-        name:string,
-        token:string
+    vets: VetState,
+    currentUser: {
+        id: string,
+        name: string,
+        token: string
     }
 }
 
-const Content = (props:{isSignedIn:boolean}) => {
+const Content = (props: { isSignedIn: boolean }) => {
     return (<>
         <SignInForm/>
-        { props.isSignedIn  }
+        {props.isSignedIn}
     </>);
 
 };

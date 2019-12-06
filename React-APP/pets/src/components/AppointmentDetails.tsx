@@ -5,31 +5,77 @@ import {GlobalState} from "../App";
 import {Appointment} from "./AppointmentList";
 import {connect} from "react-redux";
 import {getData} from "../Utils/NetworkUtils";
+import {receiveVet} from "../actions/VetActions";
+import {Pet} from "./PetList";
+import {receivePet} from "../actions/PetActions";
+import {Vet} from "./VetList";
 
 const AppointmentDetails = (props: { appointments: Appointment[] }) => {
     let {id} = useParams();
-    const [apt, setApt] = React.useState({id: -1, desc: "", date:Date.now()})
+    const [apt, setApt] = React.useState({} as Appointment)
 
-    const loadAppointment = (id:string) => {
+    const [vet, setVet] = React.useState({} as Vet)
+    const [loading, setLoading] = React.useState(false)
+
+
+    const loadAppointment = (id: string) => {
+        setLoading(true)
         return getData(`/appointments/${id}`, {} as Appointment)
             .then(data => {
                 console.log("fetch appointment: " + JSON.stringify(data))
                 setApt(data)
+                setLoading(false)
             })
     };
 
 
+    const loadVet = (id: string) => {
+        setLoading(true)
+        return getData(`/vets/${+id}`, {} as Vet)
+            .then(data => {
+                console.log("log: " + JSON.stringify(data))
+                data && setVet(data)
+                setLoading(false)
+            })
+
+    }
+
+
     React.useEffect(() => {
-      loadAppointment(id as string)
+        loadAppointment(id as string)
     }, [id])
 
+    React.useEffect(() => {
+            if (typeof apt.vetID != "undefined") {
+                loadVet(apt.vetID)
+            }
+        }, [apt]
+    )
+
+    let date = String(apt.date)
+    let desc = String(apt.desc)
+
+    let content = (
+        <div>
+            <h1 className="text-center">Appointment Details:</h1>
+            <br/>
+            <h3>Completed: {desc.length > 0 ? <span>True</span> : <span>False</span>}</h3>
+            {desc.length > 0 && <h3>Vet desc: {desc}</h3>}
+            <h3>Date: {date.toString().slice(0, 10)}</h3>
+            <h3>Time: {date.toString().slice(11, 19)}</h3>
+            <h3>Vet: {vet.name}</h3>
+        </div>
+    )
+
+    let loadingContent = (
+        <div>
+            <h1>Loading...</h1>
+        </div>
+    )
 
     return (
-        <Container>
-            <h1 className="text-center">AppointmentDetails</h1>
-            <h3>Id: {apt.id}</h3>
-            <h3>Desc: {apt.desc}</h3>
-            <h3>Date: {apt.date}</h3>
+        <Container className="m-4">
+            {loading ? loadingContent : content}
         </Container>
     );
 }

@@ -95,7 +95,7 @@ const ProtoSignInForm = (
                     ) : (
                         <Redirect
                             to={{
-                                pathname: "/login",
+                                pathname: "/",
                                 state: { from: location }
                             }}
                         />
@@ -116,7 +116,28 @@ const ProtoSignInForm = (
                     ) : (
                         <Redirect
                             to={{
-                                pathname: "/login",
+                                pathname: "/",
+                                state: { from: location }
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    }
+
+    // @ts-ignore
+    const VetRoute = ({ children, ...rest }) => {
+        return (
+            <Route
+                {...rest}
+                render={({ location }) =>
+                    props.currentRole == "ROLE_VET" ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/",
                                 state: { from: location }
                             }}
                         />
@@ -146,7 +167,7 @@ const ProtoSignInForm = (
                     <Route path="/vet/:id" component={VetDetails}/>
                     <Route path="/profile/" component={ChangePassword}/>
                     <Route path="/schedule/" component={Schedule}/>
-                    <Route path="/vet/" exact component={VetList}/>
+                    <VetRoute path="/vet/" exact><VetList/></VetRoute>
                     <ClientRoute path="/client/"><ClientPage/></ClientRoute>
                     <Route path="/logout/" exact component={Login}/>
                     <Route component={NoMatch}/>

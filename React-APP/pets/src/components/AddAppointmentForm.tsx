@@ -4,6 +4,9 @@ import {getData} from "../Utils/NetworkUtils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {useHistory, withRouter} from 'react-router-dom';
+import {Pet} from "./PetList";
+import {Vet} from "./VetList";
+import ListGroup from "react-bootstrap/ListGroup";
 
 /*
 * Mudanças no servidor:
@@ -66,7 +69,7 @@ const AddAppointmentForm = (props: { currentUserId: number }) => {
             if (s.id == slot) {
                 let d = s.start
                 let date = new Date(d)
-                postAppointment(id, date, desc, +vet, +pet);
+                postAppointment(id, date, "", +vet, +pet);
             }
         })
         history.push("/")
@@ -112,18 +115,15 @@ const AddAppointmentForm = (props: { currentUserId: number }) => {
     }, [date])
 
     let vetOptionsList = vets.length > 0
-        && vets.map((item, i) => {
+        && vets.map((item: Vet, i) => {
             return (
-                // #TODO mostrar options sem ts ignore default value tem de ser array de vet senao da undefined
-                // @ts-ignore
-                <option key={i} value={item.id} onSelect={() => setIdx(item.id)}>{item.username}</option>
+                <option key={i} value={item.id}>{item.username}</option>
             )
         });
 
     let petOptionsList = pets.length > 0
-        && pets.map((item, i) => {
+        && pets.map((item: Pet, i) => {
             return (
-                // @ts-ignore
                 <option key={i} value={item.id}>{item.name}</option>
             )
         });
@@ -132,22 +132,23 @@ const AddAppointmentForm = (props: { currentUserId: number }) => {
         && slots.map((item, i) => {
             let d = item.start
             let date = new Date(d)
-
+            console.log(slots.length)
             return (
                 <option disabled={!item.available} key={i} value={item.id}>{date.toTimeString().slice(0, 8)}</option>
             )
         });
+
 
     return (
         <div className="container mb-5">
             <br/>
             <h1 className="text-center">Create a new Appointment</h1>
             <form onSubmit={onSubmit}>
-                <div className="form-group">
+               {/* <div className="form-group">
                     <label>Description</label>
                     <textarea className="form-control" id="desc" name="desc" ref={register({required: true})}/>
                     {errors.desc && 'A brief description is required.'}
-                </div>
+                </div>*/}
                 <div className="form-group">
                     <label>Vet</label>
                     <select defaultValue="" className="form-control" id="vet" name="vet"
