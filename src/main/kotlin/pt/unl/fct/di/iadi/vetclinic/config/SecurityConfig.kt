@@ -26,7 +26,7 @@ class SecurityConfig(
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/admins").permitAll()
-                .antMatchers("/vets").permitAll()
+                .antMatchers("/vets/**").permitAll()
                 .antMatchers("/clients").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()

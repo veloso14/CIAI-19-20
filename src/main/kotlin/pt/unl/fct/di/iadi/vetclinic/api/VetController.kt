@@ -107,8 +107,8 @@ class VetController(val vets: VetService) {
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
     @GetMapping("/{id}/schedule")
-    fun getSchedule(@PathVariable id: Long, @RequestBody month: MonthDTO): ScheduleDAO =
-            handle4xx { vets.getSchedule(id, month) }
+    fun getSchedule(@PathVariable id: Long, @RequestBody month: MonthDTO): ScheduleDTO =
+            handle4xx { vets.getSchedule(id, month).let { ScheduleDTO(it) } }
 
 
     @ApiOperation(value = "Get the details of a single vet by username", response = VetDTO::class)

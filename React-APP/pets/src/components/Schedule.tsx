@@ -42,6 +42,9 @@ const ProtoAppointmentList = (props: {
         setUpdate(true);
     });
 
+    let shoppingCart = [];
+
+
     // eslint-disable-next-line
     React.useEffect(() => {
         console.log("run effect");
@@ -52,7 +55,7 @@ const ProtoAppointmentList = (props: {
     let list = props.appointments.map((appointment: Appointment) => {
         return (
             <ListGroup.Item key={appointment.id}>
-                <Link to={`/vets/2/appointments/`}>Link to appointment</Link>
+                <Link to={`/appointment/${appointment.id}/`}>{appointment.date.toString().substr(0,10)}</Link>
                 <Button className="float-right" variant="primary" size="sm" onClick={() => {
                     props.deleteAppointment(appointment.id);
                     setUpdate(true)
@@ -65,6 +68,17 @@ const ProtoAppointmentList = (props: {
 
     let petList = ((props.appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
+    let calendario = props.appointments.map((appointment: Appointment) => {
+
+            <ListGroup.Item key={appointment.id}>
+                <Link to={`/appointment/${appointment.id}/`}>{appointment.date.toString().substr(0,10)}</Link>
+                <Button className="float-right" variant="primary" size="sm" onClick={() => {
+                    props.deleteAppointment(appointment.id);
+                    setUpdate(true)
+                }}>Delete</Button>
+            </ListGroup.Item>
+
+    });
 
     return (
         <Container>
@@ -77,18 +91,12 @@ const ProtoAppointmentList = (props: {
             <br/>
             <h1 className="text-center">Appointments</h1>
             <div>
+
+
                 <FullCalendar defaultView="dayGridMonth"
                               plugins={[dayGridPlugin]}
                               events={[
-                                  {title: 'Appointement', date: '2019-12-01'},
-                                  {title: 'Appointement', date: '2019-12-02'},
-                                  {title: 'Appointement', date: '2019-12-03'},
-                                  {title: 'Appointement', date: '2019-12-04'},
-                                  {title: 'Appointement', date: '2019-12-29'},
-                                  {title: 'Appointement', date: '2019-12-20'},
-                                  {title: 'Appointement', date: '2019-12-15'},
-                                  {title: 'Appointement', date: '2019-12-09'},
-                                  {title: 'Appointement', date: '2019-12-02'}
+                                  {title: 'Appointement', date: props.appointments[0].date.toString().substr(0,10)},
                               ]}/>
             </div>
 
