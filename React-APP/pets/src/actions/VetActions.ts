@@ -127,6 +127,7 @@ export function postVet(vet: Vet) {
 export function deleteVetRequest(id: number) {
     return (dispatch: any) => {
 
+        console.log(token);
         return fetch(`/vets/${+id}`, {
             method: "PUT",
             headers: {

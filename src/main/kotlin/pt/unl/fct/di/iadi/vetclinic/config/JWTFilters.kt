@@ -110,6 +110,7 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
         val authHeader = (request as HttpServletRequest).getHeader("Authorization")
 
         if( authHeader != null && authHeader.startsWith("Bearer ") ) {
+            System.out.println(authHeader);
             val token = authHeader.substring(7) // Skip 7 characters for "Bearer "
             val claims = Jwts.parser().setSigningKey(JWTSecret.KEY).parseClaimsJws(token).body
 
@@ -125,8 +126,11 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
                 //var authentication: UsernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 //authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 val roles = claims.get("roles")
+                System.out.println(roles);
 
                 val authentication = UserAuthToken(claims["username"] as String, getAuthorities(claims))
+                System.out.println(claims);
+                System.out.println(getAuthorities(claims));
 
                 // Can go to the database to get the actual user information (e.g. authorities)
 

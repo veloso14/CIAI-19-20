@@ -12,9 +12,9 @@ type FormData = {
 }
 
 
-const clientID = 568
 
-const ProtoUpdatePassword = (props: { updatePassword: (id: number, password: string) => void }) => {
+const ProtoUpdatePassword = (props: {updatePassword: (id: number, password: string) => void }) => {
+    const clientID = 4;
     const [update, setUpdate] = React.useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({newPassord}) => {
@@ -59,7 +59,7 @@ const mapStateToProps = (state: GlobalState) => ({});
 const mapDispatchToProps = (dispatch: any) => {
     return {
         updatePassword: (id: number, password: string) => {
-            dispatch(updatePasswordRequest(clientID, password))
+            dispatch(updatePasswordRequest(id, password))
         },
     }
 };

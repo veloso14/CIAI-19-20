@@ -16,7 +16,7 @@ const ProtoSignOutForm = (
     }) => {
 
     props.performSignOut()
-    return (<Redirect to={'/'}/>);
+    return (<Redirect to={'http://localhost:3000/'}/>);
     // add a message space for alerts (you were signed out, expired session)
 };
 const mapStateToProps = (state: GlobalState) => ({isSignedIn: state.signIn.isSignedIn = false});

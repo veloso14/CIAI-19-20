@@ -158,9 +158,9 @@ const ProtoSignInForm = (
                     <AdminRoute path="/admin/" exact><AdminList/></AdminRoute>
                     <AdminRoute path="/admin/:id"><AdminDetails/></AdminRoute>
                     <Route path="/vet/:id" component={VetDetails}/>
-                    <AdminRoute path="/profile/"><ChangePassword/></AdminRoute>
+                    <AdminRoute path="/profile/" ><ChangePassword/></AdminRoute>
                     <Route path="/schedule/" component={Schedule}/>
-                    <VetRoute path="/vet/" exact><VetList/></VetRoute>
+                    <AdminRoute path="/vet/" exact><VetList/></AdminRoute>
                     <ClientRoute path="/client/"><ClientPage/></ClientRoute>
                     <Route path="/logout/" exact component={Login}/>
                     <Route component={NoMatch}/>

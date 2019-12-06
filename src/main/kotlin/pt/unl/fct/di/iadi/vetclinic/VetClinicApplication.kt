@@ -48,7 +48,7 @@ class VetClinicApplication {
 
           */
 
-            val defaultAdmin = AdminDAO(1L,"default","","default", BCryptPasswordEncoder().encode("1234"),987682,"Pio","rosto.jpg","ADMIN",1)
+            val defaultAdmin = AdminDAO(1L,"default","jveloso077@gmail.com","default", BCryptPasswordEncoder().encode("1234"),987682,"Pio","rosto.jpg","ADMIN",1)
             //admins.save(defaultAdmin)
             users.save(defaultAdmin)
 

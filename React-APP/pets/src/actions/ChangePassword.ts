@@ -16,7 +16,7 @@ export function updatePasswordRequest(id: number, password: string) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({pass: password})
+            body: JSON.stringify({ username:"default" , password: password})
         })
             .then(response => {
                 if (response.ok) {
