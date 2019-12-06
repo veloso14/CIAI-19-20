@@ -3,13 +3,14 @@ import useForm from "react-hook-form";
 import {connect} from "react-redux";
 import {GlobalState} from "../App";
 // @ts-ignore
-import Calendar from 'react-calendar';
+import FullCalendar from '@fullcalendar/react'
+import dayGridPlugin from '@fullcalendar/daygrid'
 import {Link} from "react-router-dom"
 import Container from "react-bootstrap/Container";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import {fetchVetAppointments} from "../actions/ScheduleAction";
-
+import '../main.css'
 
 export interface Appointment {
     id: number,
@@ -77,9 +78,19 @@ const ProtoAppointmentList = (props: { state: GlobalState , appointments: Appoin
         <br/>
         <h1 className="text-center">Appointments</h1>
             <div>
-                <Calendar
-
-                />
+                <FullCalendar defaultView="dayGridMonth"
+                              plugins={[ dayGridPlugin ]}
+                              events={[
+                                  { title: 'Appointement', date: '2019-12-01' },
+                                  { title: 'Appointement', date: '2019-12-02' },
+                                  { title: 'Appointement', date: '2019-12-03' },
+                                  { title: 'Appointement', date: '2019-12-04' },
+                                  { title: 'Appointement', date: '2019-12-29' },
+                                  { title: 'Appointement', date: '2019-12-20' },
+                                  { title: 'Appointement', date: '2019-12-15' },
+                                  { title: 'Appointement', date: '2019-12-09' },
+                                  { title: 'Appointement', date: '2019-12-02' }
+                              ]}/>
             </div>
 
         </Container>
