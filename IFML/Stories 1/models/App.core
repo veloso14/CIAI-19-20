@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ASCII"?>
+<core:IFMLModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:core="http://www.omg.org/spec/20130218/core" xmlns:ext="http://www.omg.org/spec/20130218/ext" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" id="_viM9IBOFEeqA7e2cnrgo5Q">
+  <interactionFlowModel id="_5ZeyABOKEeqA7e2cnrgo5Q">
+    <interactionFlowModelElements xsi:type="core:ViewContainer" id="_QHHdoBgXEeqtsOcEehkOyg" name="Registo">
+      <viewElements xsi:type="ext:Form" id="_X56PEBgYEeqtsOcEehkOyg" name="Form">
+        <viewElementEvents xsi:type="ext:OnSubmitEvent" id="_cLupkBgYEeqtsOcEehkOyg" name="OnSubmit Event">
+          <outInteractionFlows xsi:type="core:DataFlow" id="_7vub0BgYEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.2"/>
+        </viewElementEvents>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_YfCVYBgYEeqtsOcEehkOyg" name="Name">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_aFVk0BgYEeqtsOcEehkOyg" name="Email">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_Z_nZsBhMEeqtsOcEehkOyg" name="Username">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_jOkckBhMEeqtsOcEehkOyg" name="Password">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_mBMVMBhMEeqtsOcEehkOyg" name="CellPhone">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_YGTmEJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_qG_F4BhMEeqtsOcEehkOyg" name="Adress">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+      </viewElements>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:ViewContainer" id="_TmnqYBgXEeqtsOcEehkOyg" name="Login" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.2/@outInteractionFlows.0 //@interactionFlowModel/@interactionFlowModelElements.6/@outInteractionFlows.1 //@interactionFlowModel/@interactionFlowModelElements.3/@viewElements.0/@viewElementEvents.0/@outInteractionFlows.0">
+      <viewElements xsi:type="ext:Form" id="_WOsf4BgXEeqtsOcEehkOyg" name="Form">
+        <viewElementEvents xsi:type="ext:OnSubmitEvent" id="_Xpg4EBgXEeqtsOcEehkOyg" name="OnSubmit Event">
+          <outInteractionFlows xsi:type="core:DataFlow" id="_hNVSsBhOEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.6"/>
+        </viewElementEvents>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_gau2EBgXEeqtsOcEehkOyg" name="Username">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_jxKmYBgXEeqtsOcEehkOyg" name="Password">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+      </viewElements>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:IFMLAction" id="_c6LrABgYEeqtsOcEehkOyg" name="Registar" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.0/@viewElements.0/@viewElementEvents.0/@outInteractionFlows.0">
+      <outInteractionFlows xsi:type="core:NavigationFlow" id="_tvO-8BhMEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.1"/>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:ViewContainer" id="_FEh08BhOEeqtsOcEehkOyg" name="Profile" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.5/@viewElements.0/@outInteractionFlows.0">
+      <viewElements xsi:type="core:ViewComponent" id="_G-zwUBhOEeqtsOcEehkOyg" name="ChangePassword">
+        <viewElementEvents xsi:type="ext:OnSubmitEvent" id="_uHRZkBhOEeqtsOcEehkOyg" name="Change Password Sucesso">
+          <outInteractionFlows xsi:type="core:NavigationFlow" id="_v8LswBhOEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.1"/>
+          <outInteractionFlows xsi:type="core:DataFlow" id="_wbF2UBhOEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.7"/>
+        </viewElementEvents>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_JH_DUBhOEeqtsOcEehkOyg" name="Old">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_JpXSEBhOEeqtsOcEehkOyg" name="New">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+      </viewElements>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:IFMLAction" id="_RVWGUBhOEeqtsOcEehkOyg" name="Action"/>
+    <interactionFlowModelElements xsi:type="core:ViewContainer" id="_WYw84BhOEeqtsOcEehkOyg" name="Home" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.6/@outInteractionFlows.0">
+      <viewElements xsi:type="ext:IFMLMenu" id="_Bt9FQBhPEeqtsOcEehkOyg" name="Menu">
+        <outInteractionFlows xsi:type="core:NavigationFlow" id="_L1q8IBhPEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.3"/>
+        <outInteractionFlows xsi:type="core:NavigationFlow" id="_MYUWMBhPEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.8"/>
+      </viewElements>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:IFMLAction" id="_fiZa4BhOEeqtsOcEehkOyg" name="IsValid" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.1/@viewElements.0/@viewElementEvents.0/@outInteractionFlows.0">
+      <outInteractionFlows xsi:type="core:NavigationFlow" id="_hmUacBhOEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.5"/>
+      <outInteractionFlows xsi:type="core:NavigationFlow" id="_h8GdMBhOEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.1"/>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:IFMLAction" id="_vSvHIBhOEeqtsOcEehkOyg" name="Change Password" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.3/@viewElements.0/@viewElementEvents.0/@outInteractionFlows.1"/>
+    <interactionFlowModelElements xsi:type="core:ViewContainer" id="_5qC5MBhOEeqtsOcEehkOyg" name="Schedule" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.5/@viewElements.0/@outInteractionFlows.1">
+      <viewElements xsi:type="core:ViewComponent" id="_NpOkcBhPEeqtsOcEehkOyg" name="Lista de appointments">
+        <viewElementEvents xsi:type="ext:OnSubmitEvent" id="_l6D1oBhQEeqtsOcEehkOyg" name="Completa">
+          <outInteractionFlows xsi:type="core:NavigationFlow" id="_oJBnkBhQEeqtsOcEehkOyg"/>
+          <outInteractionFlows xsi:type="core:NavigationFlow" id="_1lEV8BhQEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.8/@viewElements.1"/>
+        </viewElementEvents>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_UigT8BhQEeqtsOcEehkOyg" name="date"/>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_WQsUEBhQEeqtsOcEehkOyg" name="desc"/>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_Xm5SABhQEeqtsOcEehkOyg" name="pets"/>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_ZtAp8BhQEeqtsOcEehkOyg" name="Clients"/>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_bLI00BhQEeqtsOcEehkOyg" name="vet"/>
+      </viewElements>
+      <viewElements xsi:type="core:ViewComponent" id="_vLm5gBhQEeqtsOcEehkOyg" name="Popup descri&#xe7;&#xe3;o" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.8/@viewElements.0/@viewElementEvents.0/@outInteractionFlows.1">
+        <outInteractionFlows xsi:type="core:NavigationFlow" id="_2GGmcBhQEeqtsOcEehkOyg" targetInteractionFlowElement="//@interactionFlowModel/@interactionFlowModelElements.9"/>
+        <viewComponentParts xsi:type="ext:SimpleField" id="_2XAJMBhQEeqtsOcEehkOyg" name="Descri&#xe7;&#xe3;o">
+          <type xsi:type="uml:PrimitiveType" href="model.uml#_VK2hkJ6QEeGdnpRmAZh-dQ"/>
+        </viewComponentParts>
+      </viewElements>
+    </interactionFlowModelElements>
+    <interactionFlowModelElements xsi:type="core:IFMLAction" id="_wW62EBhQEeqtsOcEehkOyg" name="Completa Appointment" inInteractionFlows="//@interactionFlowModel/@interactionFlowModelElements.8/@viewElements.1/@outInteractionFlows.0"/>
+  </interactionFlowModel>
+  <domainModel id="_viNkMBOFEeqA7e2cnrgo5Q">
+    <domainElements xsi:type="core:UMLDomainConcept" id="_viR1oBOFEeqA7e2cnrgo5Q" name="Movie">
+      <classifier xsi:type="uml:Class" href="model.uml#__W1boJ6PEeGdnpRmAZh-dQ"/>
+    </domainElements>
+    <domainElements xsi:type="core:UMLStructuralFeature" id="_viTq0BOFEeqA7e2cnrgo5Q" name="title">
+      <structuralFeature xsi:type="uml:Property" href="model.uml#_jEpi8J6QEeGdnpRmAZh-dQ"/>
+    </domainElements>
+    <domainElements xsi:type="core:UMLStructuralFeature" id="_viUR4BOFEeqA7e2cnrgo5Q" name="year">
+      <structuralFeature xsi:type="uml:Property" href="model.uml#_jm9l0J6QEeGdnpRmAZh-dQ"/>
+    </domainElements>
+  </domainModel>
+</core:IFMLModel>
