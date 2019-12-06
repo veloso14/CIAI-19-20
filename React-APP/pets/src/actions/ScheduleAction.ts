@@ -28,10 +28,10 @@ export interface ReceiveAppointmentAction extends Action {
 export const receiveAppointments = (data: {}) => ({type: AppointmentActionsTypes.RECEIVE_APPOINTMENTS, data: data});
 export const requestAppointments = () => ({type: AppointmentActionsTypes.REQUEST_APPOINTMENTS});
 
-export function fetchVetAppointments(id: string) {
+export function fetchVetAppointments(id: number) {
     return (dispatch: any) => {
         dispatch(requestAppointments());
-        return getData(`/vets/appointments/${+id}`, [] as Appointment[])
+        return getData(`/vets/${+id}/appointments/`, [] as Appointment[])
             .then(data => {
                 console.log("appointments fetch log: " + JSON.stringify(data));
                 data && dispatch(receiveAppointments(data))

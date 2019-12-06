@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
 import {GlobalState} from "../App";
@@ -28,12 +28,12 @@ type FormData = {
 }
 
 
-const clientID = "1"
 
 
-const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: boolean, loadAppointment: (id:string)
+const ProtoAppointmentList = (props: { state: GlobalState , appointments: Appointment[], isFetching: boolean, loadAppointment: (id:number)
         => void, postAppointment: (appointment: Appointment) => void, deleteAppointment: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
+    const [client, setClient] = useState({} as Client);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({petName, petSpecies}) => {
         console.log(petName, petSpecies);
@@ -44,14 +44,14 @@ const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: 
     // eslint-disable-next-line
     React.useEffect(() => {
         console.log("run effect");
-        props.loadAppointment(clientID);
+        props.loadAppointment(client.id);
 
     }, []);
 
     let list = props.appointments.map((appointment: Appointment) => {
         return (
             <ListGroup.Item key={appointment.id}>
-            <Link to={`/vets/${appointment.id}/appointments/`}>Link to appointment</Link>
+            <Link to={`/vets/${client.id}/appointments/`}>Link to appointment</Link>
         <Button className="float-right" variant="primary" size="sm" onClick={() => {
             props.deleteAppointment(appointment.id);
             setUpdate(true)
@@ -60,7 +60,7 @@ const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: 
     )
     });
 
-    let emptyList = (<p className="text-center">You currently don't have any pets registered!</p>)
+    let emptyList = (<p className="text-center">You currently don't have any appointments!</p>)
 
     let petList = ( (props.appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
@@ -69,7 +69,7 @@ const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: 
     return (
         <Container>
             <br/>
-        <h1 className="text-center">My Pets</h1>
+        <h1 className="text-center">My Appointments</h1>
     <br/>
 
     {props.isFetching ? <p>Loading...</p> : petList}
@@ -86,18 +86,27 @@ const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: 
 );
 };
 
+export interface Client {
+    id: number,
+    name: string,
+    username: string
+}
+
 const mapStateToProps = (state: GlobalState) => ({
     pets: state.pets.pets,
-
+    currentUser: state.signIn.currentUser,
+    currentRole: state.signIn.currentRole,
     appointments: state.appointments.appointments
 });
 
-const mapDispatchToProps = (dispatch: any) => {
+
+
+    const mapDispatchToProps = (dispatch: any) => {
     return {
      /*   postAppointment: (appointment: Appointment) => {
             dispatch(fetchAppointment())
         },*/
-        loadAppointment: (id:string) => {
+        loadAppointment: (id:number) => {
             dispatch(fetchVetAppointments(id))
         },
     }
