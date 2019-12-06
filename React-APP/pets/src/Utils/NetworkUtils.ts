@@ -2,6 +2,7 @@
 export function getData<T>(url:string, defaultValue:T):Promise<T> {
 
     let token = localStorage.getItem('jwt');
+    console.log("token is " + token);
     // sign out in case of unauthorized access (expired session)
     return fetch(url, {
         method: "GET",
@@ -9,7 +10,7 @@ export function getData<T>(url:string, defaultValue:T):Promise<T> {
         cache: "no-cache",
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
+            'Authorization': '' + token,
 
         }
     })
