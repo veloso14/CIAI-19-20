@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse
 import kotlin.collections.HashMap
 import kotlin.collections.LinkedHashMap
 import org.springframework.security.core.authority.AuthorityUtils
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.util.StringUtils
 
 
@@ -169,13 +170,14 @@ class UserPasswordSignUpFilterToJWT (
                                        response: HttpServletResponse?): Authentication? {
         //getting user from request body
         val user = ObjectMapper().readValue(request!!.inputStream, ClientDAO::class.java)
-
+        var authorities : MutableList<GrantedAuthority>  = mutableListOf()
+        authorities.add(SimpleGrantedAuthority("CLIENT"))
 
         return users
                 .addUser(user)
                 .orElse( null )
                 .let {
-                    val auth = UserAuthToken(user.username, users.getAuthorities(user.username) )
+                    val auth = UserAuthToken(user.username, authorities )
                     SecurityContextHolder.getContext().authentication = auth
                     auth
                 }
