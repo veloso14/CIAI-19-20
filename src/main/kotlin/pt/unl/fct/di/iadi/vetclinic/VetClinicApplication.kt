@@ -52,8 +52,8 @@ class VetClinicApplication {
             //admins.save(defaultAdmin)
             users.save(defaultAdmin)
 
-            val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao","rosto.jpg", 12, false, emptyList(), emptyList())
-           // vets.save(chenel)
+                      val chenel = VetDAO(2L,"Chenel","chenel@gmail.com","chenel",BCryptPasswordEncoder().encode("1234"),1234, "Rua Romao","rosto.jpg", 12, false, emptyList(), emptyList())
+            // vets.save(chenel)
             users.save(chenel)
 
             //val consulta = AppointmentDAO(1L, Date(), "consulta",pantufas, antonio, chenel)

@@ -44,14 +44,14 @@ const ProtoAppointmentList = (props: { state: GlobalState , appointments: Appoin
     // eslint-disable-next-line
     React.useEffect(() => {
         console.log("run effect");
-        props.loadAppointment(client.id);
+        props.loadAppointment(5);
 
     }, []);
 
     let list = props.appointments.map((appointment: Appointment) => {
         return (
             <ListGroup.Item key={appointment.id}>
-            <Link to={`/vets/${client.id}/appointments/`}>Link to appointment</Link>
+            <Link to={`/vets/2/appointments/`}>Link to appointment</Link>
         <Button className="float-right" variant="primary" size="sm" onClick={() => {
             props.deleteAppointment(appointment.id);
             setUpdate(true)
