@@ -4,6 +4,7 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
@@ -16,7 +17,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 class AdminController(val admins: AdminService) {
 
 
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Get the details of a single admin by id", response = AdminDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved admin details"),
@@ -28,7 +29,7 @@ class AdminController(val admins: AdminService) {
     fun getOneAdmin(@PathVariable id:Long) : AdminDTO =
             handle4xx { admins.getOneAdmin(id).let { AdminDTO(it) } }
 
-    //@PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Get the details of a single admin by username", response = AdminDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved client details"),
@@ -41,7 +42,7 @@ class AdminController(val admins: AdminService) {
             handle4xx { admins.getOneAdminByUsername(username).let { AdminDTO(it) } }
 
 
-    //Aqui podem todos mesmo nem estando registado
+
     @ApiOperation(value = "View a list of registered admins", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
@@ -53,7 +54,7 @@ class AdminController(val admins: AdminService) {
 
 
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Hire new admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a admin"),
@@ -79,7 +80,7 @@ class AdminController(val admins: AdminService) {
 
      */
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Fire a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully fired a admin"),
@@ -91,7 +92,7 @@ class AdminController(val admins: AdminService) {
             handle4xx { admins.fireAdmin(id) }
 
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Update contact info of a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
@@ -102,7 +103,7 @@ class AdminController(val admins: AdminService) {
     fun updateAdmin(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
             handle4xx { admins.updateUser(id,AdminDAO(user)) }
 
-    //@PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Change the password of a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully changed the password"),
