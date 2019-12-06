@@ -45,7 +45,7 @@ class VetService(val vets: VetRepository,
 
     fun appointmentsOfVet(id: Long): List<AppointmentDAO> {
         val vet = vets.findByIdWithAppointment(id)
-                .orElseThrow { NotFoundException("There is no Pet with Id $id") }
+                .orElseThrow { NotFoundException("There is no vet with Id $id with appointments") }
 
         return vet.appointments // This redirection has pre-fetching
     }
