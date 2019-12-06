@@ -89,7 +89,7 @@ const ProtoRegisterForm = (
                     </div>
 
                     <div className="form-group">
-                        <label>CellPhone: <input className="form-control" type="text" required value={cellphone}
+                        <label>CellPhone: <input className="form-control" type="number" required value={cellphone}
                                                  onChange={cellphoneChangeHandler}/></label>
                     </div>
 
