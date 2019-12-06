@@ -4,33 +4,25 @@ import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
 import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
 import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
+import pt.unl.fct.di.iadi.vetclinic.services.PetService
+import pt.unl.fct.di.iadi.vetclinic.services.VetService
 
 
 @Api(value = "VetClinic Management System - Client API",
         description = "Management operations of Clients in the IADI 2019 Pet Clinic")
 @RestController
-@RequestMapping("/user/client")
+@RequestMapping("/clients")
 
-class ClientController(val clients: ClientService) {
-
-    @ApiOperation(value = "List the appointments related to a Client", response = List::class)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
-        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
-        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
-        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
-    ])
-    @GetMapping("/{name}/appointments")
-    fun appointmentsOfClient(@PathVariable name: String): List<AppointmentDTO> =
-            handle4xx { clients.appointmentsOfClient(name).map { AppointmentDTO(it) } }
+class ClientController(val clients: ClientService, val pets:PetService, val vets: VetService) {
 
 
+   // @PreAuthorize("(hasRole('ROLE_CLIENT' )  and @securityService.canEditClient(principal, #id) ) or  hasRole('ROLE_VET')")
     @ApiOperation(value = "Get the details of a single client by id", response = ClientDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved client details"),
@@ -38,86 +30,143 @@ class ClientController(val clients: ClientService) {
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
-    @GetMapping("/{name}")
-    fun getOneClient(@PathVariable name: String): ClientDTO =
-            handle4xx { clients.getOneClient(name).let { ClientDTO(it) } }
+    @GetMapping("/{id}")
+    fun getOneClient(@PathVariable id: Long): ClientDTO =
+            handle4xx { clients.getOneClient(id).let { ClientDTO(it) } }
 
 
-    @ApiOperation(value = "Add a new appointment to a pet", response = Unit::class)
+    // @PreAuthorize("(hasAnyRole('ROLE_CLIENT' )  and @securityService.canEditClient(principal, #id) ) or  hasRole('ROLE_VET')")
+    @ApiOperation(value = "Get the details of a single client by username", response = ClientDTO::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
-        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 200, message = "Successfully retrieved client details"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
-    @PostMapping("/{name}/appointments")
-    fun newAppointment(@PathVariable name: String,
-                       @RequestBody apt:AppointmentDTO,@RequestBody pet:PetDTO ) =
-            handle4xx {
-                AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, PetDAO(pet, emptyList(), emptyList(),clients.getOneClient(name)),clients.getOneClient(name), VetDAO())))
-            }
+    @GetMapping("/client/{username}")
+    fun getOneClientByUsername(@PathVariable username: String): ClientDTO =
+            handle4xx { clients.getOneUserByUsername(username).let { ClientDTO(it) } }
 
-   /* @ApiOperation(value = "View a list of registered clients", response = List::class)
+
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VET')")
+    @ApiOperation(value = "View a list of registered clients", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved list"),
         ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
     @GetMapping("")
-    fun getAllClients() : List<ClientPetsDTO> =
-            clients.getAllClients().map { ClientPetsDTO(ClientDTO(it),
-                    it.pets.map { PetDTO(it) }) }
-*/
+    fun getAllClients() = clients.getAllClients().map { ClientDTO(it) }
 
-    @ApiOperation(value = "List the pets related to a Client", response = List::class)
+    //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAppointmentOfClient(principal, #id) " )
+     @ApiOperation(value = "List the appointments related to a Client", response = List::class)
+     @ApiResponses(value = [
+     ApiResponse(code = 200, message = "Successfully retrieved the list of appointments"),
+     ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+     ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+     ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+     ])
+    @GetMapping("/{id}/appointments")
+     fun appointmentsOfClient(@PathVariable id: Long): List<AppointmentDTO> =
+         handle4xx { clients.appointmentsOfClient(id).map { AppointmentDTO(it) } }
+
+
+    @ApiOperation(value = "New client", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added a client"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+    ])
+    @PostMapping("")
+    fun addNewClient(@RequestBody client: ClientDTO): ClientDTO =
+            ClientDTO(clients.newClient(ClientDAO(client, emptyList(), emptyList())))
+
+
+
+   // @PreAuthorize("hasAnyRole('ROLE_CLIENT' , 'ROLE_VET' )")
+    @ApiOperation(value = "Book an appointment", response = Unit::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully added an appointment to a pet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @PostMapping("/{id}/appointments")
+    fun newAppointment(@PathVariable id: Long,
+                       @RequestBody apt:AppointmentDTO,@RequestBody pet:PetDTO) =
+            handle4xx {
+               AppointmentDTO(clients.newAppointment(AppointmentDAO(apt, pets.getOnePet(pet.id), clients.getOneClient(id), vets.getOneVet(apt.vetID))))
+            }
+
+
+    //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canGetAllPetsOfClient(principal, #id) ")
+    @ApiOperation(value = "List the pets related to a client", response = List::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved the list of pets"),
         ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
-    @GetMapping("/{name}/pets")
-    fun petsOfClient(@PathVariable name: String): List<PetDTO> =
-            handle4xx { clients.petsOfClient(name).map { PetDTO(it) } }
+    @GetMapping("/{id}/pets")
+    fun petsOfClient(@PathVariable id:Long): List<PetDTO> =
+            handle4xx {
+                clients.petsOfClient(id)
+                        .map { PetDTO(it) }
+            }
 
+
+
+    /*
+
+   // @PreAuthorize("hasRole('ROLE_CLIENT')")
     @ApiOperation(value = "Add a new pet to a client", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully added an appointment to a client"),
+        ApiResponse(code = 200, message = "Successfully added a pet to a client"),
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
         ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     ])
-    @PostMapping("/{name}/pets")
-    fun newPet(@PathVariable name:String,
-               @RequestBody pet: PetDTO) =
+    @PostMapping("/{id}/pets")
+    fun newPet(@PathVariable id:Long,
+                       @RequestBody pet:PetDTO) =
             handle4xx {
-                PetDTO(clients.newPet(PetDAO(pet, emptyList(), emptyList(),clients.getOneClient(name))))
+                val onePet = pets.getOnePet(id)
+                PetDTO(clients.newPet(PetDAO(pet, onePet.appointments,clients.getOneClient(id))))
             }
 
-    //falta teste
+     */
+
+   // @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
     @ApiOperation(value = "Delete a pet", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully deleted a pet"),
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @DeleteMapping("/{name}/pets")
-    fun removePet(@PathVariable name:String,
-               @RequestBody pet: PetDTO) =
-            handle4xx {
-                clients.removePet(PetDAO(pet, emptyList(), emptyList(),clients.getOneClient(name)))
+    @PutMapping("/pets/{id}")
+    fun deletePet( @PathVariable id: Long) =
+            handle4xx { clients.deletePet(id) }
 
-            }
-
-
-
-    @ApiOperation(value = "Delete a client", response = Unit::class)
+   // @PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
+    @ApiOperation(value = "Update contact info of a client", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully deleted a client"),
+        ApiResponse(code = 200, message = "Successfully updated a user"),
         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @DeleteMapping("/{name}")
-    fun deleteClient(@PathVariable name: String) =
-            handle4xx { clients.deleteClient(name) }
+    @PutMapping("/{id}/info")
+    fun updateClient(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
+            handle4xx { clients.updateUser(id, ClientDAO(user)) }
+
+    //@PreAuthorize("hasRole('ROLE_CLIENT') and @securityService.canEditClient(principal, #id)")
+     @ApiOperation(value = "Change the password of a client", response = Unit::class)
+     @ApiResponses(value = [
+         ApiResponse(code = 200, message = "Successfully changed the password"),
+         ApiResponse(code = 401, message = "You are not authorized to use this resource"),
+         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
+     ])
+     @PutMapping("/{id}/password")
+     fun updatePassword(@RequestBody pass: UserPasswordDTO, @PathVariable id: Long) =
+             handle4xx { clients.updatePassword(id, pass) }
+
 }

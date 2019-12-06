@@ -1,6 +1,5 @@
 package pt.unl.fct.di.iadi.vetclinic.AppointmentTests
 
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -23,17 +22,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import pt.unl.fct.di.iadi.vetclinic.api.AppointmentDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetAptsDTO
-import pt.unl.fct.di.iadi.vetclinic.api.PetDTO
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
-import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
-import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
-import pt.unl.fct.di.iadi.vetclinic.services.PetService
-import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
-import java.time.LocalDateTime
+import pt.unl.fct.di.iadi.vetclinic.model.*
+import pt.unl.fct.di.iadi.vetclinic.services.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -49,37 +39,62 @@ class AppointmentControllerTester {
     @MockBean
     lateinit var apts:AppointmentService
 
+    @MockBean
+    lateinit var clients: ClientService
+
+    @MockBean
+    lateinit var pets: PetService
+
+
     companion object {
         // To avoid all annotations JsonProperties in data classes
         // see: https://github.com/FasterXML/jackson-module-kotlin
         // see: https://discuss.kotlinlang.org/t/data-class-and-jackson-annotation-conflict/397/6
         val mapper = ObjectMapper().registerModule(KotlinModule())
 
-        val consulta = AppointmentDAO(1L,LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, PetDAO(), ClientDAO(),VetDAO())
-        val exame = AppointmentDAO(2L,LocalDateTime.MIN, LocalDateTime.MAX, "exame",false, PetDAO(), ClientDAO(), VetDAO())
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
+        val caramelo =  PetDAO(2, "pantufas", "Dog",false, emptyList(), veloso)
 
+        val consulta = AppointmentDAO(1L,Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
+        val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), veloso)
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
-        val aptsDTO = aptsDAO.map { AppointmentDTO(it.id, it.start,it.end,it.desc, it.complete) }
+        val aptsDTO = aptsDAO.map { AppointmentDTO(it.id, it.date,it.desc, it.pet.id, it.client.id, it.vet.id) }
 
         val aptsURL = "/appointments"
     }
 
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
+    fun `Test GET all appointments (Vet Role)`() {
+        Mockito.`when`(apts.getAllAppointments()).thenReturn(aptsDAO)
+
+        val result = mvc.perform(get(aptsURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize<Any>(aptsDTO.size)))
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
+        assertThat(responseDTO, equalTo(aptsDTO))
+    }
 
 
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
-    fun `Test GET all appointments`() {
-            Mockito.`when`(apts.getAllAppointments()).thenReturn(aptsDAO)
+    fun `Test GET all appointments (Admin Role)`() {
+        Mockito.`when`(apts.getAllAppointments()).thenReturn(aptsDAO)
 
-             val result = mvc.perform(get(aptsURL))
-                        .andExpect(status().isOk())
-                        .andExpect(jsonPath("$", hasSize<Any>(aptsDTO.size)))
-                        .andReturn()
+        val result = mvc.perform(get(aptsURL))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize<Any>(aptsDTO.size)))
+                .andReturn()
 
-                val responseString = result.response.contentAsString
-                val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
-                assertThat(responseDTO, equalTo(aptsDTO))
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
+        assertThat(responseDTO, equalTo(aptsDTO))
     }
 
 
@@ -103,9 +118,12 @@ class AppointmentControllerTester {
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    //@Transactional
     fun `Test POST One appointment`() {
-        val revisao = AppointmentDTO(0,LocalDateTime.MIN, LocalDateTime.MAX, "revisao",false)
-        val revisaoDAO = AppointmentDAO(revisao.id,revisao.start,revisao.end,revisao.desc,revisao.complete, PetDAO(), ClientDAO(),VetDAO())
+
+        val revisao = AppointmentDTO(0, Date(), "revisao",2,1,1)
+        val revisaoDAO = AppointmentDAO(revisao.id,revisao.date,revisao.desc, caramelo,veloso, vet)
 
         val revisaoJSON = mapper.writeValueAsString(revisao)
 

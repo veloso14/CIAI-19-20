@@ -7,89 +7,110 @@ import io.swagger.annotations.ApiResponses
 import org.springframework.web.bind.annotation.*
 import pt.unl.fct.di.iadi.vetclinic.model.AdminDAO
 import pt.unl.fct.di.iadi.vetclinic.services.AdminService
-import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @Api(value = "VetClinic Management System - Admin API",
-        description = "Management operations of ADMIN in the IADI 2019 Pet Clinic")
+        description = "Management operations of Admins in the IADI 2019 Pet Clinic")
 @RestController
-@RequestMapping("/user/admin")
+@RequestMapping("/admins")
+class AdminController(val admins: AdminService) {
 
-class AdminController(val admin: AdminService) {
 
-    @ApiOperation(value = "View a list of all employees", response = List::class)
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @ApiOperation(value = "Get the details of a single admin by id", response = AdminDTO::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved employees list"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+        ApiResponse(code = 200, message = "Successfully retrieved admin details"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/{id}")
+    fun getOneAdmin(@PathVariable id:Long) : AdminDTO =
+            handle4xx { admins.getOneAdmin(id).let { AdminDTO(it) } }
+
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @ApiOperation(value = "Get the details of a single admin by username", response = AdminDTO::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved client details"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
+        ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    ])
+    @GetMapping("/admin/{username}")
+    fun getOneAdminByUsername(@PathVariable username: String): AdminDTO =
+            handle4xx { admins.getOneAdminByUsername(username).let { AdminDTO(it) } }
+
+
+    //Aqui podem todos mesmo nem estando registado
+    @ApiOperation(value = "View a list of registered admins", response = List::class)
+    @ApiResponses(value = [
+        ApiResponse(code = 200, message = "Successfully retrieved list"),
+        ApiResponse(code = 401, message = "You are not authorized to view the resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @GetMapping("/employees")
-    fun getAllUsers() = admin.getAllEmployees().map { UserDTO(it) }
+    @GetMapping("")
+    fun getAllAdmins() = admins.getAllAdmins().map { AdminDTO(it) }
 
 
 
-    @ApiOperation(value = "View a list of all pets", response = List::class)
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Hire new admin", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved pets list"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+        ApiResponse(code = 200, message = "Successfully added a admin"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @GetMapping("/pets")
-    fun getAllPets() = admin.getAllPets().map { PetDTO(it) }
+    @PostMapping("")
+    fun addNewAdmin(@RequestBody admin: AdminDTO): AdminDTO =
+            AdminDTO(admins.hireAdmin(AdminDAO(admin)))
 
 
-
-    @ApiOperation(value = "View a list of all clients", response = List::class)
+    /*
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Fire a vet", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved clients list"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+        ApiResponse(code = 200, message = "Successfully fired a vet"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @GetMapping("/clients")
-    fun getAllClients() = admin.getAllClients().map { UserDTO(it) }
+    @PutMapping("/vets/{id}")
+    fun fireVet(@PathVariable id: Long) =
+            handle4xx { admins.fireVet(id)}
 
+     */
 
-
-    @ApiOperation(value = "View a list of all appointments", response = List::class)
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ApiOperation(value = "Fire a admin", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved appointments list"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+        ApiResponse(code = 200, message = "Successfully fired a admin"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @GetMapping("/appointments")
-    fun getAllAppointments() = admin.getAllAppointments().map { AppointmentDTO(it) }
+    @DeleteMapping("/{id}")
+    fun deleteAdmin(@PathVariable id: Long) =
+            handle4xx { admins.fireAdmin(id) }
 
 
-
-    @ApiOperation(value = "View a list of appointments of a given vet id", response = List::class)
+    //@PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @ApiOperation(value = "Update contact info of a admin", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully retrieved vet appointments list"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+        ApiResponse(code = 200, message = "Successfully updated a user"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @GetMapping("/appointments/{id}")
-    fun getAppointmentsByVetId(@PathVariable id: String) = handle4xx { admin.getAppointmentsByVetId(id).map { AppointmentDTO(it) } }
+    @PutMapping("/{id}/info")
+    fun updateAdmin(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
+            handle4xx { admins.updateUser(id,AdminDAO(user)) }
 
-
-
-    @ApiOperation(value = "Fire employee with given id", response = List::class)
+    //@PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
+    @ApiOperation(value = "Change the password of a admin", response = Unit::class)
     @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully fired employee with given id"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
+        ApiResponse(code = 200, message = "Successfully changed the password"),
+        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
         ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
     ])
-    @PostMapping("/employees/{id}")
-    fun fireEmployee(@PathVariable id: String) = handle4xx { admin.fireEmployee(id) }
-
-
-
-    @ApiOperation(value = "Assign empty schedule to vet with given id", response = List::class)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully set vet schedule"),
-        ApiResponse(code = 401, message = "You are not authorized to view this resource"),
-        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
-    ])
-    @PostMapping("/schedule/{id}")
-    fun setVetSchedule(@PathVariable id: String) = handle4xx { admin.setVetSchedule(id) }
+    @PutMapping("/{id}/password")
+    fun updatePassword(@RequestBody pass: UserPasswordDTO, @PathVariable id: Long) =
+            handle4xx { admins.updatePassword(id, pass) }
 
 }

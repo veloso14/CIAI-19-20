@@ -3,6 +3,7 @@ package pt.unl.fct.di.iadi.vetclinic.config
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
@@ -11,6 +12,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
         val customUserDetails: CustomUserDetailsService,
         val users: UserService
@@ -21,47 +23,32 @@ class SecurityConfig(
                 .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui.html").permitAll()
-                .antMatchers("/users/all").hasRole("ADMIN")
-                .antMatchers("/users/*").hasRole("ADMIN")
-                .antMatchers("/appointments").hasRole("ADMIN")
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
-                //Permite mais endpoints
-                .antMatchers(HttpMethod.POST, "/users/login").permitAll()
-                .antMatchers(HttpMethod.POST, "/users/register/**").permitAll()
+                .antMatchers("/admins/**").permitAll()
+                .antMatchers("/vets/**").permitAll()
+                .antMatchers("/pets/**").permitAll()
+                .antMatchers("/clients/**").permitAll()
+                .antMatchers("/appointments").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(UserPasswordAuthenticationFilterToJWT("/users/login", super.authenticationManagerBean()),
+                .addFilterBefore(UserPasswordAuthenticationFilterToJWT("/login", super.authenticationManagerBean(), users),
                         BasicAuthenticationFilter::class.java)
-                .addFilterBefore(UserPasswordSignUpFilterToJWT("/users/register/**", users),
+                .addFilterBefore(UserPasswordSignUpFilterToJWT("/signup", users),
                         BasicAuthenticationFilter::class.java)
                 .addFilterBefore(JWTAuthenticationFilter(),
                         BasicAuthenticationFilter::class.java)
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
+        //apagar
         auth.inMemoryAuthentication()
-                .withUser("user")
-                .password(BCryptPasswordEncoder().encode("password"))
+                .withUser("default")
+                .password(BCryptPasswordEncoder().encode("1234"))
                 .authorities(emptyList())
-                .and()
-                //Cliente
-                .withUser("CLIENT")
-                .password(BCryptPasswordEncoder().encode("password"))
-                .authorities(emptyList())
-                .roles("USER","CLIENT")
-                .and()
-                //Veterinario
-                .withUser("VET")
-                .password(BCryptPasswordEncoder().encode("password"))
-                .authorities(emptyList())
-                .roles("USER","VETERINARIO")
-                .and()
-                //Admin
-                .withUser("ADMIN")
-                .password(BCryptPasswordEncoder().encode("password"))
-                .authorities("USER","ADMIN","VETERINARIO")
-                .roles("USER","ADMIN","VETERINARIO")
+                .roles("ADMIN")
                 .and()
                 .passwordEncoder(BCryptPasswordEncoder())
                 .and()

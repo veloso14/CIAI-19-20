@@ -14,7 +14,6 @@ import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
-import java.time.LocalDateTime
 import java.util.*
 
 @RunWith(SpringRunner::class)
@@ -31,8 +30,8 @@ class PetServiceTester {
     lateinit var aptRepo:AppointmentRepository
 
     companion object Constants {
-        val pantufas = PetDAO(1L, "pantufas", "Dog", emptyList(), emptyList(), ClientDAO())
-        val bigodes = PetDAO(2L, "bigodes", "Cat", emptyList(), emptyList(), ClientDAO())
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
         val petsDAO = mutableListOf(pantufas, bigodes);
 
     }
@@ -67,11 +66,12 @@ class PetServiceTester {
                     assertThat(pet.id, equalTo(0L))
                     assertThat(pet.name, equalTo(pantufas.name))
                     assertThat(pet.species, equalTo(pantufas.species))
+                    assertThat(pet.frozen, equalTo(pantufas.frozen))
                     assertThat(pet.appointments, equalTo(pantufas.appointments))
                     pet
                 }
 
-        pets.addNewPet(PetDAO(0L, pantufas.name, pantufas.species, pantufas.appointments, pantufas.notes, pantufas.owner))
+        pets.addNewPet(PetDAO(0L, pantufas.name, pantufas.species, pantufas.frozen , pantufas.appointments, pantufas.owner))
     }
 
     @Test(expected = PreconditionFailedException::class)
@@ -81,8 +81,8 @@ class PetServiceTester {
 
     @Test
     fun `test on retrieving appointments 1`() {
-        val consulta1 = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1", false, pantufas,ClientDAO(), VetDAO())
-        val consulta2 = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1",false, pantufas,ClientDAO(), VetDAO())
+        val consulta1 = AppointmentDAO(1, Date(), "consulta1", pantufas, pantufas.owner, VetDAO())
+        val consulta2 = AppointmentDAO(2, Date(), "consulta1", pantufas, pantufas.owner, VetDAO())
         pantufas.appointments = listOf(consulta1, consulta2)
 
         Mockito.`when`(repo.findByIdWithAppointment(pantufas.id)).thenReturn(Optional.of(pantufas))
@@ -101,7 +101,7 @@ class PetServiceTester {
 
     @Test
     fun `test on adding a new Appointment`() {
-        val consulta = AppointmentDAO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, pantufas, ClientDAO(), VetDAO())
+        val consulta = AppointmentDAO(0, Date(), "consulta", pantufas, pantufas.owner, VetDAO())
 
         pantufas.appointments = emptyList()
 
@@ -110,8 +110,7 @@ class PetServiceTester {
                     val apt:AppointmentDAO = it.getArgument(0)
                     assertThat(apt.id, equalTo(0L))
                     assertThat(apt.desc, equalTo(consulta.desc))
-                    assertThat(apt.start, equalTo(consulta.start))
-                    assertThat(apt.end, equalTo(consulta.end))
+                    assertThat(apt.date, equalTo(consulta.date))
                     assertThat(apt.pet, equalTo(pantufas))
                     apt
                 }
@@ -120,7 +119,7 @@ class PetServiceTester {
 
     @Test(expected = PreconditionFailedException::class)
     fun `test on adding a new Appointment (Precondition Failed)`() {
-        val consulta = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, pantufas,ClientDAO(), VetDAO())
+        val consulta = AppointmentDAO(1, Date(), "consulta", pantufas, pantufas.owner, VetDAO())
         pets.newAppointment(consulta)
     }
 }

@@ -24,24 +24,15 @@ import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
  * used in the api layer. This can also be implemented using Spring
  * exception handlers.
  */
-fun <T> handle404(inner: () -> T): T =
-        try {
-            inner()
-        } catch (e: NotFoundException) {
-            throw HTTPNotFoundException(e.message ?: "Not Found")
-        }
-
-fun <T> handle200(inner: () -> T): T =
-        try {
-            inner()
-        } catch (e: NotFoundException) {
-            throw HTTPNotFoundException(e.message ?: "Not Found")
-        }
-
 fun <T> handle4xx(inner: () -> T): T =
         try {
             inner()
-        } catch (e: NotFoundException) {
+
+        }
+        catch (e: IllegalArgumentException) {
+            throw HTTPNotFoundException(e.message ?: "Bad Request")
+        }
+        catch (e: NotFoundException) {
             throw HTTPNotFoundException(e.message ?: "Not Found")
         } catch (e : PreconditionFailedException ) {
             throw HTTPBadRequestException(e.message ?: "Bad Request")

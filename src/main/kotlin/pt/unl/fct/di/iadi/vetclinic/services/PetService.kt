@@ -11,12 +11,15 @@ import pt.unl.fct.di.iadi.vetclinic.model.PetRepository
 class PetService(
         val pets: PetRepository,
         val appointments: AppointmentRepository
+        /*,
+        val clients: ClientRepository*/
 ) {
 
     val logger = LoggerFactory.getLogger(PetService::class.java)
 
-    fun getAllPets(): List<PetDAO> = pets.findAll().toList()
+    fun getAllPets(): List<PetDAO> = pets.findAllByFrozenFalse().toList()
 
+    // falta verificar se pet já existe
     fun addNewPet(pet: PetDAO) =
         // defensive programming
         if (pet.id != 0L)
@@ -24,7 +27,7 @@ class PetService(
         else
             pets.save(pet)
 
-    fun getOnePet(id: Long): PetDAO =
+    fun getOnePet(id: Long) : PetDAO =
             pets.findById(id)
                 .orElseThrow { NotFoundException("There is no Pet with Id $id") }
 

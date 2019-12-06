@@ -1,6 +1,5 @@
 package pt.unl.fct.di.iadi.vetclinic.ClientTests
 
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -8,6 +7,7 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -20,15 +20,14 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import pt.unl.fct.di.iadi.vetclinic.PetTests.PetControllerTester
 import pt.unl.fct.di.iadi.vetclinic.api.*
-import pt.unl.fct.di.iadi.vetclinic.model.AppointmentDAO
-import pt.unl.fct.di.iadi.vetclinic.model.ClientDAO
-import pt.unl.fct.di.iadi.vetclinic.model.PetDAO
-import pt.unl.fct.di.iadi.vetclinic.model.VetDAO
+import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.ClientService
 import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
+import pt.unl.fct.di.iadi.vetclinic.services.PetService
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
-import java.time.LocalDateTime
+import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -43,6 +42,12 @@ class ClientControllerTester {
     @MockBean
     lateinit var clients:ClientService
 
+    @MockBean
+    lateinit var clientRepo: ClientRepository
+
+    @MockBean
+    lateinit var pets: PetService
+
     companion object {
         // To avoid all annotations JsonProperties in data classes
         // see: https://github.com/FasterXML/jackson-module-kotlin
@@ -53,140 +58,252 @@ class ClientControllerTester {
         val chenel = ClientDAO(2L,"Chenel","chenel@gmail.com","chenel","1234",1234, "Rua Romao", emptyList(), emptyList())
         val clientsDAO = ArrayList(listOf(antonio, chenel))
 
-        val clientsPetsDTO =
-                clientsDAO.map { ClientPetsDTO(ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone,it.address),it.pets.map { PetDTO(it) }) }
+       // val clientsPetsDTO =
+              //  clientsDAO.map { ClientPetsDTO(ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone,it.address),it.pets.map { PetDTO(it) }) }
 
+        val clientsDTO = clientsDAO.map{ClientDTO(it.id,it.name,it.email,it.username,it.password,it.cellphone,it.address, it.photo)}
 
 
         val clientsURL = "/clients"
     }
 
-  /*  @Test
-    fun `Test GET all clients`() {
-        Mockito.`when`(clients.getAllClients()).thenReturn(clientsDAO)
-
-        val result = mvc.perform(get(clientsURL))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize<Any>(clientsPetsDTO.size)))
-                .andReturn()
-
-        val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<List<ClientPetsDTO>>(responseString)
-        assertThat(responseDTO, equalTo(clientsPetsDTO))
-    } */
 
     @Test
     @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
-    fun `Test Get One Client`() {
-        Mockito.`when`(clients.getOneClient("Antonio")).thenReturn(antonio)
+    fun `Test Get One Client (Bad ROLE)`() {
+        Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
 
-        val result = mvc.perform(get("$clientsURL/Antonio"))
+        mvc.perform(get("$clientsURL/2"))
+                .andExpect(status().isForbidden)
+                .andReturn()
+
+
+    }
+
+
+    @Test
+    fun `Test Get One Client (No ROLE)`() {
+        Mockito.`when`(clients.getOneClient(2)).thenReturn(chenel)
+
+       mvc.perform(get("$clientsURL/2"))
+                .andExpect(status().isForbidden)
+                .andReturn()
+
+
+    }
+
+
+    @Test
+    @WithMockUser(username = "", password = "", roles = ["VET"])
+    fun `Test Get One Client`() {
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
+
+        val result = mvc.perform(get("$clientsURL/2"))
                 .andExpect(status().isOk)
                 .andReturn()
 
         val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<ClientPetsDTO>(responseString)
-        assertThat(responseDTO, equalTo(clientsPetsDTO[0]))
+        val responseDTO = mapper.readValue<ClientDTO>(responseString)
+        assertThat(responseDTO, equalTo(clientsDTO[1]))
+
+
     }
 
     @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["VET"])
     fun `Test GET One Client (Not Found)`() {
-        Mockito.`when`(clients.getOneClient("jose")).thenThrow(NotFoundException("not found"))
+        Mockito.`when`(clients.getOneClient(2)).thenThrow(NotFoundException("not found"))
 
-        mvc.perform(get("$clientsURL/jose"))
+        mvc.perform(get("$clientsURL/2"))
                 .andExpect(status().is4xxClientError)
     }
 
     fun <T>nonNullAny(t:Class<T>):T = Mockito.any(t)
 
- /*   @Test
-    fun `Test POST One Client`() {
-        val vicente = ClientDTO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao")
-        val vicenteDAO = ClientDAO(vicente.id,vicente.name,vicente.email,vicente.username,vicente.password,vicente.cellphone,vicente.address, emptyList(), emptyList())
-
-        val vicenteJSON = mapper.writeValueAsString(vicente)
-
-        Mockito.`when`(clients.addNewClient(nonNullAny(ClientDAO::class.java)))
-                .then { assertThat(it.getArgument(0), equalTo(vicenteDAO)); it.getArgument(0) }
-
-        mvc.perform(post(clientsURL)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(vicenteJSON))
-                .andExpect(status().isOk)
-    }
-    */
-
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
     fun `Test checking appointments`() {
-        val vicente = ClientDAO(0,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
-        val apt = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX,"consulta",false, PetDAO(), vicente, VetDAO())
-        vicente.appointments = listOf(apt)
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
 
-        Mockito.`when`(clients.appointmentsOfClient("Vicente")).thenReturn(listOf(apt))
+        val apt = AppointmentDAO(2, Date(),"consulta", PetDAO(), veloso, vet)
 
-        //val result =
-        mvc.perform(get("$clientsURL/Vicente/appointments"))
+        veloso.appointments = listOf(apt)
+
+        val aptDAO = ArrayList(listOf(apt))
+        val aptDTO = aptDAO.map{AppointmentDTO(it.id,it.date,it.desc, it.pet.id, it.client.id, it.vet.id)}
+
+
+        Mockito.`when`(clients.appointmentsOfClient(1)).thenReturn(listOf(apt))
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
+
+
+        val result = mvc.perform(get("$clientsURL/1/appointments"))
                 .andExpect(status().isOk)
                 .andReturn()
 
-        /* TODO: need to compare with result
         val responseString = result.response.contentAsString
-        val responseDTO = mapper.readValue<List<PetAptsDTO>>(responseString)
-        assertThat(responseDTO, equalTo(petsAptsDTO))
-        */
+        val responseDTO = mapper.readValue<List<AppointmentDTO>>(responseString)
+        assertThat(responseDTO, equalTo(aptDTO))
     }
 
     @Test
     fun `Test checking appointments of non client`() {
-        Mockito.`when`(clients.appointmentsOfClient("jose"))
+        Mockito.`when`(clients.appointmentsOfClient(1))
                 .thenThrow(NotFoundException("not found"))
 
-        mvc.perform(get("$clientsURL/jose/appointments"))
+        mvc.perform(get("$clientsURL/1/appointments"))
                 .andExpect(status().is4xxClientError)
     }
 
     @Test
-    @WithMockUser(username = "aUser", password = "aPassword", roles = ["ADMIN"])
-    fun `Test adding an appointment to a client`() {
-        val vicente = ClientDAO(1,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
+    fun `Test booking an appointment`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
 
-        val apt = AppointmentDTO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false)
-        val aptDAO = AppointmentDAO(apt, PetDAO(), vicente, VetDAO())
-        vicente.appointments = listOf(aptDAO)
+        val apt = AppointmentDTO(0, Date(), "consulta",0,1, 1)
+        val aptDAO = AppointmentDAO(apt, PetDAO(), ClientDAO(), VetDAO())
+        veloso.appointments = listOf(aptDAO)
 
-        val aptJSON = mapper.writeValueAsString(apt)
+        //val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, listOf<AppointmentDAO>(aptDAO), emptyList<ScheduleDAO>())
+        //val aptJSON = mapper.writeValueAsString(apt)
 
         Mockito.`when`(clients.newAppointment(nonNullAny(AppointmentDAO::class.java)))
                 .then { assertThat( it.getArgument(0), equalTo(aptDAO)); it.getArgument(0) }
 
-        Mockito.`when`(clients.getOneClient("Vicente")).thenReturn(vicente)
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
 
-        mvc.perform(post("$clientsURL/Vicente/appointments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(aptJSON))
+        mvc.perform(get("$clientsURL/1/appointments"))
                 .andExpect(status().isOk)
     }
 
     @Test
-    fun `Bad request on id not 0`() {
-        val vicente = ClientDAO(1,"Vicente","vario@gmail.com","vide","1234",1234, "Rua Romao", emptyList(), emptyList())
+    fun `Bad request add appointment on id not 0`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val vet = VetDAO(1L,"Guilherme","vel@gmail.com","vela","1234",987682,"Pio","rosto.jpg",10, false, emptyList<AppointmentDAO>(), emptyList<ScheduleDAO>().toMutableList())
 
-        val apt = AppointmentDTO(2,LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false)
-        val aptDAO = AppointmentDAO(apt,PetDAO(),vicente, VetDAO())
-        vicente.appointments = listOf(aptDAO)
+        val apt = AppointmentDTO(2, Date(), "consulta",0,1,1)
+        val aptDAO = AppointmentDAO(apt,PetDAO(), veloso, vet)
+        veloso.appointments = listOf(aptDAO)
 
         val aptJSON = mapper.writeValueAsString(apt)
 
         Mockito.`when`(clients.newAppointment(nonNullAny(AppointmentDAO::class.java)))
                 .thenThrow( PreconditionFailedException("id 0"))
 
-        Mockito.`when`(clients.getOneClient("Vicente")).thenReturn(vicente)
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
 
-        mvc.perform(post("$clientsURL/Vicente/appointments")
+        mvc.perform(post("$clientsURL/1/appointments")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(aptJSON))
                 .andExpect(status().is4xxClientError)
 
     }
+
+    @Test
+    @WithMockUser(username = "chenel", password = "1234", roles = ["CLIENT"])
+    fun `Test checking pets`() {
+        val veloso = ClientDAO(1L,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), veloso)
+
+        veloso.pets = listOf(louro)
+
+        val louroDAO = ArrayList(listOf(louro))
+        val louroDTO = louroDAO.map{PetDTO(it.id, it.name, it.species,it.owner.id)}
+
+
+        Mockito.`when`(clients.petsOfClient(1)).thenReturn(listOf(louro))
+        Mockito.`when`(clients.getOneClient(anyLong())).thenReturn(chenel)
+        Mockito.`when`(clientRepo.findById(anyLong())).thenReturn( Optional.of( chenel))
+
+
+        val result = mvc.perform(get("$clientsURL/1/pets"))
+                .andExpect(status().isOk)
+                .andReturn()
+
+        val responseString = result.response.contentAsString
+        val responseDTO = mapper.readValue<List<PetDTO>>(responseString)
+        assertThat(responseDTO, equalTo(louroDTO))
+    }
+
+    @Test
+    fun `Test checking pets of non client`() {
+        Mockito.`when`(clients.petsOfClient(1))
+                .thenThrow(NotFoundException("not found"))
+
+        mvc.perform(get("$clientsURL/1/pets"))
+                .andExpect(status().is4xxClientError)
+    }
+
+    /*
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    fun `Test new pet`() {
+
+        val louro = PetDTO(0, "louro", "Papagaio", 1)
+        val louroDAO = PetDAO(louro, emptyList(), ClientDAO())
+        val veloso = ClientDAO(1,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList<AppointmentDAO>())
+        veloso.pets = listOf(louroDAO)
+
+        val aptJSON = mapper.writeValueAsString(louro)
+
+        Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
+                .then { assertThat( it.getArgument(0), equalTo(louroDAO)); it.getArgument(0) }
+        Mockito.`when`(clients.getOneClient(1)).thenReturn(veloso)
+        Mockito.`when`(pets.getOnePet(1)).thenReturn(louroDAO)
+
+        mvc.perform(post("$clientsURL/1/pets")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(aptJSON))
+                .andExpect(status().isOk)
+    }
+
+
+
+    @Test
+    fun `Bad request add pet on id not 0`() {
+        val veloso = ClientDAO(0,"Veloso","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+       // val louro = PetDTO(2, "louro", "Papagaio",false, 1)
+        val louro = PetDAO(1, "louro", "Papagaio",false, emptyList(), veloso)
+        //val louroDAO = PetDAO(louro, emptyList(), veloso)
+
+        veloso.pets = listOf(louro)
+
+        Mockito.`when`(clients.newPet(nonNullAny(PetDAO::class.java)))
+                .thenThrow( PreconditionFailedException("id 0"))
+
+        Mockito.`when`(clients.getOneClient(0)).thenReturn(veloso)
+
+        mvc.perform(get("$clientsURL/1/pets"))
+                .andExpect(status().is4xxClientError)
+
+    }
+
+     */
+
+    @Test
+    @WithMockUser(username = "aUser", password = "aPassword", roles = ["CLIENT"])
+    fun `Test POST One Client`() {
+        val curroDTO = ClientDTO(0, "Romero","vel@gmail.com","vela","1234",987682,"Pio")
+        val curroDAO = ClientDAO(0,"Romero","vel@gmail.com","vela","1234",987682,"Pio", emptyList<PetDAO>(), emptyList())
+
+        val curroJSON = PetControllerTester.mapper.writeValueAsString(curroDTO)
+
+        Mockito.`when`(clients.newClient(nonNullAny(ClientDAO::class.java)))
+                .then { assertThat(it.getArgument(0), equalTo(curroDAO)); it.getArgument(0) }
+
+        mvc.perform(post(clientsURL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(curroJSON))
+                .andExpect(status().isOk)
+    }
+
+
+
+
+
 }

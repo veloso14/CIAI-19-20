@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <script>
+
+        function loadXMLDoc() {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.onreadystatechange = function() {
+                if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                    console.log(xmlHttp.responseText)
+                    var myArr = JSON.parse(this.responseText);
+                    myFunction(myArr);
+                }
+            };
+            var getURL = "http://localhost:8080/clients";
+            xmlHttp.open( "GET", getURL, true );
+            xmlHttp.setRequestHeader(
+                'Access-Control-Allow-Origin', '*'
+            );
+            xmlHttp.send( null );
+
+            function myFunction(arr) {
+                var ul = document.createElement('ul');
+                document.getElementById('client-list').innerHTML = "";
+                document.getElementById('client-list').appendChild(ul);
+
+                arr.forEach(function(pet){
+                    var li = document.createElement('li');
+                    ul.appendChild(li);
+                    li.innerHTML += pet.name;
+                });
+            }
+        }
+
+    </script>
+</head>
+<body>
+<h2>All Clients</h2>
+<button type="button" onclick="loadXMLDoc()">Get all clients</button>
+    <div id = "client-list">
+
+    </div>
+<ul style="list-style-type:disc;" id="clients">
+</ul>
+
+</body>
+
+
+</html>

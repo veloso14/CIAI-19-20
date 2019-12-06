@@ -1,5 +1,5 @@
 /**
-Copyright 2019 João Costa Seco, Eduardo Geraldo
+Copyright 2019 João Veloso, Luís Grilo, Bernardo Amaral
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ limitations under the License.
 package pt.unl.fct.di.iadi.vetclinic.api
 
 import pt.unl.fct.di.iadi.vetclinic.model.*
-import java.time.LocalDateTime
+import java.time.Month
 import java.util.*
 
 /**
@@ -29,49 +29,70 @@ import java.util.*
  * Relations are added in subsequent DTO classes.
  */
 
-data class PetDTO(val id:Long, val name:String, val species:String) {
+data class PetDTO(val id:Long, val name:String, val species:String, val ownerID:Long) {
+    constructor(pet: PetDAO) : this(pet.id,pet.name,pet.species,pet.owner.id)
+}
+
+data class PetUpdateDTO(val id:Long, val name:String, val species:String) {
     constructor(pet: PetDAO) : this(pet.id,pet.name,pet.species)
 }
 
+data class UserPasswordDTO(val username:String, val password:String)
+data class MonthDTO(val month:String)
+
+
 data class PetAptsDTO(val pet:PetDTO, val appointments:List<AppointmentDTO>)
-data class PetOwnerDTO(val pet:PetDTO, val owner:ClientDTO)
 
-data class AppointmentDTO(val id:Long, var start:LocalDateTime, var end:LocalDateTime , var desc:String, var complete:Boolean) {
-    constructor(apt:AppointmentDAO) : this(apt.id, apt.start, apt.end, apt.desc, apt.complete)
+data class AppointmentDTO(val id:Long, var date: Date, var desc:String, var petID:Long, var clientID:Long, var vetID:Long) {
+    constructor(apt:AppointmentDAO) : this(apt.id, apt.date, apt.desc, apt.pet.id, apt.client.id, apt.vet.id)
 }
-
 
 data class AppointmentPetDTO(val appointment:AppointmentDTO, val pet:PetDTO)
-data class AppointmentClientDTO(val appointment:AppointmentDTO, val client: ClientDAO)
 
+abstract class UserDTO( open val id: Long,
+                        open val name: String,
+                        open var email: String,
+                        open val username: String,
+                        open var password: String,
+                        open var cellphone: Long,
+                        open  var address: String,
+                        open var photo:String  ) {
 
-
-
-open class UserDTO(val id: Long, val name: String, var email: String,
-                  val username: String,
-                  var password: String,
-                  var cellphone: Long,
-                  var address: String) {
-    constructor(user: UserDAO) : this(user.id, user.name,user.email,user.username, user.password, user.cellphone, user.address)
+    //constructor(user: UserDAO) : this()
 }
 
-class ClientDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String) : UserDTO(id, name,email,username,password,cellphone,address) {
-    constructor(client: ClientDAO) : this(client.id, client.name, client.email,client.username,client.password, client.cellphone,client.address)
+data class UserUpdateDTO( val id: Long,
+                          val email: String,
+                          val cellphone: Long,
+                          val address: String) {
+
+}
+
+
+data class ClientDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String, override var photo:String) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
+    constructor(client: ClientDAO) : this(client.id, client.name, client.email,client.username,client.password, client.cellphone,client.address, client.photo)
+    constructor(id:Long, name: String, email: String, username: String,password: String, cellphone: Long, address: String) : this(id, name, email,username,password, cellphone,address, "")
 }
 
 data class ClientPetsDTO(val client:ClientDTO, val pets:List<PetDTO>)
 
-
-class VetDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
-    constructor(vet: VetDAO) : this(vet.id, vet.name,vet.email,vet.username,vet.password, vet.cellphone,vet.address, vet.employeeID)
+data class VetDTO(override val  id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,override var photo:String, var employeeID: Long) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
+    constructor(vet: VetDAO) : this(vet.id, vet.name,vet.email,vet.username,vet.password, vet.cellphone,vet.address, vet.photo, vet.employeeID)
+}
+//data
+data class AdminDTO(override val id: Long, override val name: String, override var email: String, override var username: String, override var password: String, override var cellphone: Long, override var address: String,override var photo:String, var employeeID: Long) : UserDTO(id, name,email, username,password,cellphone,address, photo) {
+    constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address,admin.photo, admin.employeeID)
 }
 
-data class VetAptsDTO(val vet:VetDTO, val appointments:List<AppointmentDTO>)
-
-class AdminDTO(id: Long, name: String, email: String,username: String,password: String,cellphone: Long,address: String, var employeeID: Long) : UserDTO(id, name,email,username,password,cellphone,address) {
-    constructor(admin: AdminDAO) : this(admin.id, admin.name,admin.email,admin.username,admin.password, admin.cellphone,admin.address, admin.employeeID)
+data class ScheduleDTO(val id: Long, val month: Month, val vetID: Long) {
+    constructor(schedule: ScheduleDAO) : this(schedule.id, schedule.month, schedule.vet.id)
 }
 
-data class VetScheduleDTO(val id: Long, val vet: VetDAO){
-    constructor(schedule:VetScheduleDAO):this(schedule.id,schedule.vet)
+data class ShiftDTO(val id: Long, var slots: List<SlotDAO>, val scheduleID: Long) {
+    constructor(shift: ShiftDAO) : this(shift.id, shift.slots, shift.schedule.id)
 }
+
+data class SlotDTO(val id: Long, val start: Long, val available: Boolean, val shiftID: Long) {
+    constructor(slot: SlotDAO) : this(slot.id, slot.start, slot.available, slot.shift.id)
+}
+

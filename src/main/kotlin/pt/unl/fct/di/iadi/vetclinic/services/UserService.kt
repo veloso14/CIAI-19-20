@@ -1,30 +1,63 @@
 package pt.unl.fct.di.iadi.vetclinic.services
 
+
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.unl.fct.di.iadi.vetclinic.model.UserDAO
 import pt.unl.fct.di.iadi.vetclinic.model.UserRepository
 import java.util.*
 
+
 @Service
-class UserService(val users: UserRepository) {
+class UserService(
+                   val users: UserRepository
 
-    fun getAllUser(): List<UserDAO> = users.findAll().toList()
+) {
 
-    fun addNewUser(client: UserDAO) {
-        users.save(client)
+    fun getUserRoles(name: String): List<String> {
+        val u : UserDAO = getOneUserByName(name)
+        if(u.role.isNotEmpty()){
+           return  u.role.split(",")
+        }else return emptyList()
+
     }
 
-    fun getOneUser(id: String):UserDAO =
-            users.findById(id).orElseThrow { NotFoundException("There is no client with Id $id") }
+
+    fun getAuthorities(name: String) : MutableList<GrantedAuthority> {
+        var authorities : MutableList<GrantedAuthority>  = mutableListOf()
+
+        getUserRoles(name).forEach { p ->
+            val authority = SimpleGrantedAuthority(p)
+            authorities.add(authority)
+        }
+
+        return authorities
+
+    }
 
 
-    fun findUser(username: String): Optional<UserDAO> = users.findById(username)
+    fun getOneUserByName(name: String): UserDAO =
+            users.findByUsername(name)
+                    .orElseThrow { NotFoundException("There is no user with username $name") }
 
-    fun addUser(user: UserDAO): Optional<UserDAO> {
-        val aUser = users.findById(user.username)
 
-        return if (aUser.isPresent)
+    fun getOneUser(id: Long): UserDAO =
+            users.findById(id)
+                    .orElseThrow { NotFoundException("There is no user with Id $id") }
+
+
+    fun updateUser(id: Long, user: UserDAO) =
+            getOneUser(id).let { it.update(user); users.save(it) }
+
+    fun updatePassword(id: Long, password: String) = getOneUser(id).let { it.changePassword(BCryptPasswordEncoder().encode(password)); users.save(it) }
+
+
+    fun addUser(user: UserDAO) : Optional<UserDAO> {
+        val aUser = users.findByUsername(user.username)
+
+        return if ( aUser.isPresent )
             Optional.empty()
         else {
             user.password = BCryptPasswordEncoder().encode(user.password)
@@ -32,23 +65,5 @@ class UserService(val users: UserRepository) {
         }
     }
 
-    fun checkIfPasswordValid(id: String, password: String): Boolean {
-        val client: UserDAO = getOneUser(id)
-        return client.password.equals(password)
-    }
 
-    fun checkIfUserExists(id: String): Boolean {
-        return users.existsById(id);
-    }
-
-    fun logout(id: String){
-        val client: UserDAO = getOneUser(id)
-
-
-    }
-
-    fun deleteUser(id: String) {
-        val client: UserDAO = getOneUser(id)
-        users.delete(client)
-    }
 }

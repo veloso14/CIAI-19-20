@@ -4,6 +4,8 @@ import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -29,6 +31,9 @@ class ClientServiceTester {
     @MockBean
     lateinit var aptRepo:AppointmentRepository
 
+    @MockBean
+    lateinit var petRepo:PetRepository
+
     companion object Constants {
 
         val antonio = ClientDAO(1L,"Antonio","antonio@gmail.com","tony","1234",1234, "Rua Romao", emptyList(), emptyList())
@@ -38,77 +43,45 @@ class ClientServiceTester {
 
     }
 
-  /*  @Test
-    fun `basic test on getAll`() {
-        Mockito.`when`(repo.findAll()).thenReturn(clientsDAO);
-
-        assertThat(clients.getAllClients(), equalTo(clientsDAO as List<ClientDAO>))
-    }*/
 
     @Test
     fun `basic test on getOne`() {
-        Mockito.`when`(repo.findById("Antonio")).thenReturn(Optional.of(antonio));
+        Mockito.`when`(repo.findById(1L)).thenReturn(Optional.of(antonio));
 
-        assertThat(clients.getOneClient("Antonio"), equalTo(antonio))
+        assertThat(clients.getOneClient(1L), equalTo(antonio))
     }
 
     @Test(expected = NotFoundException::class)
     fun `test on getOne() exception`() {
         //did not find the desired pet on the DB hence an empty Optional
-        Mockito.`when`(repo.findById("")).thenReturn(Optional.empty())
+        Mockito.`when`(repo.findById(anyLong())).thenReturn(Optional.empty())
 
-        clients.getOneClient("")
+        clients.getOneClient(0L)
     }
 
-    /*
-    @Test
-    fun `test on adding a new client`() {
-        Mockito.`when`(repo.save(Mockito.any(ClientDAO::class.java)))
-                .then {
-                    val client:ClientDAO = it.getArgument(0)
-                    assertThat(client.id, equalTo(0L))
-                    assertThat(client.name, equalTo(antonio.name))
-                    assertThat(client.email, equalTo(antonio.email))
-                    assertThat(client.username, equalTo(antonio.username))
-                    assertThat(client.password, equalTo(antonio.password))
-                    assertThat(client.cellphone, equalTo(antonio.cellphone))
-                    assertThat(client.address, equalTo(antonio.address))
-                    client
-
-
-                }
-
-        clients.addNewClient(ClientDAO(0L, antonio.name, antonio.email, antonio.username, antonio.password, antonio.cellphone, antonio.address, antonio.pets, antonio.appointments))
-    }
-*/
- /*   @Test(expected = PreconditionFailedException::class)
-    fun `test on adding a new Client (Error)`() {
-        clients.addNewClient(antonio) // antonio has a non-0 id
-    }
-*/
     @Test
     fun `test on retrieving appointments 1`() {
-        val consulta1 = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1",false, PetDAO(), antonio, VetDAO())
-        val consulta2 = AppointmentDAO(2, LocalDateTime.MIN, LocalDateTime.MAX, "consulta1",false, PetDAO(), antonio, VetDAO())
+        val consulta1 = AppointmentDAO(1, Date(), "consulta1", PetDAO(), antonio, VetDAO())
+        val consulta2 = AppointmentDAO(2, Date(), "consulta1", PetDAO(), antonio, VetDAO())
         antonio.appointments = listOf(consulta1, consulta2)
 
-        Mockito.`when`(repo.findByIdWithAppointment(antonio.name)).thenReturn(Optional.of(antonio))
+        Mockito.`when`(repo.findByIdWithAppointment(antonio.id)).thenReturn(Optional.of(antonio))
 
-        assertThat(clients.appointmentsOfClient(antonio.name), equalTo(antonio.appointments))
+        assertThat(clients.appointmentsOfClient(antonio.id), equalTo(antonio.appointments))
     }
 
     @Test
     fun `test on retrieving appointments 2`() {
         antonio.appointments = emptyList()
 
-        Mockito.`when`(repo.findByIdWithAppointment(antonio.name)).thenReturn(Optional.of(antonio))
+        Mockito.`when`(repo.findByIdWithAppointment(antonio.id)).thenReturn(Optional.of(antonio))
 
-        assertThat(clients.appointmentsOfClient(antonio.name), equalTo(antonio.appointments))
+        assertThat(clients.appointmentsOfClient(antonio.id), equalTo(antonio.appointments))
     }
 
     @Test
     fun `test on adding a new Appointment`() {
-        val consulta = AppointmentDAO(0, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, PetDAO(), antonio, VetDAO())
+        val consulta = AppointmentDAO(0, Date(), "consulta", PetDAO(), antonio, VetDAO())
 
         antonio.appointments = emptyList()
 
@@ -117,8 +90,7 @@ class ClientServiceTester {
                     val apt:AppointmentDAO = it.getArgument(0)
                     assertThat(apt.id, equalTo(0L))
                     assertThat(apt.desc, equalTo(consulta.desc))
-                    assertThat(apt.start, equalTo(consulta.start))
-                    assertThat(apt.end, equalTo(consulta.end))
+                    assertThat(apt.date, equalTo(consulta.date))
                     assertThat(apt.client, equalTo(antonio))
                     apt
                 }
@@ -127,7 +99,60 @@ class ClientServiceTester {
 
     @Test(expected = PreconditionFailedException::class)
     fun `test on adding a new Appointment (Precondition Failed)`() {
-        val consulta = AppointmentDAO(1, LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, PetDAO(),antonio, VetDAO())
+        val consulta = AppointmentDAO(1, Date(), "consulta", PetDAO(), antonio, VetDAO())
         clients.newAppointment(consulta)
     }
+
+    @Test
+    fun `test on retrieving pets 1`() {
+        val pantufas = PetDAO(1L, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        val bigodes = PetDAO(2L, "bigodes", "Cat",false, emptyList(), ClientDAO())
+        antonio.pets = listOf(pantufas,bigodes)
+
+        Mockito.`when`(repo.findByIdWithPet(antonio.id)).thenReturn(Optional.of(antonio))
+
+        assertThat(clients.petsOfClient(antonio.id), equalTo(antonio.pets))
+    }
+
+    @Test
+    fun `test on retrieving pets 2`() {
+        antonio.pets = emptyList()
+
+        Mockito.`when`(repo.findByIdWithPet(antonio.id)).thenReturn(Optional.of(antonio))
+
+        assertThat(clients.petsOfClient(antonio.id), equalTo(antonio.pets))
+    }
+
+    /*
+    @Test
+    fun `test on adding a new Pet`() {
+        val pantufas = PetDAO(0, "pantufas", "Dog",false, emptyList(), antonio)
+
+        antonio.pets = emptyList()
+
+        Mockito.`when`(petRepo.save(Mockito.any(PetDAO::class.java)))
+                .then {
+                    val pet:PetDAO = it.getArgument(0)
+                    assertThat(pet.id, equalTo(0L))
+                    assertThat(pet.name, equalTo(pantufas.name))
+                    assertThat(pet.species, equalTo(pantufas.species))
+                    assertThat(pet.appointments, equalTo(pantufas.appointments))
+                    assertThat(pet.owner, equalTo(antonio))
+                    pet
+                }
+        clients.newPet(pantufas)
+    }
+
+    @Test(expected = PreconditionFailedException::class)
+    fun `test on adding a new Pet (Precondition Failed)`() {
+        val pantufas = PetDAO(1, "pantufas", "Dog",false, emptyList(), ClientDAO())
+        clients.newPet(pantufas)
+    }
+
+     */
+
+
+
+
+
 }

@@ -1,5 +1,4 @@
 package pt.unl.fct.di.iadi.vetclinic.AppointmentTests
-
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.Assert.assertThat
 import org.junit.Test
@@ -10,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.context.junit4.SpringRunner
-import pt.unl.fct.di.iadi.vetclinic.api.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.model.*
 import pt.unl.fct.di.iadi.vetclinic.services.AppointmentService
+import pt.unl.fct.di.iadi.vetclinic.services.NotFoundException
 import pt.unl.fct.di.iadi.vetclinic.services.PreconditionFailedException
+import pt.unl.fct.di.iadi.vetclinic.services.VetService
 import java.time.LocalDateTime
+import java.time.Month
 import java.util.*
 
 @RunWith(SpringRunner::class)
@@ -24,13 +25,20 @@ class AppointmentServiceTester {
     @Autowired
     lateinit var apts: AppointmentService
 
+    @Autowired
+    lateinit var vets: VetService
+
+
     @MockBean
     lateinit var repo:AppointmentRepository
 
 
     companion object Constants {
-        val consulta = AppointmentDAO(1L,LocalDateTime.MIN, LocalDateTime.MAX, "consulta",false, PetDAO(), ClientDAO(),VetDAO())
-        val exame = AppointmentDAO(2L,LocalDateTime.MIN, LocalDateTime.MAX, "exame",false, PetDAO(), ClientDAO(), VetDAO())
+        val consulta = AppointmentDAO(1L, Date(), "consulta",PetDAO(), ClientDAO(), VetDAO())
+        val exame = AppointmentDAO(2L,Date(), "exame", PetDAO(), ClientDAO(), VetDAO())
+
+        val data = Date(2019,1,1,9,0)
+        val consulta_marcada = AppointmentDAO(1L, data, "consulta",PetDAO(), ClientDAO(), VetDAO())
 
         val aptsDAO = ArrayList(listOf(consulta, exame))
 
@@ -59,24 +67,38 @@ class AppointmentServiceTester {
     }
 
     @Test
-    fun `test on adding a new pet`() {
+    fun `test on adding a new appointment`() {
         Mockito.`when`(repo.save(Mockito.any(AppointmentDAO::class.java)))
                 .then {
                     val apt:AppointmentDAO = it.getArgument(0)
                     assertThat(apt.id, equalTo(0L))
-                    assertThat(apt.start, equalTo(consulta.start))
-                    assertThat(apt.end, equalTo(consulta.end))
+                    assertThat(apt.date, equalTo(consulta.date))
                     assertThat(apt.desc, equalTo(consulta.desc))
-                    assertThat(apt.complete, equalTo(consulta.complete))
+                    assertThat(apt.pet, equalTo(consulta.pet))
                     apt
                 }
 
-        apts.addNewAppointment(AppointmentDAO(0L, consulta.start,consulta.end,consulta.desc,consulta.complete,consulta.pet,consulta.client,consulta.vet))
+        apts.addNewAppointment(AppointmentDAO(0L, consulta.date, consulta.desc, consulta.pet, consulta.client, consulta.vet))
+    }
+
+    @Test
+    fun `test 1`() {
+        val data = Date(2019,1,1,9,0)
+        val consulta_marcada = AppointmentDAO(1L, data, "consulta",PetDAO(), ClientDAO(), VetDAO())
+       println("consulta marcada: " +  apts.checkAvailable(consulta_marcada))
+        val antonio = VetDAO(1L, "Antonio", "antonio@gmail.com", "tony",
+                "1234", 1234, "Rua Romao", "rosto.jpg", 11,
+                true, emptyList(), emptyList())
+        val schedule = vets.createSchedule(antonio, Month.APRIL)
+        schedule.shifts[1].slots[0].setAvailableFalse()
+        println("consulta marcada: " +  apts.checkAvailable(consulta_marcada))
+
     }
 
     @Test(expected = PreconditionFailedException::class)
     fun `test on adding a new pet (Error)`() {
         apts.addNewAppointment(consulta) // pantufas has a non-0 id
     }
+
 
 }
