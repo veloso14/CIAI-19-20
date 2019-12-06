@@ -33,7 +33,7 @@ class AdminService(val admins: AdminRepository,
 
 
     fun fireAdmin(id:Long){
-        if(id != 1L){
+        if(getOneAdmin(id).username != "default"){
             getOneAdmin(id).let { users.delete(it) }
         }
         else
