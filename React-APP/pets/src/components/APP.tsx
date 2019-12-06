@@ -67,7 +67,6 @@ const ProtoSignInForm = (
             <Router>
             <Switch>
                 <Route exact path="/" component={Login} />
-                <Route exact path="/" component={Login} />
                 <Route exact path="/logout" component={Login} />
                 <Route exact path="/register" component={RegisterForm}/>
             </Switch>
@@ -154,7 +153,7 @@ const ProtoSignInForm = (
     let signOutForm = (
 
         <Provider store={store}>
-            <NavigationBar currentRole={props.currentRole}/>
+            {props.isSignedIn && <NavigationBar currentRole={props.currentRole}/>}
             <Router>
                 <Switch>
                     <Route path="/" exact component={Home}/>

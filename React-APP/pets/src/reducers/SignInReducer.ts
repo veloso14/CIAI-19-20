@@ -47,7 +47,7 @@ function signInReducer(state = initialState, action: Action) {
             }
         case SIGN_OUT:
             localStorage.removeItem('jwt');
-            return {...state, isSignedIn: false};
+            return {...state, isSignedIn: false, currentUser: "", currentRole: ""};
         default:
             return state;
     }

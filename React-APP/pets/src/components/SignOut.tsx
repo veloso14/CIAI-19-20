@@ -14,7 +14,6 @@ const ProtoSignOutForm = (
     }) => {
 
     props.performSignOut()
-    props.performSignOut()
     return (<Redirect to = {'/'} />);
     // add a message space for alerts (you were signed out, expired session)
 };
