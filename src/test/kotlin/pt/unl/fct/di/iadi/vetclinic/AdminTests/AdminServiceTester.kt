@@ -184,5 +184,5 @@ class AdminServiceTester {
     fun `test on hiring a new admin (Error)`() {
         admins.hireAdmin(cid) // antonio has a non-0 id
     }
-    
+
 }
