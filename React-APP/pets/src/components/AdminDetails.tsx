@@ -5,8 +5,6 @@ import {useParams} from "react-router-dom"
 import useForm from "react-hook-form";
 import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image"
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import {Admin} from "./AdminList";
 import {fetchAdmin, updateAdminRequest} from "../actions/AdminActions";
 

@@ -2,7 +2,7 @@ import React, {ChangeEvent, FormEvent, useState} from "react";
 import {connect, Provider} from "react-redux";
 import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
-import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import thunk from 'redux-thunk';
 import PetList from "./PetList";
 import PetDetails from "./PetDetails";
@@ -14,18 +14,14 @@ import {applyMiddleware, createStore} from "redux";
 import AdminList from "./AdminList";
 import Home from "./Home";
 import AdminDetails from "./AdminDetails";
-import SignOutForm from "./SignOut";
 import ChangePassword from "./ChangePassword";
 import VetList from "./VetList";
-import Container from "react-bootstrap/Container";
 import NoMatch from "./NoMatch";
 import Schedule from "./Schedule";
 import ClientPage from "../pages/ClientPage";
 import VetDetails from "./VetDetails";
-import {REGISTER} from "../actions/RegisterAction";
-import ProtoRegisterForm from "./Register";
-import Login from "./Login";
 import RegisterForm from "./Register";
+import Login from "./Login";
 
 
 export interface SignInState {
@@ -33,7 +29,6 @@ export interface SignInState {
     currentUser: string,
     currentRole: string
 }
-
 
 
 const ProtoSignInForm = (
@@ -65,16 +60,15 @@ const ProtoSignInForm = (
     let signInForm =
         (
             <Router>
-            <Switch>
-                <Route exact path="/" component={Login} />
-                <Route exact path="/logout" component={Login} />
-                <Route exact path="/register" component={RegisterForm}/>
-            </Switch>
-        </Router>
+                <Switch>
+                    <Route exact path="/" component={Login}/>
+                    <Route exact path="/logout" component={Login}/>
+                    <Route exact path="/register" component={RegisterForm}/>
+                </Switch>
+            </Router>
 
 
-    );
-
+        );
 
 
     const Content = () => {
@@ -84,18 +78,18 @@ const ProtoSignInForm = (
     };
 
     // @ts-ignore
-    const ClientRoute = ({ children, ...rest }) => {
+    const ClientRoute = ({children, ...rest}) => {
         return (
             <Route
                 {...rest}
-                render={({ location }) =>
+                render={({location}) =>
                     props.currentRole == "CLIENT" ? (
                         children
                     ) : (
                         <Redirect
                             to={{
                                 pathname: "/",
-                                state: { from: location }
+                                state: {from: location}
                             }}
                         />
                     )
@@ -105,18 +99,18 @@ const ProtoSignInForm = (
     }
 
     // @ts-ignore
-    const AdminRoute = ({ children, ...rest }) => {
+    const AdminRoute = ({children, ...rest}) => {
         return (
             <Route
                 {...rest}
-                render={({ location }) =>
+                render={({location}) =>
                     props.currentRole == "ROLE_ADMIN" ? (
                         children
                     ) : (
                         <Redirect
                             to={{
                                 pathname: "/",
-                                state: { from: location }
+                                state: {from: location}
                             }}
                         />
                     )
@@ -126,18 +120,18 @@ const ProtoSignInForm = (
     }
 
     // @ts-ignore
-    const VetRoute = ({ children, ...rest }) => {
+    const VetRoute = ({children, ...rest}) => {
         return (
             <Route
                 {...rest}
-                render={({ location }) =>
+                render={({location}) =>
                     props.currentRole == "VET" ? (
                         children
                     ) : (
                         <Redirect
                             to={{
                                 pathname: "/",
-                                state: { from: location }
+                                state: {from: location}
                             }}
                         />
                     )
@@ -180,7 +174,10 @@ const ProtoSignInForm = (
     return (<> {props.isSignedIn ? signOutForm : signInForm} </>);
     // add a message space for alerts (you were signed out, expired session)
 };
-const mapStateToProps = (state: GlobalState) => ({isSignedIn: state.signIn.isSignedIn, currentRole: state.signIn.currentRole});
+const mapStateToProps = (state: GlobalState) => ({
+    isSignedIn: state.signIn.isSignedIn,
+    currentRole: state.signIn.currentRole
+});
 const mapDispatchToProps =
     (dispatch: any) =>
         ({

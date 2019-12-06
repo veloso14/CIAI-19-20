@@ -34,12 +34,12 @@ function adminReducer(state: AdminState = initialState, action: Action): AdminSt
                     id: 0,
                     name: (action as AddAdminAction).name,
                     employeeID: (action as AddAdminAction).employeeID,
-                    photo:  (action as AddAdminAction).photo,
-                    address:  (action as AddAdminAction).address,
+                    photo: (action as AddAdminAction).photo,
+                    address: (action as AddAdminAction).address,
                     password: (action as AddAdminAction).password,
-                    username:  (action as AddAdminAction).username,
-                    cellphone:  (action as AddAdminAction).cellphone,
-                    email:  (action as AddAdminAction).email,
+                    username: (action as AddAdminAction).username,
+                    cellphone: (action as AddAdminAction).cellphone,
+                    email: (action as AddAdminAction).email,
                 }]
             };
         case AdminActionsTypes.UPDATE_ADMIN:

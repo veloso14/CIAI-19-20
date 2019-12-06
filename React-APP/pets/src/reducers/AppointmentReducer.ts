@@ -1,7 +1,6 @@
 import {Action} from "redux"
 import {AppointmentActionsTypes, ReceiveAppointmentsAction} from '../actions/ScheduleAction';
 import {AppointmentState} from "../components/Schedule";
-import {ReceiveVetsAction, VetActionsTypes} from "../actions/VetActions";
 
 
 const initialState = {

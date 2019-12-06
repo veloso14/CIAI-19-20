@@ -15,7 +15,7 @@ export interface RegisterState {
 
 const ProtoRegisterForm = (
     props: {
-        performRegister: (username: string, password: string , nome : string , email : string , cellphone : string , address : string ) => void
+        performRegister: (username: string, password: string, nome: string, email: string, cellphone: string, address: string) => void
     }) => {
 
     const [username, setUsername] = useState("");
@@ -27,7 +27,7 @@ const ProtoRegisterForm = (
 
     let submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        props.performRegister(username, password , nome , email , cellphone , address);
+        props.performRegister(username, password, nome, email, cellphone, address);
         setUsername("");
         setPassword("");
         setNome("");
@@ -125,8 +125,8 @@ const mapStateToProps = (state: GlobalState) => ({});
 const mapDispatchToProps =
     (dispatch: any) =>
         ({
-            performRegister: (username: string, password: string , nome : string , email : string , cellphone : string , address : string ) => {
-                dispatch(requestRegister(username, password , nome , email , cellphone , address))
+            performRegister: (username: string, password: string, nome: string, email: string, cellphone: string, address: string) => {
+                dispatch(requestRegister(username, password, nome, email, cellphone, address))
             },
         });
 const RegisterForm = connect(mapStateToProps, mapDispatchToProps)(ProtoRegisterForm);

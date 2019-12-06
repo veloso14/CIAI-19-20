@@ -29,16 +29,16 @@ type FormData = {
 }
 
 
-
-
-const ProtoAppointmentList = (props: { state: GlobalState , appointments: Appointment[], isFetching: boolean, loadAppointment: (id:number)
-        => void, postAppointment: (appointment: Appointment) => void, deleteAppointment: (id: number) => void }) => {
+const ProtoAppointmentList = (props: {
+    state: GlobalState, appointments: Appointment[], isFetching: boolean, loadAppointment: (id: number)
+        => void, postAppointment: (appointment: Appointment) => void, deleteAppointment: (id: number) => void
+}) => {
     const [update, setUpdate] = React.useState(false);
     const [client, setClient] = useState({} as Client);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({petName, petSpecies}) => {
         console.log(petName, petSpecies);
-      //  props.postAppointment({name: petName, species: petSpecies, id: 0, ownerID: clientID});
+        //  props.postAppointment({name: petName, species: petSpecies, id: 0, ownerID: clientID});
         setUpdate(true);
     });
 
@@ -52,49 +52,48 @@ const ProtoAppointmentList = (props: { state: GlobalState , appointments: Appoin
     let list = props.appointments.map((appointment: Appointment) => {
         return (
             <ListGroup.Item key={appointment.id}>
-            <Link to={`/vets/2/appointments/`}>Link to appointment</Link>
-        <Button className="float-right" variant="primary" size="sm" onClick={() => {
-            props.deleteAppointment(appointment.id);
-            setUpdate(true)
-        }}>Delete</Button>
-        </ListGroup.Item>
-    )
+                <Link to={`/vets/2/appointments/`}>Link to appointment</Link>
+                <Button className="float-right" variant="primary" size="sm" onClick={() => {
+                    props.deleteAppointment(appointment.id);
+                    setUpdate(true)
+                }}>Delete</Button>
+            </ListGroup.Item>
+        )
     });
 
     let emptyList = (<p className="text-center">You currently don't have any appointments!</p>)
 
-    let petList = ( (props.appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
-
+    let petList = ((props.appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
 
     return (
         <Container>
             <br/>
-        <h1 className="text-center">My Appointments</h1>
-    <br/>
+            <h1 className="text-center">My Appointments</h1>
+            <br/>
 
-    {props.isFetching ? <p>Loading...</p> : petList}
+            {props.isFetching ? <p>Loading...</p> : petList}
 
-        <br/>
-        <h1 className="text-center">Appointments</h1>
+            <br/>
+            <h1 className="text-center">Appointments</h1>
             <div>
                 <FullCalendar defaultView="dayGridMonth"
-                              plugins={[ dayGridPlugin ]}
+                              plugins={[dayGridPlugin]}
                               events={[
-                                  { title: 'Appointement', date: '2019-12-01' },
-                                  { title: 'Appointement', date: '2019-12-02' },
-                                  { title: 'Appointement', date: '2019-12-03' },
-                                  { title: 'Appointement', date: '2019-12-04' },
-                                  { title: 'Appointement', date: '2019-12-29' },
-                                  { title: 'Appointement', date: '2019-12-20' },
-                                  { title: 'Appointement', date: '2019-12-15' },
-                                  { title: 'Appointement', date: '2019-12-09' },
-                                  { title: 'Appointement', date: '2019-12-02' }
+                                  {title: 'Appointement', date: '2019-12-01'},
+                                  {title: 'Appointement', date: '2019-12-02'},
+                                  {title: 'Appointement', date: '2019-12-03'},
+                                  {title: 'Appointement', date: '2019-12-04'},
+                                  {title: 'Appointement', date: '2019-12-29'},
+                                  {title: 'Appointement', date: '2019-12-20'},
+                                  {title: 'Appointement', date: '2019-12-15'},
+                                  {title: 'Appointement', date: '2019-12-09'},
+                                  {title: 'Appointement', date: '2019-12-02'}
                               ]}/>
             </div>
 
         </Container>
-);
+    );
 };
 
 export interface Client {
@@ -111,13 +110,12 @@ const mapStateToProps = (state: GlobalState) => ({
 });
 
 
-
-    const mapDispatchToProps = (dispatch: any) => {
+const mapDispatchToProps = (dispatch: any) => {
     return {
-     /*   postAppointment: (appointment: Appointment) => {
-            dispatch(fetchAppointment())
-        },*/
-        loadAppointment: (id:number) => {
+        /*   postAppointment: (appointment: Appointment) => {
+               dispatch(fetchAppointment())
+           },*/
+        loadAppointment: (id: number) => {
             dispatch(fetchVetAppointments(id))
         },
     }

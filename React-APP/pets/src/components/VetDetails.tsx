@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Vet} from "./VetList";
+import {Schedule, Vet} from "./VetList";
 import {Appointment} from "./AppointmentList";
 import {GlobalState} from "../App";
 import {connect} from "react-redux";
@@ -9,8 +9,7 @@ import Container from "react-bootstrap/Container";
 import Image from "react-bootstrap/Image"
 import Card from "react-bootstrap/Card";
 import Spinner from "react-bootstrap/Spinner";
-import {Schedule} from "./VetList";
-import {fetchVet, receiveVet, setScheduleVet, updateVetRequest} from "../actions/VetActions";
+import {fetchVet, setScheduleVet, updateVetRequest} from "../actions/VetActions";
 import {getData} from "../Utils/NetworkUtils";
 
 type FormData = {
@@ -18,7 +17,7 @@ type FormData = {
 }
 
 
-const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appointment[], schedules: Schedule[], loadVet: (id: string) => void, updateVet: (id: string, vet: Vet) => void ,  postScheduleVet: (id: string, month: Schedule) => void}) => {
+const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appointment[], schedules: Schedule[], loadVet: (id: string) => void, updateVet: (id: string, vet: Vet) => void, postScheduleVet: (id: string, month: Schedule) => void }) => {
     let {id} = useParams();
 
     const [vet, setVet] = useState({} as Vet)
@@ -27,11 +26,11 @@ const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appoin
 
     const onSubmit = handleSubmit(({month}) => {
         console.log(month);
-        props.postScheduleVet(id as string,{month: month})
+        props.postScheduleVet(id as string, {month: month})
         setValue("month", "JAN")
     });
 
-    const fetchVet = (id:string) => {
+    const fetchVet = (id: string) => {
 
         return getData(`/vets/${id}`, {} as Vet)
             .then(data => {
@@ -64,37 +63,37 @@ const VetDetails = (props: { vet: Vet, isFetching: boolean, appointments: Appoin
             <br/>
 
             <br/>
-                <Card>
-                    <Card.Header>
+            <Card>
+                <Card.Header>
 
-                        <h1 className="text-center">Set schedule</h1>
+                    <h1 className="text-center">Set schedule</h1>
 
-                    </Card.Header>
-                        <Card.Body>
+                </Card.Header>
+                <Card.Body>
 
-                            <form onSubmit={onSubmit}>
-                                <div className="form-group">
-                                    <label>Month</label>
-                                    <select className="form-control" id="month" name="month" ref={register({required: true})}>
-                                        <option value="JAN">January</option>
-                                        <option value="FEB">February</option>
-                                        <option value="MAR">March</option>
-                                        <option value="APR">April</option>
-                                        <option value="MAY">May</option>
-                                        <option value="JUN">June</option>
-                                        <option value="JUL">July</option>
-                                        <option value="AUG">August</option>
-                                        <option value="SEP">September</option>
-                                        <option value="OCT">October</option>
-                                        <option value="NOV">November</option>
-                                        <option value="DEC">December</option>
-                                    </select>
-                                </div>
-                                <input className="btn btn-primary float-right" type="submit" value="Set schedule"/>
-                            </form>
-                        </Card.Body>
+                    <form onSubmit={onSubmit}>
+                        <div className="form-group">
+                            <label>Month</label>
+                            <select className="form-control" id="month" name="month" ref={register({required: true})}>
+                                <option value="JAN">January</option>
+                                <option value="FEB">February</option>
+                                <option value="MAR">March</option>
+                                <option value="APR">April</option>
+                                <option value="MAY">May</option>
+                                <option value="JUN">June</option>
+                                <option value="JUL">July</option>
+                                <option value="AUG">August</option>
+                                <option value="SEP">September</option>
+                                <option value="OCT">October</option>
+                                <option value="NOV">November</option>
+                                <option value="DEC">December</option>
+                            </select>
+                        </div>
+                        <input className="btn btn-primary float-right" type="submit" value="Set schedule"/>
+                    </form>
+                </Card.Body>
 
-                </Card>
+            </Card>
 
 
             <br/>
@@ -133,7 +132,7 @@ const mapDispatchToProps = (dispatch: any) => {
         updateVet: (id: string, newVet: Vet) => {
             dispatch(updateVetRequest(id, newVet))
         },
-        postScheduleVet: (id: string, month: Schedule)=> {
+        postScheduleVet: (id: string, month: Schedule) => {
             dispatch(setScheduleVet(id, month))
         },
     }

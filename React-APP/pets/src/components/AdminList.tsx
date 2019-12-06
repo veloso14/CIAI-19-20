@@ -1,15 +1,13 @@
 import React from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
-import {deletePetRequest, fetchPets, postPet} from "../actions/PetActions";
 import {GlobalState} from "../App";
 import {Link} from "react-router-dom"
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import {Appointment} from "./AppointmentList";
-import {deleteAdminRequest, fetchAdmins, postAdmin, receiveAdmins} from "../actions/AdminActions";
+import {deleteAdminRequest, fetchAdmins, postAdmin} from "../actions/AdminActions";
 import {getData} from "../Utils/NetworkUtils";
 import Container from "react-bootstrap/Container";
 
@@ -44,14 +42,12 @@ type FormData = {
 }
 
 
-
-
 const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmins: () => void, postAdmin: (admin: Admin) => void, deleteAdmin: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const [admins, setAdmins] = React.useState([] as Admin[]);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
-    const onSubmit = handleSubmit(({adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername}) => {
-        console.log(adminName, adminCellphone, adminEmail, adminPhoto, adminAddress,adminPassword,adminUsername);
+    const onSubmit = handleSubmit(({adminName, adminCellphone, adminEmail, adminPhoto, adminAddress, adminPassword, adminUsername}) => {
+        console.log(adminName, adminCellphone, adminEmail, adminPhoto, adminAddress, adminPassword, adminUsername);
         props.postAdmin({
             address: adminAddress,
             employeeID: 0,
@@ -59,7 +55,8 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
             password: adminPassword,
             photo: adminPhoto,
             username: adminUsername,
-            name: adminName, cellphone: adminCellphone, email: adminEmail });
+            name: adminName, cellphone: adminCellphone, email: adminEmail
+        });
         setUpdate(true);
         setValue("adminName", "");
         setValue("adminCellphone", -1);
@@ -73,7 +70,7 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
     const fetchAdmins = () => {
         return getData('/admins', [])
             .then(data => {
-                console.log("admins data: "+JSON.stringify(data))
+                console.log("admins data: " + JSON.stringify(data))
                 data && setAdmins(data)
             })
     }
@@ -124,37 +121,44 @@ const ProtoAdminList = (props: { admins: Admin[], isFetching: boolean, loadAdmin
                             <form onSubmit={onSubmit}>
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input className="form-control" id="adminName" name="adminName" ref={register({required: true})}/>
+                                    <input className="form-control" id="adminName" name="adminName"
+                                           ref={register({required: true})}/>
                                     {errors.adminName && 'Admin name is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Username</label>
-                                    <input className="form-control" id="adminUsername" name="adminUsername" ref={register({required: true})}/>
+                                    <input className="form-control" id="adminUsername" name="adminUsername"
+                                           ref={register({required: true})}/>
                                     {errors.adminUsername && 'Admin username is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Password</label>
-                                    <input className="form-control" id="adminPassword" name="adminPassword" ref={register({required: true})}/>
+                                    <input className="form-control" id="adminPassword" name="adminPassword"
+                                           ref={register({required: true})}/>
                                     {errors.adminPassword && 'Admin password is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Cellphone</label>
-                                    <input type="number" min="0" className="form-control" id="adminCellphone" name="adminCellphone" ref={register({required: true})}/>
+                                    <input type="number" min="0" className="form-control" id="adminCellphone"
+                                           name="adminCellphone" ref={register({required: true})}/>
                                     {errors.adminCellphone && 'Admin cellphone is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input className="form-control" id="adminEmail" name="adminEmail" ref={register({required: true})}/>
+                                    <input className="form-control" id="adminEmail" name="adminEmail"
+                                           ref={register({required: true})}/>
                                     {errors.adminEmail && 'Admin email is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Address</label>
-                                    <input className="form-control" id="adminAddress" name="adminAddress" ref={register({required: true})}/>
+                                    <input className="form-control" id="adminAddress" name="adminAddress"
+                                           ref={register({required: true})}/>
                                     {errors.adminAddress && 'Admin address is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Photo</label>
-                                    <input className="form-control" id="adminPhoto" name="adminPhoto" ref={register({required: true})}/>
+                                    <input className="form-control" id="adminPhoto" name="adminPhoto"
+                                           ref={register({required: true})}/>
                                     {errors.adminPhoto && 'Admin photo is required'}
                                 </div>
 

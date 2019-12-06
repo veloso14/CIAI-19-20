@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {getData} from "../Utils/NetworkUtils";
 import PetList, {Pet} from "../components/PetList";
-import {Appointment} from "../components/AppointmentList"
+import AppointmentList, {Appointment} from "../components/AppointmentList"
 import Container from "react-bootstrap/Container";
 import Spinner from "react-bootstrap/Spinner";
 import AddAppointmentForm from "../components/AddAppointmentForm";
-import AppointmentList from "../components/AppointmentList";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
@@ -27,8 +26,6 @@ const ClientPage = (props: {
     const [appointments, setAppointments] = useState([] as Appointment[]);
     const [pets, setPets] = useState([] as Pet[]);
     const [loading, setLoading] = useState(false);
-
-
 
 
     const loadClient = (username: string) => {

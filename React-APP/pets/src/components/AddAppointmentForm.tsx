@@ -3,10 +3,9 @@ import useForm from "react-hook-form";
 import {getData} from "../Utils/NetworkUtils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {useHistory, withRouter} from 'react-router-dom';
+import {useHistory} from 'react-router-dom';
 import {Pet} from "./PetList";
 import {Vet} from "./VetList";
-import ListGroup from "react-bootstrap/ListGroup";
 
 /*
 * Mudanças no servidor:
@@ -144,7 +143,7 @@ const AddAppointmentForm = (props: { currentUserId: number }) => {
             <br/>
             <h1 className="text-center">Create a new Appointment</h1>
             <form onSubmit={onSubmit}>
-               {/* <div className="form-group">
+                {/* <div className="form-group">
                     <label>Description</label>
                     <textarea className="form-control" id="desc" name="desc" ref={register({required: true})}/>
                     {errors.desc && 'A brief description is required.'}

@@ -3,7 +3,10 @@ export enum ChangePasswordTypes {
 }
 
 
-export const updatePassword = (id: number, password: string) => ({type: ChangePasswordTypes.UPDATE_PASSWORD, data: {id: id, password: password}});
+export const updatePassword = (id: number, password: string) => ({
+    type: ChangePasswordTypes.UPDATE_PASSWORD,
+    data: {id: id, password: password}
+});
 
 export function updatePasswordRequest(id: number, password: string) {
     return (dispatch: any) => {
@@ -13,7 +16,7 @@ export function updatePasswordRequest(id: number, password: string) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({pass: password })
+            body: JSON.stringify({pass: password})
         })
             .then(response => {
                 if (response.ok) {

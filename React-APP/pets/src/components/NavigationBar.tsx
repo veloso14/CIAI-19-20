@@ -10,7 +10,7 @@ const NavigationBar = (props: { currentRole: string }) => {
                 <Nav.Link href="/">Home</Nav.Link>
                 {props.currentRole == "CLIENT" && <Nav.Link href="/client">Client</Nav.Link>}
                 {props.currentRole == "ROLE_ADMIN" && <Nav.Link href="/admin">Admin</Nav.Link>}
-                {props.currentRole == "ROLE_VET" &&  <Nav.Link href="/vet">Vets</Nav.Link>}
+                {props.currentRole == "ROLE_VET" && <Nav.Link href="/vet">Vets</Nav.Link>}
             </Nav>
             <Navbar.Collapse>
                 <Nav className="justify-content-end" style={{width: "100%"}}>

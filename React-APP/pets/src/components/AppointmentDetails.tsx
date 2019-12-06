@@ -5,9 +5,6 @@ import {GlobalState} from "../App";
 import {Appointment} from "./AppointmentList";
 import {connect} from "react-redux";
 import {getData} from "../Utils/NetworkUtils";
-import {receiveVet} from "../actions/VetActions";
-import {Pet} from "./PetList";
-import {receivePet} from "../actions/PetActions";
 import {Vet} from "./VetList";
 
 const AppointmentDetails = (props: { appointments: Appointment[] }) => {

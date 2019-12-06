@@ -27,6 +27,7 @@ export interface AddAdminAction extends Action {
 export interface ReceiveAdminsAction extends Action {
     data: Admin[]
 }
+
 export interface ReceiveAdminAction extends Action {
     data: Admin
 
@@ -46,7 +47,10 @@ export interface UpdateAdminAction extends Action {
 
 export const addAdmin = (admin: Admin) => ({type: AdminActionsTypes.ADD_ADMIN, data: admin});
 export const deleteAdmin = (id: number) => ({type: AdminActionsTypes.DELETE_ADMIN, data: id});
-export const updateAdmin = (id: string, admin: Admin) => ({type: AdminActionsTypes.UPDATE_ADMIN, data: {id: id, admin: admin}});
+export const updateAdmin = (id: string, admin: Admin) => ({
+    type: AdminActionsTypes.UPDATE_ADMIN,
+    data: {id: id, admin: admin}
+});
 export const requestAdmins = () => ({type: AdminActionsTypes.REQUEST_ADMINS});
 export const receiveAdmins = (data: Admin[]) => ({type: AdminActionsTypes.RECEIVE_ADMINS, data: data});
 export const requestAdmin = () => ({type: AdminActionsTypes.REQUEST_ADMIN});
@@ -55,7 +59,7 @@ export const receiveAdmin = (data: {}) => ({type: AdminActionsTypes.RECEIVE_ADMI
 export function fetchAdmin(id: string) {
     return (dispatch: any) => {
         dispatch(requestAdmin());
-        return getData(`/admins/${+id}`, {admin:{}})
+        return getData(`/admins/${+id}`, {admin: {}})
             .then(data => {
                 console.log("log: " + JSON.stringify(data))
                 data && dispatch(receiveAdmin(data))
@@ -84,7 +88,17 @@ export function postAdmin(admin: Admin) {
                 'Content-Type': 'application/json',
                 'Authorization': '' + token,
             },
-            body: JSON.stringify({id: admin.id, name: admin.name, email: admin.email, username: admin.username, password: admin.password,  cellphone: admin.cellphone, address: admin.address , photo:admin.photo,  employeeID: admin.employeeID})
+            body: JSON.stringify({
+                id: admin.id,
+                name: admin.name,
+                email: admin.email,
+                username: admin.username,
+                password: admin.password,
+                cellphone: admin.cellphone,
+                address: admin.address,
+                photo: admin.photo,
+                employeeID: admin.employeeID
+            })
         })
             .then(response => {
                 if (response.ok)

@@ -31,8 +31,6 @@ type FormData = {
 }
 
 
-
-
 const ProtoPetList = (props: { currentUserId: number, pets: Pet[], isFetching: boolean, loadPets: () => void, postPet: (pet: Pet) => void, deletePet: (id: number) => void }) => {
     const clientID = props.currentUserId;
     const [update, setUpdate] = React.useState(false);
@@ -45,14 +43,14 @@ const ProtoPetList = (props: { currentUserId: number, pets: Pet[], isFetching: b
         setValue("petSpecies", "");
     });
 
-  /*  // eslint-disable-next-line
-    React.useEffect(() => {
-        console.log("run effect");
-        props.loadPets();
-        return () => {
-            setUpdate(false)
-        }
-    }, [update]);*/
+    /*  // eslint-disable-next-line
+      React.useEffect(() => {
+          console.log("run effect");
+          props.loadPets();
+          return () => {
+              setUpdate(false)
+          }
+      }, [update]);*/
 
     let list = props.pets.map((pet: Pet) => {
         return (

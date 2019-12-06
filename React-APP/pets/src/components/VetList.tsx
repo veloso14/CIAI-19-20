@@ -49,13 +49,12 @@ type FormData = {
 }
 
 
-
 const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () => void, postVet: (vet: Vet) => void, deleteVet: (id: number) => void }) => {
     const [update, setUpdate] = React.useState(false);
     const [vets, setVets] = React.useState([] as Vet[]);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
-    const onSubmit = handleSubmit(({vetName, vetCellphone, vetEmail, vetPhoto, vetAddress,vetPassword,vetUsername}) => {
-        console.log(vetName, vetCellphone, vetEmail, vetPhoto, vetAddress,vetPassword,vetUsername);
+    const onSubmit = handleSubmit(({vetName, vetCellphone, vetEmail, vetPhoto, vetAddress, vetPassword, vetUsername}) => {
+        console.log(vetName, vetCellphone, vetEmail, vetPhoto, vetAddress, vetPassword, vetUsername);
         props.postVet({
             address: vetAddress,
             employeeID: 0,
@@ -63,7 +62,8 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
             password: vetPassword,
             photo: vetPhoto,
             username: vetUsername,
-            name: vetName, cellphone: vetCellphone, email: vetEmail });
+            name: vetName, cellphone: vetCellphone, email: vetEmail
+        });
         setUpdate(true);
         setValue("vetName", "");
         setValue("vetCellphone", -1);
@@ -77,7 +77,7 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
     const fetchVets = () => {
         return getData('/vets', [])
             .then(data => {
-                console.log("vets data: "+JSON.stringify(data))
+                console.log("vets data: " + JSON.stringify(data))
                 data && setVets(data)
             })
     }
@@ -126,37 +126,44 @@ const ProtoVetList = (props: { vets: Vet[], isFetching: boolean, loadVets: () =>
                             <form onSubmit={onSubmit}>
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input className="form-control" id="vetName" name="vetName" ref={register({required: true})}/>
+                                    <input className="form-control" id="vetName" name="vetName"
+                                           ref={register({required: true})}/>
                                     {errors.vetName && 'Vet name is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Username</label>
-                                    <input className="form-control" id="vetUsername" name="vetUsername" ref={register({required: true})}/>
+                                    <input className="form-control" id="vetUsername" name="vetUsername"
+                                           ref={register({required: true})}/>
                                     {errors.vetUsername && 'Vet username is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Password</label>
-                                    <input className="form-control" id="vetPassword" name="vetPassword" ref={register({required: true})}/>
+                                    <input className="form-control" id="vetPassword" name="vetPassword"
+                                           ref={register({required: true})}/>
                                     {errors.vetPassword && 'Vet password is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Cellphone</label>
-                                    <input type="number" min="0" className="form-control" id="vetCellphone" name="vetCellphone" ref={register({required: true})}/>
+                                    <input type="number" min="0" className="form-control" id="vetCellphone"
+                                           name="vetCellphone" ref={register({required: true})}/>
                                     {errors.vetCellphone && 'Vet cellphone is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Email</label>
-                                    <input className="form-control" id="vetEmail" name="vetEmail" ref={register({required: true})}/>
+                                    <input className="form-control" id="vetEmail" name="vetEmail"
+                                           ref={register({required: true})}/>
                                     {errors.vetEmail && 'Vet email is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Address</label>
-                                    <input className="form-control" id="vetAddress" name="vetAddress" ref={register({required: true})}/>
+                                    <input className="form-control" id="vetAddress" name="vetAddress"
+                                           ref={register({required: true})}/>
                                     {errors.vetAddress && 'Vet address is required'}
                                 </div>
                                 <div className="form-group">
                                     <label>Photo</label>
-                                    <input className="form-control" id="vetPhoto" name="vetPhoto" ref={register({required: true})}/>
+                                    <input className="form-control" id="vetPhoto" name="vetPhoto"
+                                           ref={register({required: true})}/>
                                     {errors.vetPhoto && 'Vet photo is required'}
                                 </div>
 

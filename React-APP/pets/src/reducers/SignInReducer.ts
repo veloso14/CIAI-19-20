@@ -16,6 +16,7 @@ function decodeUsername() {
         return ""
     }
 }
+
 function decodeRole() {
     const jwt = require("jsonwebtoken");
     const token = localStorage.getItem('jwt');

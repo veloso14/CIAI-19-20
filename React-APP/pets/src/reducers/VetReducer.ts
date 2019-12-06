@@ -1,6 +1,5 @@
 import {Action} from "redux"
 import {
-    AddScheduleVetAction,
     AddVetAction,
     ReceiveVetAction,
     ReceiveVetsAction,
@@ -37,21 +36,21 @@ function vetReducer(state: VetState = initialState, action: Action): VetState {
                     id: 0,
                     name: (action as AddVetAction).name,
                     employeeID: (action as AddVetAction).employeeID,
-                    photo:  (action as AddVetAction).photo,
-                    address:  (action as AddVetAction).address,
+                    photo: (action as AddVetAction).photo,
+                    address: (action as AddVetAction).address,
                     password: (action as AddVetAction).password,
-                    username:  (action as AddVetAction).username,
-                    cellphone:  (action as AddVetAction).cellphone,
-                    email:  (action as AddVetAction).email,
+                    username: (action as AddVetAction).username,
+                    cellphone: (action as AddVetAction).cellphone,
+                    email: (action as AddVetAction).email,
                 }]
             };
-/*
-        case VetActionsTypes.ADD_SCHEDULE_VET:
-            return {
-                ...state, month:(action as AddScheduleVetAction).data.month
-            };
+        /*
+                case VetActionsTypes.ADD_SCHEDULE_VET:
+                    return {
+                        ...state, month:(action as AddScheduleVetAction).data.month
+                    };
 
- */
+         */
 
         case VetActionsTypes.UPDATE_VET:
             return {
@@ -77,8 +76,8 @@ function vetReducer(state: VetState = initialState, action: Action): VetState {
             };
 
 
-       // case VetActionsTypes.DELETE_PET:
-         //   return {...state, pets: state.pets.filter(pet => pet.id !== (action as DeletePetAction).id)};
+        // case VetActionsTypes.DELETE_PET:
+        //   return {...state, pets: state.pets.filter(pet => pet.id !== (action as DeletePetAction).id)};
         default:
             return state
     }

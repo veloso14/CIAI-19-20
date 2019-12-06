@@ -22,6 +22,7 @@ export interface AddPetAction extends Action {
 export interface ReceivePetsAction extends Action {
     data: Pet[]
 }
+
 export interface ReceivePetAction extends Action {
     data: {
         pet: Pet,
@@ -52,7 +53,7 @@ export const receivePet = (data: {}) => ({type: PetActionsTypes.RECEIVE_PET, dat
 export function fetchPet(id: string) {
     return (dispatch: any) => {
         dispatch(requestPet());
-        return getData(`/pets/${+id}`, {pet:{} as Pet, appointments: []})
+        return getData(`/pets/${+id}`, {pet: {} as Pet, appointments: []})
             .then(data => {
                 console.log("log: " + JSON.stringify(data))
                 data && dispatch(receivePet(data))

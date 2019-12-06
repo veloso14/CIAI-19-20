@@ -1,5 +1,4 @@
-
-export function getData<T>(url:string, defaultValue:T):Promise<T> {
+export function getData<T>(url: string, defaultValue: T): Promise<T> {
 
     let token = localStorage.getItem('jwt');
     //console.log("token is " + token);

@@ -1,10 +1,9 @@
 import React, {ChangeEvent, FormEvent, useState} from "react";
-import {connect, Provider} from "react-redux";
+import {connect} from "react-redux";
 import {GlobalState} from "../App";
 import {requestSignIn, signOut} from "../actions/SignInAction";
 import Container from "react-bootstrap/Container";
 import {Link, useHistory} from "react-router-dom";
-
 
 
 export interface LoginState {
@@ -12,7 +11,6 @@ export interface LoginState {
     currentUser: string,
     currentRole: string
 }
-
 
 
 const ProtoLogin = (
@@ -55,7 +53,7 @@ const ProtoLogin = (
 
                 <form onSubmit={submitHandler}>
                     <div className="form-group">
-                        <label>Username: <input className="form-control" type="text"  required value={username}
+                        <label>Username: <input className="form-control" type="text" required value={username}
                                                 onChange={usernameChangeHandler}/></label>
                     </div>
                     <div className="form-group">
@@ -65,7 +63,7 @@ const ProtoLogin = (
                     <button>Sign In</button>
                     <br/> <br/>
                     <Link to="/register">
-                    <button>Register</button>
+                        <button>Register</button>
                     </Link>
                 </form>
             </Container>);
@@ -78,10 +76,13 @@ const ProtoLogin = (
     };
 
 
-    return (<> { signInForm} </>);
+    return (<> {signInForm} </>);
     // add a message space for alerts (you were signed out, expired session)
 };
-const mapStateToProps = (state: GlobalState) => ({isSignedIn: state.signIn.isSignedIn, currentRole: state.signIn.currentRole});
+const mapStateToProps = (state: GlobalState) => ({
+    isSignedIn: state.signIn.isSignedIn,
+    currentRole: state.signIn.currentRole
+});
 const mapDispatchToProps =
     (dispatch: any) =>
         ({
