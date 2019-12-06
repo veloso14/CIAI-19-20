@@ -74,13 +74,16 @@ export function fetchPets() {
     }
 }
 
+let token = localStorage.getItem('jwt');
+
 export function postPet(pet: Pet) {
     return (dispatch: any) => {
         dispatch(addPet(pet));
         return fetch('/pets', {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({id: pet.id, name: pet.name, ownerID: pet.ownerID, species: pet.species})
         })
@@ -104,7 +107,8 @@ export function deletePetRequest(id: number) {
         return fetch(`/pets/${id}`, {
             method: "DELETE",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             }
         })
             .then(response => {
@@ -129,7 +133,8 @@ export function updatePetRequest(id: string, pet: Pet) {
         return fetch(`/pets/${+id}`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({id: pet.id, name: pet.name, species: pet.species})
         })
