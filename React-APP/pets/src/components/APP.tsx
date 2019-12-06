@@ -147,7 +147,7 @@ const ProtoSignInForm = (
     let signOutForm = (
 
         <Provider store={store}>
-            {props.isSignedIn && <NavigationBar currentRole={props.currentRole}/>}
+            {props.isSignedIn && <NavigationBar performSignOut={props.performSignOut} currentRole={props.currentRole}/>}
             <Router>
                 <Switch>
                     <Route path="/" exact component={Home}/>
