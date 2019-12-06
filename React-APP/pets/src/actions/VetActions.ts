@@ -47,6 +47,8 @@ export interface UpdateVetAction extends Action {
     }
 }
 
+let token = localStorage.getItem('jwt');
+
 
 export interface DeleteVetAction extends Action {
     id: number
@@ -88,7 +90,8 @@ export function postVet(vet: Vet) {
         return fetch('/vets', {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({id: vet.id, name: vet.name, email: vet.email, username: vet.username, password: vet.password,  cellphone: vet.cellphone, address: vet.address , photo:vet.photo,  employeeID: vet.employeeID})
         })
@@ -113,7 +116,8 @@ export function deleteVetRequest(id: number) {
         return fetch(`/vets/${+id}`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({id:id})
         })
@@ -138,7 +142,8 @@ export function updateVetRequest(id: string, vet: Vet) {
         return fetch(`/vets/${+id}/info`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({ address: vet.address,
                 employeeID: vet.employeeID,

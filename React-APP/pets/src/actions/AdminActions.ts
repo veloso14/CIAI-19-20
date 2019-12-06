@@ -63,6 +63,8 @@ export function fetchAdmin(id: string) {
     }
 }
 
+let token = localStorage.getItem('jwt');
+
 export function fetchAdmins() {
     return (dispatch: any) => {
         dispatch(requestAdmins());
@@ -79,7 +81,8 @@ export function postAdmin(admin: Admin) {
         return fetch('/admins', {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({id: admin.id, name: admin.name, email: admin.email, username: admin.username, password: admin.password,  cellphone: admin.cellphone, address: admin.address , photo:admin.photo,  employeeID: admin.employeeID})
         })
@@ -103,7 +106,8 @@ export function deleteAdminRequest(id: number) {
         return fetch(`/admins/${id}`, {
             method: "DELETE",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             }
         })
             .then(response => {
@@ -128,7 +132,8 @@ export function updateAdminRequest(id: string, admin: Admin) {
         return fetch(`/admins/${+id}/info`, {
             method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': '' + token,
             },
             body: JSON.stringify({id: 0, cellphone: admin.cellphone, email: admin.email, address: admin.address})
         })
