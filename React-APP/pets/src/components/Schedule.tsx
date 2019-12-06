@@ -78,6 +78,7 @@ const ProtoAppointmentList = (props: { appointments: Appointment[], isFetching: 
         <h1 className="text-center">Appointments</h1>
             <div>
                 <Calendar
+
                 />
             </div>
 

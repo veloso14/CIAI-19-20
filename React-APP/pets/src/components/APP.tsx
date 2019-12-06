@@ -68,6 +68,7 @@ const ProtoSignInForm = (
             <Switch>
                 <Route exact path="/" component={Login} />
                 <Route exact path="/" component={Login} />
+                <Route exact path="/logout" component={Login} />
                 <Route exact path="/register" component={RegisterForm}/>
             </Switch>
         </Router>
@@ -147,7 +148,7 @@ const ProtoSignInForm = (
                     <Route path="/schedule/" component={Schedule}/>
                     <Route path="/vet/" exact component={VetList}/>
                     <ClientRoute path="/client/"><ClientPage/></ClientRoute>
-                    <Route path="/logout/" exact component={SignOutForm}/>
+                    <Route path="/logout/" exact component={Login}/>
                     <Route component={NoMatch}/>
                 </Switch>
             </Router>

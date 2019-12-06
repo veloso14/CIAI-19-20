@@ -16,7 +16,7 @@ async function performRegister(username: string, password: string , nome : strin
     const myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
 
-    return fetch("/signup",
+    return fetch("/clients",
         {method:'POST',
             headers: myHeaders,
             body: JSON.stringify({
@@ -27,10 +27,7 @@ async function performRegister(username: string, password: string , nome : strin
                 password:password,
                 cellphone:cellphone,
                 address:address,
-                photo:"",
-                role:"CLIENT",
-                pets:[],
-                appointments:[]
+                photo:""
                 })})
         .then( response => {
             if( response.ok ) {
