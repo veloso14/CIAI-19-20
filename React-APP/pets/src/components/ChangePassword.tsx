@@ -1,9 +1,11 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
 import {updatePasswordRequest} from "../actions/ChangePassword";
 import {GlobalState} from "../App";
 import Container from "react-bootstrap/Container";
+import {Client} from "../pages/ClientPage";
+import {getData} from "../Utils/NetworkUtils";
 
 
 type FormData = {
@@ -13,17 +15,36 @@ type FormData = {
 
 
 
-const ProtoUpdatePassword = (props: {updatePassword: (id: number, password: string) => void }) => {
+const ProtoUpdatePassword = (props: {currentUser: string, currentRole: string,updatePassword: (id: number, password: string) => void }) => {
     const clientID = 4;
     const [update, setUpdate] = React.useState(false);
+    const [client, setClient] = useState({} as Client);
+    const [loading, setLoading] = useState(false);
     const {register, setValue, handleSubmit, errors} = useForm<FormData>();
     const onSubmit = handleSubmit(({newPassord}) => {
         console.log(newPassord);
-        props.updatePassword(clientID, newPassord);
+        props.updatePassword(client.id, newPassord);
         setUpdate(true);
         setValue("oldPassword", "");
         setValue("newPassord", "");
     });
+
+
+
+    const loadClient = (username: string) => {
+        setLoading(true);
+        return getData(`/admins/admin/${username}`, {} as Client)
+            .then(data => {
+                console.log("client loaded: " + JSON.stringify(data));
+                setClient(data);
+                setLoading(false);
+            })
+    };
+
+    useEffect(() => {
+        loadClient(props.currentUser)
+        console.log(props.currentRole)
+    }, []);
 
 
     return (
@@ -54,7 +75,10 @@ const ProtoUpdatePassword = (props: {updatePassword: (id: number, password: stri
     );
 };
 
-const mapStateToProps = (state: GlobalState) => ({});
+const mapStateToProps = (state: GlobalState) => ({
+    currentUser: state.signIn.currentUser,
+    currentRole: state.signIn.currentRole
+});
 
 const mapDispatchToProps = (dispatch: any) => {
     return {

@@ -104,7 +104,7 @@ const ProtoSignInForm = (
             <Route
                 {...rest}
                 render={({location}) =>
-                    props.currentRole == "ROLE_ADMIN" ? (
+                    (props.currentRole == "ROLE_ADMIN" ||props.currentRole == "ADMIN")? (
                         children
                     ) : (
                         <Redirect

@@ -6,14 +6,29 @@ import {Appointment} from "./AppointmentList";
 import {connect} from "react-redux";
 import {getData} from "../Utils/NetworkUtils";
 import {Vet} from "./VetList";
+import Card from "react-bootstrap/Card";
+import useForm from "react-hook-form";
+import {updateAppointmentRequest} from "../actions/AppointmentActions";
 
-const AppointmentDetails = (props: { appointments: Appointment[] }) => {
+
+type FormData = {
+    desc: string;
+}
+
+
+
+const AppointmentDetails = (props: { apt: Appointment,appointments: Appointment[], updateAppointment: (id: string, desc: String) => void }) => {
     let {id} = useParams();
     const [apt, setApt] = React.useState({} as Appointment)
-
-    const [vet, setVet] = React.useState({} as Vet)
     const [loading, setLoading] = React.useState(false)
+    const [vet, setVet] = React.useState({} as Vet)
 
+    const {register, setValue, handleSubmit, errors} = useForm<FormData>();
+    const onSubmit = handleSubmit(({desc}) => {
+        console.log(desc);
+        props.updateAppointment(id as string, desc)
+        setValue("desc", "")
+    });
 
     const loadAppointment = (id: string) => {
         setLoading(true)
@@ -53,6 +68,7 @@ const AppointmentDetails = (props: { appointments: Appointment[] }) => {
     let desc = String(apt.desc)
 
     let content = (
+        <Container>
         <div>
             <h1 className="text-center">Appointment Details:</h1>
             <br/>
@@ -62,6 +78,30 @@ const AppointmentDetails = (props: { appointments: Appointment[] }) => {
             <h3>Time: {date.toString().slice(11, 19)}</h3>
             <h3>Vet: {vet.name}</h3>
         </div>
+            <br/>
+            <br/>
+            <Card>
+                <Card.Header>
+
+                    <h1 className="text-center">Complete appointment</h1>
+
+                </Card.Header>
+                <Card.Body>
+
+                    <form onSubmit={onSubmit}>
+                        <div className="form-group">
+                            <label>Description</label>
+                            <input className="form-control" id="desc" name="desc"
+                                   ref={register({required: true})}/>
+                            {errors.desc && 'desc is required'}
+                        </div>
+                        <input className="btn btn-primary float-right" type="submit" value="Complete appointment"/>
+                    </form>
+                </Card.Body>
+
+            </Card>
+        </Container>
+
     )
 
     let loadingContent = (
@@ -80,12 +120,16 @@ const AppointmentDetails = (props: { appointments: Appointment[] }) => {
 
 const mapStateToProps = (state: GlobalState) => {
     return {
-        pet: state.pets.pet,
-        appointments: state.pets.appointments,
-        isFetching: state.pets.isFetching
+        apt: state.appointments.apt,
+        appointments: state.appointments.appointments,
+        isFetching: state.appointments.isFetching
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
-    return {}
+    return {
+        updateAppointment: (id: string, desc: String) => {
+            dispatch(updateAppointmentRequest(id, desc))
+        },
+    }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentDetails);

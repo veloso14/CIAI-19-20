@@ -10,6 +10,14 @@ export interface Appointment {
     petID: string
 }
 
+export interface AppointmentState {
+    apt:Appointment,
+    appointments: Appointment[],
+    isFetching: boolean
+}
+
+
+
 const AppointmentList = (props: { appointments: Appointment[] }) => {
 
 

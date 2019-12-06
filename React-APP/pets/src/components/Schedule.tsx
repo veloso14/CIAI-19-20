@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import useForm from "react-hook-form";
 import {connect} from "react-redux";
 import {GlobalState} from "../App";
@@ -11,74 +11,81 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import {fetchVetAppointments} from "../actions/ScheduleAction";
 import '../main.css'
-
-export interface Appointment {
-    id: number,
-    date: number,
-    desc: string,
-}
+import {Appointment} from "./AppointmentList";
+import {getData} from "../Utils/NetworkUtils";
+import {Client} from "../pages/ClientPage";
+import {Pet} from "./PetList";
 
 export interface AppointmentState {
+    apt:Appointment,
     appointments: Appointment[],
     isFetching: boolean
 }
 
-type FormData = {
-    petName: string;
-    petSpecies: string;
+
+
+export interface Event {
+    title: string,
+    date: string
 }
 
-
-const ProtoAppointmentList = (props: {
+const ProtoAppointmentList = (props: {currentUser: string,
+    currentRole: string,
     state: GlobalState, appointments: Appointment[], isFetching: boolean, loadAppointment: (id: number)
         => void, postAppointment: (appointment: Appointment) => void, deleteAppointment: (id: number) => void
 }) => {
-    const [update, setUpdate] = React.useState(false);
     const [client, setClient] = useState({} as Client);
-    const {register, setValue, handleSubmit, errors} = useForm<FormData>();
-    const onSubmit = handleSubmit(({petName, petSpecies}) => {
-        console.log(petName, petSpecies);
-        //  props.postAppointment({name: petName, species: petSpecies, id: 0, ownerID: clientID});
-        setUpdate(true);
-    });
+    const [appointments, setAppointments] = useState([] as Appointment[]);
+    const [loading, setLoading] = useState(false);
 
-    let shoppingCart = [];
+    const loadClient = (username: string) => {
+        setLoading(true);
+        return getData(`/vets/vet/${username}`, {} as Client)
+            .then(data => {
+                console.log("client loaded: " + JSON.stringify(data));
+                setClient(data);
+                setLoading(false);
+            })
+    };
 
 
-    // eslint-disable-next-line
-    React.useEffect(() => {
-        console.log("run effect");
-        props.loadAppointment(5);
+    const loadAppointments = () => {
+        setLoading(true);
+        return getData(`/vets/${client.id}/appointments`, [] as Appointment[])
+            .then(data => {
+                console.log("apt loaded: " + JSON.stringify(data));
+                setAppointments(data);
+                setLoading(false);
+            })
+    };
 
+
+    useEffect(() => {
+        loadClient(props.currentUser)
+        console.log(props.currentRole)
     }, []);
 
-    let list = props.appointments.map((appointment: Appointment) => {
+    useEffect(() => {
+        if (typeof client.id != "undefined") {
+            loadAppointments()
+        }
+    }, [client]);
+
+    let events : Event[] = [];
+
+    let list = appointments.map((appointment: Appointment) => {
+        events.push({title: "Appointment",  date: appointment.date.toString().substr(0,10)})
         return (
             <ListGroup.Item key={appointment.id}>
                 <Link to={`/appointment/${appointment.id}/`}>{appointment.date.toString().substr(0,10)}</Link>
-                <Button className="float-right" variant="primary" size="sm" onClick={() => {
-                    props.deleteAppointment(appointment.id);
-                    setUpdate(true)
-                }}>Delete</Button>
             </ListGroup.Item>
         )
     });
 
     let emptyList = (<p className="text-center">You currently don't have any appointments!</p>)
 
-    let petList = ((props.appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
+    let aptList = ((appointments.length > 0) ? <ListGroup>{list}</ListGroup> : emptyList)
 
-    let calendario = props.appointments.map((appointment: Appointment) => {
-
-            <ListGroup.Item key={appointment.id}>
-                <Link to={`/appointment/${appointment.id}/`}>{appointment.date.toString().substr(0,10)}</Link>
-                <Button className="float-right" variant="primary" size="sm" onClick={() => {
-                    props.deleteAppointment(appointment.id);
-                    setUpdate(true)
-                }}>Delete</Button>
-            </ListGroup.Item>
-
-    });
 
     return (
         <Container>
@@ -86,7 +93,7 @@ const ProtoAppointmentList = (props: {
             <h1 className="text-center">My Appointments</h1>
             <br/>
 
-            {props.isFetching ? <p>Loading...</p> : petList}
+            {props.isFetching ? <p>Loading...</p> : aptList}
 
             <br/>
             <h1 className="text-center">Appointments</h1>
@@ -95,34 +102,24 @@ const ProtoAppointmentList = (props: {
 
                 <FullCalendar defaultView="dayGridMonth"
                               plugins={[dayGridPlugin]}
-                              events={[
-                                  {title: 'Appointement', date: props.appointments[0].date.toString().substr(0,10)},
-                              ]}/>
+                              events={events}/>
             </div>
 
         </Container>
     );
 };
 
-export interface Client {
-    id: number,
-    name: string,
-    username: string
-}
 
 const mapStateToProps = (state: GlobalState) => ({
-    pets: state.pets.pets,
     currentUser: state.signIn.currentUser,
     currentRole: state.signIn.currentRole,
-    appointments: state.appointments.appointments
+    appointments: state.appointments.appointments,
+    isFetching: state.appointments.isFetching
 });
 
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        /*   postAppointment: (appointment: Appointment) => {
-               dispatch(fetchAppointment())
-           },*/
         loadAppointment: (id: number) => {
             dispatch(fetchVetAppointments(id))
         },
