@@ -14,7 +14,7 @@ const NavigationBar = (props: { currentRole: string }) => {
             </Nav>
             <Navbar.Collapse>
                 <Nav className="justify-content-end" style={{width: "100%"}}>
-                    <Nav.Link href="/profile">Profile</Nav.Link>
+                    {props.currentRole == "ROLE_ADMIN" && <Nav.Link href="/profile">Profile</Nav.Link>}
                     <Nav.Link href="/logout">Logout</Nav.Link>
                 </Nav>
             </Navbar.Collapse>

@@ -164,7 +164,7 @@ const ProtoSignInForm = (
                     <AdminRoute path="/admin/" exact><AdminList/></AdminRoute>
                     <AdminRoute path="/admin/:id"><AdminDetails/></AdminRoute>
                     <Route path="/vet/:id" component={VetDetails}/>
-                    <Route path="/profile/" component={ChangePassword}/>
+                    <AdminRoute path="/profile/"><ChangePassword/></AdminRoute>
                     <Route path="/schedule/" component={Schedule}/>
                     <VetRoute path="/vet/" exact><VetList/></VetRoute>
                     <ClientRoute path="/client/"><ClientPage/></ClientRoute>
