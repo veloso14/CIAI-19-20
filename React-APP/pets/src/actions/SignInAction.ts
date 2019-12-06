@@ -31,6 +31,7 @@ async function performLogin(username: string, password: string) {
                 console.log("login response: " + JSON.stringify(response))
                 return response.headers.get('Authorization');
             } else {
+                window.alert("Dados inválidos")
                 console.log(`Error: ${response.status}: ${response.statusText}`);
                 return null;
                 // and add a message to the Ui: wrong password ?? other errors?

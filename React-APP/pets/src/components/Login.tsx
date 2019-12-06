@@ -52,11 +52,11 @@ const ProtoLogin = (
 
                 <form onSubmit={submitHandler}>
                     <div className="form-group">
-                        <label>Username: <input className="form-control" type="text" value={username}
+                        <label>Username: <input className="form-control" type="text"  required value={username}
                                                 onChange={usernameChangeHandler}/></label>
                     </div>
                     <div className="form-group">
-                        <label>Password: <input className="form-control" type="password" value={password}
+                        <label>Password: <input className="form-control" type="password" required value={password}
                                                 onChange={passwordChangeHandler}/></label>
                     </div>
                     <button>Sign In</button>

@@ -84,7 +84,7 @@ abstract class UserDAO( @Id @GeneratedValue open val id: Long,
 }
 
 @Entity
-data class ClientDAO(override val id: Long,
+data class ClientDAO(override val id: Long,//0
                      override val name: String,
                      override  var email: String,
                      override  var username: String,
@@ -92,7 +92,7 @@ data class ClientDAO(override val id: Long,
                      override  var cellphone: Long,
                      override  var address: String,
                      override  var photo:String,
-                     override  var role:String,
+                     override  var role:String,//CLIENT
                      @OneToMany(mappedBy = "owner", cascade = [CascadeType.ALL])
                      var pets:List<PetDAO>,
                      @OneToMany(mappedBy = "client", cascade = [CascadeType.ALL])

@@ -25,6 +25,7 @@ import VetDetails from "./VetDetails";
 import {REGISTER} from "../actions/RegisterAction";
 import ProtoRegisterForm from "./Register";
 import Login from "./Login";
+import RegisterForm from "./Register";
 
 
 export interface SignInState {
@@ -67,7 +68,7 @@ const ProtoSignInForm = (
             <Switch>
                 <Route exact path="/" component={Login} />
                 <Route exact path="/" component={Login} />
-                <Route exact path="/register" component={ProtoRegisterForm}/>
+                <Route exact path="/register" component={RegisterForm}/>
             </Switch>
         </Router>
 
