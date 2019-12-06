@@ -126,16 +126,11 @@ class JWTAuthenticationFilter(): GenericFilterBean() {
                 //var authentication: UsernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 //authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 val roles = claims.get("roles")
-                System.out.println(roles);
-
                 val authentication = UserAuthToken(claims["username"] as String, getAuthorities(claims))
-                System.out.println(claims);
-                System.out.println(getAuthorities(claims));
-
                 // Can go to the database to get the actual user information (e.g. authorities)
 
                 SecurityContextHolder.getContext().authentication = authentication
-
+                System.out.println("Filter -> " + SecurityContextHolder.getContext().authentication.authorities.toString())
                 // Renew token with extended time here. (before doFilter)
                 addResponseToken(authentication, response as HttpServletResponse)
 

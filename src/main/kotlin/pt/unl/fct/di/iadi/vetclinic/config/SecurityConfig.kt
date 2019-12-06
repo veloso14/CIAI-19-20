@@ -12,7 +12,6 @@ import pt.unl.fct.di.iadi.vetclinic.services.UserService
 
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(
         val customUserDetails: CustomUserDetailsService,
         val users: UserService
@@ -25,9 +24,6 @@ class SecurityConfig(
                 .antMatchers("/swagger-ui.html").permitAll()
                 //Obter json do swagger daqui
                 .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/admins").permitAll()
-                .antMatchers("/vets/**").permitAll()
-                .antMatchers("/clients").permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/signup").permitAll()
                 .anyRequest().authenticated()
@@ -41,7 +37,6 @@ class SecurityConfig(
     }
 
     override fun configure(auth: AuthenticationManagerBuilder) {
-        //apagar
         auth.inMemoryAuthentication()
                 .withUser("default")
                 .password(BCryptPasswordEncoder().encode("1234"))

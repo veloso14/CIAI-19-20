@@ -16,7 +16,7 @@ import pt.unl.fct.di.iadi.vetclinic.services.AdminService
 @RequestMapping("/admins")
 class AdminController(val admins: AdminService) {
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Get the details of a single admin by id", response = AdminDTO::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully retrieved admin details"),
@@ -51,7 +51,7 @@ class AdminController(val admins: AdminService) {
     fun getAllAdmins() = admins.getAllAdmins().map { AdminDTO(it) }
 
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ApiOperation(value = "Hire new admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully added a admin"),
@@ -63,20 +63,7 @@ class AdminController(val admins: AdminService) {
             AdminDTO(admins.hireAdmin(AdminDAO(admin)))
 
 
-    /*
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    @ApiOperation(value = "Fire a vet", response = Unit::class)
-    @ApiResponses(value = [
-        ApiResponse(code = 200, message = "Successfully fired a vet"),
-        ApiResponse(code = 401, message = "You are not authorized to use this resource"),
-        ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden")
-    ])
-    @PutMapping("/vets/{id}")
-    fun fireVet(@PathVariable id: Long) =
-            handle4xx { admins.fireVet(id)}
-
-     */
-
     @ApiOperation(value = "Fire a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully fired a admin"),
@@ -87,7 +74,7 @@ class AdminController(val admins: AdminService) {
     fun deleteAdmin(@PathVariable id: Long) =
             handle4xx { admins.fireAdmin(id) }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Update contact info of a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully updated a user"),
@@ -98,6 +85,7 @@ class AdminController(val admins: AdminService) {
     fun updateAdmin(@RequestBody user: UserUpdateDTO, @PathVariable id: Long) =
             handle4xx { admins.updateUser(id,AdminDAO(user)) }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') and @securityService.canEditAdmin(principal, #id)")
     @ApiOperation(value = "Change the password of a admin", response = Unit::class)
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "Successfully changed the password"),

@@ -101,12 +101,14 @@ const ClientPage = (props: {
         </Spinner>
     );
 
+
     return (
         <Container>
             {loading ? loadingContent : content}
         </Container>
     );
 };
+
 
 const mapStateToProps = (state: GlobalState) => ({
     currentUser: state.signIn.currentUser,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Container from "react-bootstrap/Container";
 import {useParams} from "react-router";
 import {GlobalState} from "../App";
@@ -17,7 +17,7 @@ type FormData = {
 
 
 
-const AppointmentDetails = (props: { apt: Appointment,appointments: Appointment[], updateAppointment: (id: string, desc: String) => void }) => {
+const AppointmentDetails = (props: { currentRole: string,apt: Appointment,appointments: Appointment[], updateAppointment: (id: string, desc: String) => void }) => {
     let {id} = useParams();
     const [apt, setApt] = React.useState({} as Appointment)
     const [loading, setLoading] = React.useState(false)
@@ -53,6 +53,7 @@ const AppointmentDetails = (props: { apt: Appointment,appointments: Appointment[
     }
 
 
+
     React.useEffect(() => {
         loadAppointment(id as string)
     }, [id])
@@ -80,26 +81,30 @@ const AppointmentDetails = (props: { apt: Appointment,appointments: Appointment[
         </div>
             <br/>
             <br/>
-            <Card>
-                <Card.Header>
 
-                    <h1 className="text-center">Complete appointment</h1>
+            {props.currentRole == "VET" &&
+                <Card>
+                    <Card.Header>
 
-                </Card.Header>
-                <Card.Body>
+                        <h1 className="text-center">Complete appointment</h1>
 
-                    <form onSubmit={onSubmit}>
-                        <div className="form-group">
-                            <label>Description</label>
-                            <input className="form-control" id="desc" name="desc"
-                                   ref={register({required: true})}/>
-                            {errors.desc && 'desc is required'}
-                        </div>
-                        <input className="btn btn-primary float-right" type="submit" value="Complete appointment"/>
-                    </form>
-                </Card.Body>
+                    </Card.Header>
+                    <Card.Body>
 
-            </Card>
+                        <form onSubmit={onSubmit}>
+                            <div className="form-group">
+                                <label>Description</label>
+                                <input className="form-control" id="desc" name="desc"
+                                       ref={register({required: true})}/>
+                                {errors.desc && 'desc is required'}
+                            </div>
+                            <input className="btn btn-primary float-right" type="submit" value="Complete appointment"/>
+                        </form>
+                    </Card.Body>
+
+                </Card>
+
+            }
         </Container>
 
     )
@@ -122,7 +127,8 @@ const mapStateToProps = (state: GlobalState) => {
     return {
         apt: state.appointments.apt,
         appointments: state.appointments.appointments,
-        isFetching: state.appointments.isFetching
+        isFetching: state.appointments.isFetching,
+        currentRole: state.signIn.currentRole
     }
 };
 const mapDispatchToProps = (dispatch: any) => {
