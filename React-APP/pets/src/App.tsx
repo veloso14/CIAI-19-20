@@ -7,7 +7,7 @@ import {applyMiddleware, createStore} from "redux";
 import reducer from "./reducers";
 import thunk from 'redux-thunk';
 import {AdminState} from "./components/AdminList";
-import SignInForm, {SignInState} from "./components/SignIn";
+import SignInForm, {SignInState} from "./components/APP";
 import {VetState} from "./components/VetList";
 import {AppointmentState} from "./components/Schedule";
 

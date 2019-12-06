@@ -22,6 +22,9 @@ import NoMatch from "./NoMatch";
 import Schedule from "./Schedule";
 import ClientPage from "../pages/ClientPage";
 import VetDetails from "./VetDetails";
+import {REGISTER} from "../actions/RegisterAction";
+import ProtoRegisterForm from "./Register";
+import Login from "./Login";
 
 
 export interface SignInState {
@@ -60,27 +63,17 @@ const ProtoSignInForm = (
 
     let signInForm =
         (
-            <Container>
+            <Router>
+            <Switch>
+                <Route exact path="/" component={Login} />
+                <Route exact path="/" component={Login} />
+                <Route exact path="/register" component={ProtoRegisterForm}/>
+            </Switch>
+        </Router>
 
-                <br/>
 
-                <h1 className="text-center">Login</h1>
+    );
 
-
-                <form onSubmit={submitHandler}>
-                    <div className="form-group">
-                        <label>Username: <input className="form-control" type="text" value={username}
-                                                onChange={usernameChangeHandler}/></label>
-                    </div>
-                    <div className="form-group">
-                        <label>Password: <input className="form-control" type="password" value={password}
-                                                onChange={passwordChangeHandler}/></label>
-                    </div>
-                    <button>Sign In</button>
-                    <br/> <br/>
-                    <button>Registar</button>
-                </form>
-            </Container>);
 
 
     const Content = () => {
