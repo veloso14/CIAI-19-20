@@ -16,6 +16,7 @@
   },
   "host": "localhost:8080",
   "basePath": "/",
+  
   "tags": [
     {
       "name": "admin-controller",
